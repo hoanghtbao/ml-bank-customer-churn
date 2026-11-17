@@ -6,12 +6,6 @@
     "excluded_features_target_leakage": [
         "Complain"
     ],
-    "excluded_identifiers": [
-        "RowNumber",
-        "CustomerId",
-        "Surname",
-        "Surname_Encoding_Issue"
-    ],
     "feature_columns": [
         "CreditScore",
         "Age",
@@ -34,32 +28,21 @@
         "Age_Lifecycle_Stage"
     ],
     "optimal_decision_threshold": 0.45,
-    "validation_metrics": {
-        "roc_auc": 0.8702,
-        "f1_score_at_opt_t": 0.5714,
-        "net_roi_eur": 352487.9
-    },
     "test_holdout_metrics": {
-        "accuracy": 0.8467,
-        "precision": 0.6448,
-        "recall": 0.5475,
-        "f1_score": 0.5922,
+        "accuracy": 0.8466666666666667,
+        "precision": 0.6447876447876448,
+        "recall": 0.5475409836065573,
+        "f1_score": 0.5921985815602837,
         "f1_95_ci": [
             0.5428,
             0.6348
         ],
-        "roc_auc": 0.8437,
+        "roc_auc": 0.8436710336785789,
         "roc_auc_95_ci": [
             0.8179,
             0.8693
         ],
-        "pr_auc": 0.6621,
-        "confusion_matrix": {
-            "tn": 1103,
-            "fp": 92,
-            "fn": 138,
-            "tp": 167
-        }
+        "pr_auc": 0.6620750582813693
     },
     "runtime_environment": {
         "python_version": "3.13.2",
