@@ -40,7 +40,7 @@ def predict_customer(
     # Check and generate domain features if missing
     req_domain_cols = [
         'IsZeroBalance', 'Balance_To_Salary_Ratio', 'Products_Per_Tenure',
-        'Product_Holding_Risk_Tier', 'Age_Lifecycle_Stage', 'Engagement_Score'
+        'Product_Holding_Risk_Tier', 'Age_Lifecycle_Stage', 'Engagement_Score', 'age_groups'
     ]
     if not all(col in df_single.columns for col in req_domain_cols):
         df_single = create_domain_features(df_single)
@@ -89,7 +89,7 @@ def predict_batch(
     # Generate engineered features if needed
     req_domain_cols = [
         'IsZeroBalance', 'Balance_To_Salary_Ratio', 'Products_Per_Tenure',
-        'Product_Holding_Risk_Tier', 'Age_Lifecycle_Stage', 'Engagement_Score'
+        'Product_Holding_Risk_Tier', 'Age_Lifecycle_Stage', 'Engagement_Score', 'age_groups'
     ]
     if not all(col in df_scored.columns for col in req_domain_cols):
         df_scored = create_domain_features(df_scored)

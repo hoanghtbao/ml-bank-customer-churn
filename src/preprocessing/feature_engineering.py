@@ -15,9 +15,28 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 
+def categorize_age(row) -> str:
+    """
+    Phân loại nhóm tuổi khách hàng (Teacher's custom age categorizer adapted for Banking).
+    - youth: Tuổi < 30 (nhóm trẻ mới đi làm, churn thấp 7.56%)
+    - adult_prime: 30 <= Tuổi < 45 (nhóm tích lũy tài sản, churn 14.45%)
+    - adult_mature: 45 <= Tuổi < 60 (nhóm trung niên nguy cơ cao nhất, churn đỉnh điểm 49.45%)
+    - senior: Tuổi >= 60 (nhóm hưu trí, churn 27.95%)
+    """
+    age = row['Age'] if 'Age' in row else row.get('age', 35)
+    if age < 30:
+        return 'youth'
+    elif age < 45:
+        return 'adult_prime'
+    elif age < 60:
+        return 'adult_mature'
+    else:
+        return 'senior'
+
+
 def create_domain_features(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Creates 6 domain-engineered features derived from EDA diagnostic findings.
+    Creates domain-engineered features derived from EDA diagnostic findings.
     All transformations are strictly row-wise and deterministic, preventing data leakage.
 
     Engineered Features:
@@ -27,6 +46,7 @@ def create_domain_features(df: pd.DataFrame) -> pd.DataFrame:
     4. Product_Holding_Risk_Tier (str): 'Optimal' (2), 'Moderate_Risk' (1), 'Extreme_Danger' (3-4).
     5. Age_Lifecycle_Stage (str): '<30', '30-40', '41-50', '51-60', '>60'. Non-linear lifecycle risk.
     6. Engagement_Score (int): Composite score [0-4] from IsActiveMember, HasCrCard, and NumOfProducts == 2.
+    7. age_groups (str): 'youth', 'adult_prime', 'adult_mature', 'senior' (Teacher's categorize_age).
 
     Parameters
     ----------
@@ -79,6 +99,9 @@ def create_domain_features(df: pd.DataFrame) -> pd.DataFrame:
     crcard_comp = df_out['HasCrCard'].fillna(0).astype(int) * 1
     optimal_prod_comp = (df_out['NumOfProducts'] == 2).astype(int) * 1
     df_out['Engagement_Score'] = (active_comp + crcard_comp + optimal_prod_comp).astype(int)
+
+    # 7. age_groups (Teacher's categorize_age)
+    df_out['age_groups'] = df_out.apply(categorize_age, axis=1)
 
     return df_out
 

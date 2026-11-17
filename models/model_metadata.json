@@ -25,24 +25,24 @@
         "Gender",
         "Card_Type",
         "Product_Holding_Risk_Tier",
-        "Age_Lifecycle_Stage"
+        "age_groups"
     ],
-    "optimal_decision_threshold": 0.45,
+    "optimal_decision_threshold": 0.44,
     "test_holdout_metrics": {
-        "accuracy": 0.8466666666666667,
-        "precision": 0.6447876447876448,
+        "accuracy": 0.854,
+        "precision": 0.6733870967741935,
         "recall": 0.5475409836065573,
-        "f1_score": 0.5921985815602837,
+        "f1_score": 0.6039783001808319,
         "f1_95_ci": [
-            0.5428,
-            0.6348
+            0.5534,
+            0.6487
         ],
-        "roc_auc": 0.8436710336785789,
+        "roc_auc": 0.8405446189724946,
         "roc_auc_95_ci": [
-            0.8179,
-            0.8693
+            0.8138,
+            0.8663
         ],
-        "pr_auc": 0.6620750582813693
+        "pr_auc": 0.6539798622982241
     },
     "runtime_environment": {
         "python_version": "3.13.2",
