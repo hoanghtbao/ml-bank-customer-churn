@@ -177,7 +177,11 @@ Bank_Customer_Churn/
 
 ---
 
-### GIAI ĐOẠN 1 -- Business Understanding & Data Audit (Hiểu Nghiệp vụ & Kiểm toán Dữ liệu Thô)
+### GIAI ĐOẠN 1 -- Business Understanding & Data Audit (Hiểu Nghiệp vụ, Tích hợp & Kiểm toán Dữ liệu Thô)
+
+#### 1.0. Tuyên bố Tích hợp Dữ liệu (Data Integration Statement - Theo Chuẩn CRISP-DM của Thầy)
+* **Đề mục chuẩn:** `## Data Integration`
+* **Nội dung nghiệp vụ:** Bộ dữ liệu `Customer-Churn-Records.csv` là bảng dữ liệu phẳng ảnh chụp cắt ngang đơn nguồn (`single-table cross-sectional snapshot` gồm 10.000 bản ghi khách hàng ngân hàng), đã được tích hợp sẵn từ các hệ thống Core Banking, CRM và Thẻ của ngân hàng. Do đó, dự án không cần thực hiện thao tác join/merge phức tạp từ nhiều nguồn phân tán bên ngoài (`skip integration step`), đảm bảo tính toàn vẹn và nhất quán của khóa chính `CustomerId`.
 
 #### 1.1. Từ điển Dữ liệu 18 Thuộc tính (`Customer-Churn-Records.csv` - 10.000 dòng)
 
@@ -341,11 +345,14 @@ Dựa trên kết quả khám phá từ EDA ở Giai đoạn 3, xây dựng đú
    * **Tập Huấn luyện – `Train Set` (70% = 7.000 dòng, chứa ~1.427 KH rời bỏ):** Dùng để `fit` bộ tiền xử lý (`Imputer`, `Scaler`, `Encoder`), xử lý mất cân bằng (`SMOTE`/`class_weight`) và huấn luyện trọng số mô hình (kết hợp Stratified 5-Fold Cross-Validation trên tập Train để tạo Out-of-Fold predictions và tinh chỉnh Hyperparameters).
    * **Tập Kiểm định – `Validation Set` (15% = 1.500 dòng, chứa ~306 KH rời bỏ):** Dùng làm `eval_set` để kiểm soát Overfitting (Early Stopping), so sánh lựa chọn **Mô hình Vô địch (Champion Model)** và dò tìm **Ngưỡng quyết định tối ưu (`T*`)**.
    * **Tập Kiểm thử Độc lập – `Hold-out Test Set` (15% = 1.500 dòng, chứa ~305 KH rời bỏ):** Được "niêm phong" hoàn toàn trong suốt quá trình huấn luyện và chọn tham số; chỉ mở ra **đúng 1 lần duy nhất ở cuối Giai đoạn 5** để đánh giá khách quan mô hình đã chọn (với ngưỡng `T*` đã khóa từ Validation/OOF) kèm **95% Bootstrap Confidence Interval**.
-2. **Đóng gói toàn bộ tiền xử lý trong `scikit-learn Pipeline` + `ColumnTransformer` (Chỉ `fit` trên `Train Set`, sau đó `transform` trên `Validation Set` và `Test Set`):**
-   * **Nhóm biến số liên tục (`CreditScore`, `Age`, `Tenure`, `Balance`, `NumOfProducts`, `EstimatedSalary`, `Point_Earned`, `Balance_To_Salary_Ratio`, `Products_Per_Tenure`, `Engagement_Score`):** `SimpleImputer(strategy='median')` + `StandardScaler()` (hoặc `RobustScaler()`).
-   * **Nhóm biến nhị phân giữ nguyên (`HasCrCard`, `IsActiveMember`, `IsZeroBalance`):** `SimpleImputer(strategy='most_frequent')` (hoặc `passthrough`).
-   * **Nhóm biến phân loại định danh (`Geography`, `Gender`, `Age_Lifecycle_Stage`):** `OneHotEncoder(drop='first', handle_unknown='ignore')`.
-   * **Nhóm biến phân loại có thứ bậc (`Card_Type`: `SILVER < GOLD < PLATINUM < DIAMOND`, `Satisfaction_Score`: `1..5`, `Product_Holding_Risk_Tier`: `0..2`):** `OrdinalEncoder()` (với thứ tự bậc rõ ràng) hoặc `OneHotEncoder()`.
+2. **Đóng gói toàn bộ tiền xử lý & Lọc đặc trưng trong `scikit-learn Pipeline` (Theo Chuẩn của Thầy):**
+   * **Pre-processor (`ColumnTransformer`):**
+     * Nhóm biến số liên tục (`CreditScore`, `Age`, `Tenure`, `Balance`, `NumOfProducts`, `EstimatedSalary`, `Point_Earned`, `Balance_To_Salary_Ratio`, `Products_Per_Tenure`, `Engagement_Score`): `SimpleImputer(strategy='median')`.
+     * Nhóm biến nhị phân (`HasCrCard`, `IsActiveMember`, `IsZeroBalance`): `SimpleImputer(strategy='most_frequent')`.
+     * Nhóm biến phân loại định danh (`Geography`, `Gender`, `Age_Lifecycle_Stage`): `OneHotEncoder(drop='first', handle_unknown='ignore')`.
+     * Nhóm biến phân loại thứ bậc (`Card_Type`, `Product_Holding_Risk_Tier`): `OrdinalEncoder()`.
+   * **Thử nghiệm Đa Scaler (Multi-Scaler Grid như bài Thầy):** Lần lượt thử nghiệm 3 bộ Scaler: `StandardScaler()`, `MinMaxScaler()`, `RobustScaler()`.
+   * **Bộ lọc Đặc trưng Tự động (`SelectKBest`):** Thêm bước `SelectKBest(score_func=f_classif, k=K_BEST)` ngay trong Pipeline để tự động chọn $k$ đặc trưng có khả năng phân tách cao nhất trước khi đưa vào mô hình phân loại.
 
 ---
 
@@ -358,11 +365,14 @@ Dựa trên kết quả khám phá từ EDA ở Giai đoạn 3, xây dựng đú
 4. **Kịch bản B (Leakage Benchmark – Đối chứng có `Complain`):** Giữ `Complain` chỉ để chứng minh bằng thực nghiệm hiện tượng Target Leakage (Accuracy ~99,86% giả tạo) trong báo cáo.
 
 #### 5.2. Huấn luyện Đa Mô hình trên `Train Set` & Đọ sức trên `Validation Set`
-1. **So sánh 4 họ thuật toán:**
-   * `LogisticRegression` (Baseline tuyến tính chuẩn ngân hàng, giải thích qua Odds Ratio).
-   * `DecisionTreeClassifier` (Cây quyết định minh họa quy tắc phân nhánh).
-   * `RandomForestClassifier` (Mô hình Bagging bắt tương tác phi tuyến `Age x NumOfProducts x Balance`).
-   * `HistGradientBoostingClassifier` / `XGBClassifier` (Mô hình Boosting hiệu năng cao nhất cho dữ liệu bảng, dùng `Validation Set` cho Early Stopping).
+1. **Ma trận Mô hình × Scaler (Đặc sản theo barem của Thầy):**
+   * Huấn luyện 4 thuật toán: `LogisticRegression`, `DecisionTreeClassifier`, `RandomForestClassifier`, `HistGradientBoosting / XGBClassifier`.
+   * Chạy vòng lặp lồng nhau (`nested loop`) kết hợp 4 mô hình × 3 bộ Scaler = 12 kịch bản thực nghiệm.
+   * **Bảng tổng kết kết quả chuẩn (`df_result`):**
+     * Xuất bảng DataFrame gồm các cột: `Classifier` | `Scaler` | **Train ROC-AUC** | **Test ROC-AUC** | **Train F1** | **Test F1**.
+     * Đối chiếu trực tiếp giữa Train và Test để **phát hiện và đánh giá mức độ Overfitting** của từng mô hình theo đúng tiêu chí chấm điểm của thầy.
+   * **Bảng bóc tách trọng số đặc trưng (`df_if_values` chuẩn của Thầy):**
+     * Xuất bảng DataFrame liệt kê tất cả các đặc trưng: ghi rõ trọng số (`coef_` hoặc `feature_importances_`) của các biến được `SelectKBest` chọn, và đánh dấu **`'Omitted'`** đối với các biến bị loại bỏ.
 2. **Đối sánh 3 phương pháp xử lý mất cân bằng lớp (~79,62% : 20,38%) chỉ trên `Train Set`:**
    * (1) Mặc định (`Unweighted`), (2) Trọng số lớp (`class_weight='balanced'` / `scale_pos_weight`), (3) `SMOTE` đặt bên trong `imblearn.pipeline.Pipeline` (tuyệt đối không resample `Validation Set` và `Test Set`).
 
