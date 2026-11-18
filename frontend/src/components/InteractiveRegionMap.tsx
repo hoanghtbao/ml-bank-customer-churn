@@ -10,22 +10,19 @@ import {
   DollarSign,
   ArrowRight,
   Compass,
-  Layers,
-  MapPin,
   Filter,
-  Building2,
+  Database,
   CheckCircle2,
-  Sparkles,
+  Layers,
 } from "lucide-react";
 import Link from "next/link";
 import {
   COUNTRIES_DATA,
-  BANK_BRANCHES,
-  BankBranch,
+  DATA_SEGMENT_NODES,
+  DataSegmentNode,
 } from "@/lib/mapBranchesData";
 import type { MapStyle } from "./LeafletMapInner";
 
-// Dynamically load React-Leaflet component on client-side only
 const LeafletMapInner = dynamic(() => import("./LeafletMapInner"), {
   ssr: false,
   loading: () => (
@@ -39,39 +36,37 @@ const LeafletMapInner = dynamic(() => import("./LeafletMapInner"), {
 });
 
 export default function InteractiveRegionMap() {
-  // Stage 1: Base Map Tile Style (Default to OpenStreetMap / Voyager)
+  // Stage 1: Base Map Style (Default: OpenStreetMap)
   const [mapStyle, setMapStyle] = useState<MapStyle>("osm");
 
-  // Stage 2: Clustering & Branch Tier Filters
+  // Stage 2: Clustering & Quadrant Segment Filter
   const [enableClustering, setEnableClustering] = useState<boolean>(true);
-  const [tierFilter, setTierFilter] = useState<string>("ALL");
+  const [quadrantFilter, setQuadrantFilter] = useState<string>("ALL");
 
-  // Stage 3: GeoJSON Coloring, Country Filter, Risk Filter & Selected Branch Inspector
+  // Stage 3: GeoJSON Coloring, Country Filter (`Geography`), Risk Filter & Inspector
   const [showGeoJson, setShowGeoJson] = useState<boolean>(true);
   const [selectedCountry, setSelectedCountry] = useState<string>("ALL");
   const [riskFilter, setRiskFilter] = useState<string>("ALL");
-  const [selectedBranch, setSelectedBranch] = useState<BankBranch>(BANK_BRANCHES[0]);
+  const [selectedNode, setSelectedNode] = useState<DataSegmentNode>(DATA_SEGMENT_NODES[1]); // Default to DE-Q1 VIP At-Risk
   const [targetView, setTargetView] = useState<{
     center: [number, number];
     zoom: number;
     timestamp: number;
   } | null>(null);
 
-  // Filter branches based on Country, Tier, and Risk Level
-  const filteredBranches = useMemo(() => {
-    return BANK_BRANCHES.filter((b) => {
-      if (selectedCountry !== "ALL" && b.country !== selectedCountry) return false;
-      if (tierFilter !== "ALL" && b.tier !== tierFilter) return false;
-      if (riskFilter !== "ALL" && b.riskLevel !== riskFilter) return false;
+  // Filter real dataset segment nodes
+  const filteredNodes = useMemo(() => {
+    return DATA_SEGMENT_NODES.filter((n) => {
+      if (selectedCountry !== "ALL" && n.country !== selectedCountry) return false;
+      if (quadrantFilter !== "ALL" && n.quadrantCode !== quadrantFilter) return false;
+      if (riskFilter !== "ALL" && n.riskLevel !== riskFilter) return false;
       return true;
     });
-  }, [selectedCountry, tierFilter, riskFilter]);
+  }, [selectedCountry, quadrantFilter, riskFilter]);
 
-  // Active Country Summary Data (defaults to Germany when ALL is selected so HUD has rich info)
-  const activeCountryKey = selectedCountry === "ALL" ? selectedBranch.country : selectedCountry;
+  const activeCountryKey = selectedCountry === "ALL" ? selectedNode.country : selectedCountry;
   const activeData = COUNTRIES_DATA[activeCountryKey] || COUNTRIES_DATA["Germany"];
 
-  // Camera FlyTo Country
   const handleSelectCountry = (countryKey: string) => {
     setSelectedCountry(countryKey);
     if (countryKey === "ALL") {
@@ -80,28 +75,29 @@ export default function InteractiveRegionMap() {
       const c = COUNTRIES_DATA[countryKey];
       if (c) {
         setTargetView({ center: c.center, zoom: c.zoom, timestamp: Date.now() });
-        const firstBranch = BANK_BRANCHES.find((b) => b.country === countryKey);
-        if (firstBranch) setSelectedBranch(firstBranch);
+        const q1Node = DATA_SEGMENT_NODES.find(
+          (n) => n.country === countryKey && n.quadrantCode === "Q1_VIP_At_Risk"
+        );
+        if (q1Node) setSelectedNode(q1Node);
       }
     }
   };
 
-  // Camera FlyTo Specific Branch (Street-level zoom)
-  const handleFocusBranch = (branch: BankBranch) => {
-    setSelectedBranch(branch);
+  const handleFocusNode = (node: DataSegmentNode) => {
+    setSelectedNode(node);
     setTargetView({
-      center: [branch.lat, branch.lng],
-      zoom: 12,
+      center: [node.lat, node.lng],
+      zoom: 7,
       timestamp: Date.now(),
     });
   };
 
   return (
     <div className="relative overflow-hidden bg-[#091426] border-2 border-slate-800 rounded-3xl p-6 sm:p-7 mb-8 text-white shadow-2xl">
-      {/* Background Subtle Grid */}
+      {/* Subtle Radar Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b15_1px,transparent_1px),linear-gradient(to_bottom,#1e293b15_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"></div>
 
-      {/* HEADER & TECH STACK BADGES */}
+      {/* HEADER BAR */}
       <div className="relative z-10 flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-5 pb-5 border-b border-slate-800/90">
         <div>
           <div className="flex flex-wrap items-center gap-2 mb-2">
@@ -110,25 +106,26 @@ export default function InteractiveRegionMap() {
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
             </span>
             <span className="text-[11px] font-bold tracking-widest text-emerald-400 uppercase font-mono">
-              REACT-LEAFLET &bull; OPENSTREETMAP &bull; MARKERCLUSTER &bull; GEOJSON
+              100% DATABASE GROUNDED (Geography &times; 4 Quadrants) &bull; ZERO SYNTHETIC BRANCHES
             </span>
             <span className="px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/40 text-[10px] text-blue-300 font-mono font-bold">
-              25 Chi Nhánh Thực Tế
+              10,000 Khách Hàng Thực Tế
             </span>
           </div>
 
           <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2.5">
             <Globe2 className="w-6 h-6 text-blue-400" />
-            <span>Bản Đồ Mạng Lưới Chi Nhánh & Vùng Lãnh Thổ 3 Quốc Gia (GIS Live Map)</span>
+            <span>Bản Đồ Địa Lý 3 Quốc Gia & Phân Khúc Rủi Ro Từ Database (GIS Live Map)</span>
           </h2>
           <p className="text-xs text-slate-400 mt-1 max-w-3xl">
-            Triển khai chuẩn 3 giai đoạn: <b>(1) Bản đồ nền OpenStreetMap</b> &bull;{" "}
-            <b>(2) Gom cụm 25 chi nhánh bằng MarkerCluster theo tọa độ Lat/Lng</b> &bull;{" "}
-            <b>(3) Tô màu đường biên giới quốc gia bằng GeoJSON & bộ lọc chi nhánh tương tác</b>.
+            Đồng nhất 100% với cột <code>Geography</code> (<code>France: 5,014</code>,{" "}
+            <code>Germany: 2,509</code>, <code>Spain: 2,477</code>) và ma trận <b>4 Quadrants</b> trong{" "}
+            <code>Customer-Churn-Records.csv</code>. Kết hợp <b>OpenStreetMap</b>,{" "}
+            <b>MarkerCluster</b> và <b>GeoJSON</b>.
           </p>
         </div>
 
-        {/* STAGE 1: MAP TILE LAYER SWITCHER */}
+        {/* STAGE 1: MAP TILE SWITCHER */}
         <div className="flex flex-wrap items-center gap-1.5 bg-slate-900/95 p-1.5 rounded-2xl border border-slate-800 shadow-inner self-start xl:self-auto">
           {[
             { id: "osm", label: "🌍 OpenStreetMap" },
@@ -151,19 +148,19 @@ export default function InteractiveRegionMap() {
         </div>
       </div>
 
-      {/* STAGE 2 & STAGE 3: MULTI-DIMENSIONAL FILTER BAR */}
+      {/* STAGE 2 & STAGE 3: DATABASE FILTER BAR */}
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 mb-5 bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800/90">
-        {/* Country GeoJSON Selector (5 cols) */}
+        {/* Geography Column Selector (5 cols) */}
         <div className="lg:col-span-5 flex flex-wrap items-center gap-1.5">
           <span className="text-[11px] font-bold text-slate-400 uppercase mr-1 flex items-center gap-1">
             <Compass className="w-3.5 h-3.5 text-blue-400" />
-            <span>Quốc gia:</span>
+            <span>Geography:</span>
           </span>
           {[
-            { id: "ALL", label: "🌍 Tất cả (25)" },
-            { id: "Germany", label: "🇩🇪 Đức (9)" },
-            { id: "France", label: "🇫🇷 Pháp (9)" },
-            { id: "Spain", label: "🇪🇸 TBN (7)" },
+            { id: "ALL", label: "🌍 Tất cả (10,000 KH)" },
+            { id: "Germany", label: "🇩🇪 Germany (2,509)" },
+            { id: "France", label: "🇫🇷 France (5,014)" },
+            { id: "Spain", label: "🇪🇸 Spain (2,477)" },
           ].map((c) => (
             <button
               key={c.id}
@@ -179,19 +176,21 @@ export default function InteractiveRegionMap() {
           ))}
         </div>
 
-        {/* Branch Tier & Risk Filter (4 cols) */}
+        {/* Quadrant & Risk Filter (4 cols) */}
         <div className="lg:col-span-4 flex flex-wrap items-center gap-2">
           <div className="flex items-center gap-1">
             <Filter className="w-3.5 h-3.5 text-amber-400" />
             <select
-              value={tierFilter}
-              onChange={(e) => setTierFilter(e.target.value)}
+              value={quadrantFilter}
+              onChange={(e) => setQuadrantFilter(e.target.value)}
               className="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-200 focus:outline-none focus:border-blue-500"
             >
-              <option value="ALL">Mọi cấp chi nhánh (25)</option>
-              <option value="HQ">🏛️ Trụ sở chính HQ (4)</option>
-              <option value="VIP_WEALTH">💎 Trung tâm VIP Wealth (10)</option>
-              <option value="RETAIL">🏦 Chi nhánh Bán lẻ (11)</option>
+              <option value="ALL">Mọi phân khúc Database (15 cụm)</option>
+              <option value="NATIONAL_TOTAL">🏛️ Tổng hợp cấp Quốc gia (3)</option>
+              <option value="Q1_VIP_At_Risk">🚨 Q1: VIP Nguy cơ cao (1,848 KH)</option>
+              <option value="Q2_Standard_At_Risk">⚠️ Q2: Phổ thông Nguy cơ cao (742 KH)</option>
+              <option value="Q3_VIP_Loyal">💎 Q3: VIP Trung thành (3,950 KH)</option>
+              <option value="Q4_Standard_Loyal">🟢 Q4: Phổ thông Trung thành (3,460 KH)</option>
             </select>
           </div>
 
@@ -200,14 +199,14 @@ export default function InteractiveRegionMap() {
             onChange={(e) => setRiskFilter(e.target.value)}
             className="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-200 focus:outline-none focus:border-blue-500"
           >
-            <option value="ALL">Mọi mức độ rủi ro</option>
-            <option value="CRITICAL">🚨 Tâm chấn Rủi ro Cao (≥30%)</option>
-            <option value="MODERATE">⚠️ Rủi ro Trung bình (20-30%)</option>
-            <option value="LOW">🟢 Hoạt động An toàn (&lt;20%)</option>
+            <option value="ALL">Mọi mức rủi ro</option>
+            <option value="CRITICAL">🔴 Rủi ro Nghiêm trọng (Q1 / Đức)</option>
+            <option value="HIGH">🟠 Rủi ro Cao (Q2 At-Risk)</option>
+            <option value="LOW">🟢 Ổn định / Trung thành (Q3 & Q4)</option>
           </select>
         </div>
 
-        {/* Layer Toggles: MarkerCluster & GeoJSON (3 cols) */}
+        {/* Layer Toggles (3 cols) */}
         <div className="lg:col-span-3 flex items-center justify-end gap-2">
           <button
             onClick={() => setEnableClustering(!enableClustering)}
@@ -216,7 +215,7 @@ export default function InteractiveRegionMap() {
                 ? "bg-emerald-950/70 border-emerald-500/60 text-emerald-300"
                 : "bg-slate-950 border-slate-800 text-slate-400"
             }`}
-            title="Bật/tắt gom cụm điểm chi nhánh MarkerCluster"
+            title="Bật/tắt gom cụm các phân khúc bằng MarkerCluster"
           >
             <span>Cluster: {enableClustering ? "BẬT" : "TẮT"}</span>
           </button>
@@ -228,14 +227,14 @@ export default function InteractiveRegionMap() {
                 ? "bg-indigo-950/70 border-indigo-500/60 text-indigo-300"
                 : "bg-slate-950 border-slate-800 text-slate-400"
             }`}
-            title="Bật/tắt lớp tô màu đường biên giới quốc gia GeoJSON"
+            title="Bật/tắt tô màu lãnh thổ quốc gia GeoJSON"
           >
             <span>GeoJSON: {showGeoJson ? "BẬT" : "TẮT"}</span>
           </button>
         </div>
       </div>
 
-      {/* MAIN MAP CANVAS + INTERACTIVE BRANCH INSPECTOR HUD */}
+      {/* MAP CANVAS + RIGHT-SIDE DATABASE INSPECTOR */}
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* LEFT 8 COLS: REACT-LEAFLET MAP */}
         <div className="lg:col-span-7 xl:col-span-8 rounded-2xl border-2 border-slate-700/80 overflow-hidden shadow-2xl relative min-h-[540px] bg-slate-950 flex flex-col">
@@ -243,35 +242,35 @@ export default function InteractiveRegionMap() {
             mapStyle={mapStyle}
             selectedCountry={selectedCountry}
             onSelectCountry={(c) => setSelectedCountry(c)}
-            branches={filteredBranches}
-            onSelectBranch={(b) => setSelectedBranch(b)}
+            nodes={filteredNodes}
+            onSelectNode={(n) => setSelectedNode(n)}
             enableClustering={enableClustering}
             showGeoJson={showGeoJson}
             targetView={targetView}
           />
 
-          {/* Bottom Map Legend Overlay */}
+          {/* Bottom Legend */}
           <div className="absolute bottom-3 left-3 z-20 bg-slate-900/95 border border-slate-700/80 px-3.5 py-2 rounded-xl shadow-xl backdrop-blur-md text-[10px] text-slate-300 flex flex-wrap items-center gap-3">
             <span className="flex items-center gap-1.5 font-bold text-white">
               <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span>
-              Đức (GeoJSON Đỏ • Churn 32.4%)
+              Germany (2,509 KH • Churn 32.44%)
             </span>
             <span className="flex items-center gap-1.5 font-bold text-white">
               <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span>
-              Pháp (GeoJSON Xanh • 50.1% KH)
+              France (5,014 KH • Churn 16.17%)
             </span>
             <span className="flex items-center gap-1.5 font-bold text-white">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
-              Tây Ban Nha (GeoJSON Lục • 24.8% KH)
+              Spain (2,477 KH • Churn 16.67%)
             </span>
           </div>
         </div>
 
-        {/* RIGHT 4 COLS: COUNTRY GEOJSON SUMMARY & SELECTED BRANCH INSPECTOR */}
+        {/* RIGHT 4 COLS: 100% DATABASE-GROUNDED INSPECTOR */}
         <div className="lg:col-span-5 xl:col-span-4 flex flex-col justify-between space-y-4">
           <div className="bg-slate-900/95 border border-slate-800 rounded-2xl p-5 shadow-lg relative overflow-hidden flex-1 flex flex-col justify-between">
             <div>
-              {/* 1. Selected Country GeoJSON Header */}
+              {/* 1. Selected Geography Country Header */}
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2.5">
                   <span className="text-3xl">{activeData.flag}</span>
@@ -280,7 +279,7 @@ export default function InteractiveRegionMap() {
                       {activeData.name}
                     </h3>
                     <span className="text-[10px] font-mono text-slate-400">
-                      Vùng lãnh thổ GeoJSON &bull; Mã: {activeData.code}
+                      Trích xuất trực tiếp từ Customer-Churn-Records.csv
                     </span>
                   </div>
                 </div>
@@ -292,106 +291,127 @@ export default function InteractiveRegionMap() {
                 )}
               </div>
 
-              {/* Country KPI Mini Grid */}
-              <div className="grid grid-cols-2 gap-2.5 text-xs mb-4">
+              {/* Country Real CSV Metrics Grid */}
+              <div className="grid grid-cols-2 gap-2 text-xs mb-3">
                 <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
-                  <div className="text-slate-400 text-[10px] font-bold">QUY MÔ QUỐC GIA</div>
-                  <div className="text-base font-extrabold text-white mt-0.5">
-                    {activeData.customers.toLocaleString()} KH
+                  <div className="text-slate-400 text-[9px] font-bold uppercase">
+                    QUY MÔ & TỔNG SỐ DƯ
                   </div>
-                  <div className="text-[10px] text-blue-400">{activeData.totalBalanceMEur} vốn</div>
+                  <div className="text-sm font-extrabold text-white mt-0.5">
+                    {activeData.customers.toLocaleString()} KH ({activeData.pctCustomers})
+                  </div>
+                  <div className="text-[10px] text-blue-400">
+                    Tổng vốn: {activeData.totalBalanceMEur} (TB: {activeData.avgBalanceEur})
+                  </div>
                 </div>
 
                 <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
-                  <div className="text-slate-400 text-[10px] font-bold">CHURN & VỐN RỦI RO</div>
+                  <div className="text-slate-400 text-[9px] font-bold uppercase">
+                    TỶ LỆ CHURN & VỐN MẤT
+                  </div>
                   <div
-                    className={`text-base font-extrabold mt-0.5 ${
+                    className={`text-sm font-extrabold mt-0.5 ${
                       activeData.isEpicenter ? "text-rose-400" : "text-emerald-400"
                     }`}
                   >
-                    {activeData.churnRatePct}
+                    {activeData.churnRatePct} ({activeData.churners} KH)
                   </div>
                   <div className="text-[10px] text-amber-400">
-                    Đe dọa: {activeData.balanceAtRiskMEur}
+                    Vốn rủi ro: {activeData.balanceAtRiskMEur}
+                  </div>
+                </div>
+
+                <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
+                  <div className="text-slate-400 text-[9px] font-bold uppercase">
+                    TÀI KHOẢN SỐ DƯ = 0 €
+                  </div>
+                  <div className="text-sm font-extrabold text-white mt-0.5">
+                    {activeData.zeroBalanceCount.toLocaleString()} KH ({activeData.zeroBalancePct})
+                  </div>
+                  <div className="text-[10px] text-slate-400">
+                    Active Member: {activeData.activeMemberPct}
+                  </div>
+                </div>
+
+                <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
+                  <div className="text-slate-400 text-[9px] font-bold uppercase">
+                    COMPLAIN & BẪY ≥3 SẢN PHẨM
+                  </div>
+                  <div className="text-sm font-extrabold text-rose-300 mt-0.5">
+                    {activeData.complainCount} KH Complain
+                  </div>
+                  <div className="text-[10px] text-amber-300">
+                    Giữ 3-4 SP: {activeData.products34Count} KH
                   </div>
                 </div>
               </div>
 
-              {/* 2. Active Selected Branch Detail Card */}
+              {/* 2. Selected Database Segment Node Card */}
               <div className="border-t border-slate-800 pt-3 mb-3">
                 <div className="text-[10px] font-bold text-blue-400 uppercase tracking-wider mb-2 flex items-center justify-between">
                   <span className="flex items-center gap-1">
-                    <Building2 className="w-3.5 h-3.5" />
-                    Chi Tiết Chi Nhánh Đang Chọn
+                    <Database className="w-3.5 h-3.5" />
+                    Cụm Phân Khúc Đang Chọn Trên Bản Đồ
                   </span>
-                  <span className="font-mono text-slate-400">{selectedBranch.id}</span>
+                  <span className="font-mono text-slate-400">{selectedNode.id}</span>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/90 space-y-2">
+                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/90 space-y-2">
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <div className="text-xs font-extrabold text-white">
-                        {selectedBranch.name}
+                        {selectedNode.name}
                       </div>
-                      <div className="text-[11px] font-semibold text-blue-300">
-                        {selectedBranch.tierLabel}
+                      <div className="text-[10px] font-semibold text-blue-300">
+                        {selectedNode.quadrantLabel}
                       </div>
                     </div>
-                    <span
-                      className={`px-2 py-0.5 rounded text-[9px] font-mono font-bold ${
-                        selectedBranch.riskLevel === "CRITICAL"
-                          ? "bg-rose-500/20 text-rose-300 border border-rose-500/40"
-                          : selectedBranch.riskLevel === "MODERATE"
-                          ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
-                          : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
-                      }`}
-                    >
-                      {selectedBranch.churnRatePct}% CHURN
+                    <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 flex-shrink-0">
+                      Churn: {selectedNode.actualChurnRatePct}%
                     </span>
                   </div>
 
-                  <div className="text-[10px] text-slate-400">
-                    📍 {selectedBranch.address} ({selectedBranch.lat.toFixed(4)}°N,{" "}
-                    {selectedBranch.lng.toFixed(4)}°E)
+                  <div className="text-[10px] font-mono text-emerald-400 bg-slate-900/90 px-2 py-1 rounded border border-slate-800">
+                    {selectedNode.dataSourceNote}
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2 pt-1 border-t border-slate-900 text-center">
+                  <div className="grid grid-cols-3 gap-2 pt-1 text-center">
                     <div className="bg-slate-900/70 p-1.5 rounded-lg">
-                      <div className="text-[9px] text-slate-400">Khách hàng</div>
+                      <div className="text-[9px] text-slate-400">Số lượng KH</div>
                       <div className="text-xs font-extrabold text-white">
-                        {selectedBranch.customers}
+                        {selectedNode.customers.toLocaleString()} ({selectedNode.pctOfCountry}%)
                       </div>
                     </div>
                     <div className="bg-slate-900/70 p-1.5 rounded-lg">
-                      <div className="text-[9px] text-slate-400">Tiền gửi</div>
+                      <div className="text-[9px] text-slate-400">Tổng số dư</div>
                       <div className="text-xs font-extrabold text-emerald-400">
-                        {selectedBranch.balanceMEur}M €
+                        {selectedNode.balanceMEur}M €
                       </div>
                     </div>
                     <div className="bg-slate-900/70 p-1.5 rounded-lg">
-                      <div className="text-[9px] text-slate-400">Quản lý</div>
-                      <div className="text-[10px] font-bold text-slate-200 truncate">
-                        {selectedBranch.manager.split(" ")[0]}
+                      <div className="text-[9px] text-slate-400">AI Prob TB</div>
+                      <div className="text-xs font-extrabold text-amber-400">
+                        {selectedNode.avgPredProbPct}%
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* 3. Quick Branch List (Click to fly camera directly to branch) */}
-              <div className="border-t border-slate-800 pt-3">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
-                  <span>Danh Sách Chi Nhánh Đang Lọc ({filteredBranches.length})</span>
-                  <span className="text-[9px] text-slate-500">Click để bay tới</span>
+              {/* 3. Segment Nodes List */}
+              <div className="border-t border-slate-800 pt-2.5">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                  <span>Các Cụm Dữ Liệu Trên Bản Đồ ({filteredNodes.length})</span>
+                  <span className="text-[9px] text-slate-500">Click để định vị</span>
                 </div>
 
-                <div className="max-h-36 overflow-y-auto space-y-1 pr-1">
-                  {filteredBranches.map((b) => (
+                <div className="max-h-32 overflow-y-auto space-y-1 pr-1">
+                  {filteredNodes.map((n) => (
                     <button
-                      key={b.id}
-                      onClick={() => handleFocusBranch(b)}
+                      key={n.id}
+                      onClick={() => handleFocusNode(n)}
                       className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center justify-between transition-all cursor-pointer border ${
-                        selectedBranch.id === b.id
+                        selectedNode.id === n.id
                           ? "bg-blue-600/25 border-blue-500/60 text-white"
                           : "bg-slate-950/60 border-slate-800/70 text-slate-300 hover:bg-slate-800"
                       }`}
@@ -399,12 +419,12 @@ export default function InteractiveRegionMap() {
                       <span className="truncate font-semibold flex items-center gap-1.5">
                         <span
                           className="w-2 h-2 rounded-full flex-shrink-0"
-                          style={{ backgroundColor: b.color }}
+                          style={{ backgroundColor: n.color }}
                         ></span>
-                        <span className="truncate">{b.name}</span>
+                        <span className="truncate">{n.name}</span>
                       </span>
                       <span className="text-[10px] font-mono text-slate-400 flex-shrink-0 ml-2">
-                        {b.churnRatePct}%
+                        {n.customers.toLocaleString()} KH • {n.balanceMEur}M €
                       </span>
                     </button>
                   ))}
@@ -412,13 +432,13 @@ export default function InteractiveRegionMap() {
               </div>
             </div>
 
-            {/* Deep-dive Link Button */}
-            <div className="mt-4 pt-3 border-t border-slate-800/80">
+            {/* Link to Strategy / Dashboard */}
+            <div className="mt-3 pt-3 border-t border-slate-800/80">
               <Link
-                href="/dashboard"
+                href="/strategy"
                 className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md shadow-blue-600/30 transition-all"
               >
-                <span>Phân Tích Chuyên Sâu Tại Executive Dashboard</span>
+                <span>Mô Phỏng Ngân Sách Giữ Chân 4 Quadrants</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
