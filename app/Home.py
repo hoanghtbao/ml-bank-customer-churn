@@ -14,7 +14,13 @@ PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-from app.ui_theme import apply_theme, render_sidebar_brand, render_page_header, render_stat_card
+from app.ui_theme import (
+    apply_theme,
+    render_sidebar_brand,
+    render_sidebar_footer,
+    render_page_header,
+    render_stat_card
+)
 from app.utils import load_metadata, get_pre_scored_data
 
 st.set_page_config(
