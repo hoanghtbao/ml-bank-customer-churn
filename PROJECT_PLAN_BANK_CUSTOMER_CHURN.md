@@ -488,11 +488,11 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
 ## 7. Checklist tiến độ tổng thể
 
 - [x] **Bước chuẩn bị:** Chuẩn hóa toàn bộ quy trình theo 4 Cấp độ Phân tích Doanh nghiệp (Gartner) + CRISP-DM, bổ sung đầy đủ công thức tường minh, Chia 3 tập `Train / Validation / Test`, Tiered ROI, Ablation (Leakage & Fairness) và đồng bộ 100% với `Customer-Churn-Records.csv`.
-- [ ] **Giai đoạn 0:** Khởi tạo cấu trúc dự án chuẩn Enterprise, kiểm tra môi trường và quản trị dữ liệu gốc (`data/raw/`).
-- [ ] **Giai đoạn 1:** Business Understanding (Hồ sơ EuroVanguard Bank & Phạm vi giới hạn) & Data Audit (Kiểm toán 18 cột).
-- [ ] **Giai đoạn 2:** Technical Data Cleansing (Làm sạch kỹ thuật, xử lý lỗi font `Surname`, kiểm tra logic & miền giá trị *trước* EDA).
-- [ ] **Giai đoạn 3:** EDA Chuẩn Ngân hàng (Đơn biến + Nhị biến kèm Kiểm định, **Holm-Bonferroni**, **Effect Size**, **WOE/IV** + Đa biến kèm **VIF** & **Balance-at-Risk**).
-- [ ] **Giai đoạn 4:** Domain Feature Engineering (6 biến tường minh, an toàn với `Tenure = 0`) & Chia 3 tập `Train / Validation / Test` + Pipeline chống Leakage.
-- [ ] **Giai đoạn 5:** Predictive Analytics – Huấn luyện ML (4 Kịch bản Ablation `A, A1, A2, B`), Chọn ngưỡng `T*` trên Validation/OOF, Báo cáo Test kèm **95% Bootstrap CI**, **Decile Gain/Lift** & **SHAP**.
-- [ ] **Giai đoạn 6:** Prescriptive Analytics – Phân khúc **Predicted Risk x Balance Value**, Chiến lược Giữ chân tuân thủ Fairness & Mô phỏng **Tiered ROI**.
-- [ ] **Giai đoạn 7:** Xây dựng Phần mềm Tư vấn & Dự đoán trên Streamlit GUI + Kiểm thử tự động (`pytest`) & Hoàn thiện Báo cáo/Slide.
+- [x] **Giai đoạn 0:** Khởi tạo cấu trúc dự án chuẩn Enterprise, kiểm tra môi trường và quản trị dữ liệu gốc (`data/raw/`).
+- [x] **Giai đoạn 1:** Business Understanding (Hồ sơ EuroVanguard Bank & Phạm vi giới hạn) & Data Audit (Kiểm toán 18 cột).
+- [x] **Giai đoạn 2:** Technical Data Cleansing (Làm sạch kỹ thuật, xử lý lỗi font `Surname`, kiểm tra logic & miền giá trị *trước* EDA).
+- [x] **Giai đoạn 3:** EDA Chuẩn Ngân hàng (Đơn biến + Nhị biến kèm Kiểm định, **Holm-Bonferroni**, **Effect Size**, **WOE/IV** + Đa biến kèm **VIF** & **Balance-at-Risk**).
+- [x] **Giai đoạn 4:** Domain Feature Engineering (6 biến tường minh, an toàn với `Tenure = 0` + `categorize_age`) & Chia 3 tập `Train / Validation / Test` + Pipeline chống Leakage.
+- [x] **Giai đoạn 5:** Predictive Analytics – Huấn luyện ML (4 Kịch bản Ablation `A, A1, A2, B`), Chọn ngưỡng `T*` trên Validation/OOF, Báo cáo Test kèm **95% Bootstrap CI**, **Decile Gain/Lift** & **SHAP**.
+- [x] **Giai đoạn 6:** Prescriptive Analytics – Phân khúc **Predicted Risk x Balance Value**, Chiến lược Giữ chân tuân thủ Fairness & Mô phỏng **Tiered ROI**.
+- [x] **Giai đoạn 7:** Xây dựng Phần mềm Tư vấn & Dự đoán trên Streamlit GUI + Kiểm thử tự động (`pytest`) & Hoàn thiện Báo cáo/Slide.
