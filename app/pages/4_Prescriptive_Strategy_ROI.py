@@ -1,6 +1,7 @@
 """
 Prescriptive Strategy and Tiered Financial ROI Simulator Page.
 Features 4-quadrant interactive visualization and dynamic real-time ROI simulation.
+Roleplay: EuroVanguard Bank.
 """
 
 import os
@@ -17,6 +18,13 @@ PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, '..', '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
+from app.ui_theme import (
+    apply_theme,
+    render_sidebar_brand,
+    render_page_header,
+    render_stat_card,
+    get_plotly_theme
+)
 from app.utils import (
     get_pre_scored_data,
     get_quadrant_summary,
@@ -25,13 +33,20 @@ from app.utils import (
 
 st.set_page_config(page_title="Prescriptive Strategy & ROI - EuroVanguard", page_icon="💰", layout="wide")
 
-st.title("💰 Chiến Lược Đề Xuất & Mô Hình Tài Chính ROI (Prescriptive & ROI)")
-st.caption("Ma trận Phân khúc 4 Góc phần tư (Value × Risk) & Bảng Tính Lợi Nhuận Ròng Thời Gian Thực")
+apply_theme()
+render_sidebar_brand()
+
+render_page_header(
+    title="CHIẾN LƯỢC ĐỀ XUẤT & MÔ PHỎNG LỢI NHUẬN RÒNG (TIERED ROI)",
+    subtitle="Ma Trận Phân Khúc 4 Góc Phần Tư (Value × Risk) & Bảng Tính Lợi Nhuận Ròng Thời Gian Thực",
+    badge="PRESCRIPTIVE ANALYTICS & SIMULATION"
+)
 
 df_quad = get_pre_scored_data()
+theme_layout = get_plotly_theme()
 
 # 1. Four Quadrants Section
-st.subheader("1. Bản Đồ Phân Khúc 4 Góc Phần Tư (Value × Risk Matrix)")
+st.markdown("### 🗺️ 1. Bản Đồ Phân Khúc 4 Góc Phần Tư (Value × Risk Matrix)")
 
 q_sum = get_quadrant_summary(df_quad)
 
@@ -39,10 +54,10 @@ col_map, col_tbl = st.columns([1.2, 1])
 
 with col_map:
     colors_map = {
-        'Q1_VIP_At_Risk': '#d9534f',
-        'Q2_Standard_At_Risk': '#f0ad4e',
-        'Q3_VIP_Loyal': '#0275d8',
-        'Q4_Standard_Loyal': '#5cb85c'
+        'Q1_VIP_At_Risk': '#ef4444',
+        'Q2_Standard_At_Risk': '#f59e0b',
+        'Q3_VIP_Loyal': '#2563eb',
+        'Q4_Standard_Loyal': '#10b981'
     }
 
     # Sample for smooth scatter rendering
@@ -55,46 +70,51 @@ with col_map:
         color='Quadrant',
         color_discrete_map=colors_map,
         labels={'x': 'Số dư Tiền gửi (Nghìn EUR)', 'Predicted_Probability': 'Xác suất Rời bỏ Churn'},
-        title="Phân bố Khách hàng: Tiền gửi (Balance) x Xác suất Rời bỏ (Risk)",
-        opacity=0.45,
-        template='ggplot2',
+        title="Phân bố Khách hàng: Tiền gửi (Balance) × Xác suất Rời bỏ (Risk)",
+        opacity=0.5,
         height=380
     )
-    fig_quad.add_vline(x=80.0, line_dash="dash", line_color="black", annotation_text="Ngưỡng VIP (80k EUR)")
-    fig_quad.add_hline(y=0.45, line_dash="dot", line_color="black", annotation_text="Ngưỡng Rủi ro T* (0.45)")
+    fig_quad.add_vline(x=80.0, line_dash="dash", line_color="#475569", annotation_text="Ngưỡng VIP (80k €)")
+    fig_quad.add_hline(y=0.45, line_dash="dot", line_color="#475569", annotation_text="Ngưỡng Rủi ro T* (0.45)")
+    fig_quad.update_layout(theme_layout)
     st.plotly_chart(fig_quad, use_container_width=True)
 
 with col_tbl:
-    st.markdown("**Bảng Tổng hợp Chỉ số 4 Góc phần tư:**")
+    st.markdown("**Bảng Tổng Hợp Chỉ Số 4 Góc Phần Tư:**")
     st.dataframe(
         q_sum[['Quadrant_Code', 'Customer_Count', 'Customer_Pct', 'Total_Balance_M_EUR', 'Balance_Pct', 'Actual_Churn_Pct']],
         use_container_width=True,
-        height=340
+        height=320
     )
-    st.info("💡 **Q1 (VIP At-Risk)** nắm giữ **31.75% tổng vốn tiền gửi ngân hàng (242.81M EUR)** và có tỷ lệ rời bỏ thực tế lên tới **74.14%**!")
+    st.markdown("""
+    <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 12px 16px; color: #991b1b; font-size: 0.88rem;">
+        🚨 <b>Tâm điểm sống còn Q1 (VIP At-Risk):</b> Nắm giữ <b>31.75% tổng tiền gửi toàn ngân hàng (242.81M EUR)</b> 
+        nhưng có tỷ lệ rời bỏ thực tế lên tới <b>74.14%</b>! Mọi chiến dịch giữ chân phải dồn 90% ngân sách vào đây.
+    </div>
+    """, unsafe_allow_html=True)
 
-st.divider()
+st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
 
 # 2. Tiered Financial ROI Simulator
-st.subheader("2. Mô Phỏng Lợi Nhuận Ròng Tài Chính Thời Gian Thực (Tiered ROI Simulator)")
-st.caption("Tùy biến các tham số chi phí và tỷ lệ giữ chân thành công để đánh giá hiệu quả kinh tế của chiến dịch")
+st.markdown("### 🧮 2. Mô Phỏng Lợi Nhuận Ròng Tài Chính Thời Gian Thực (Tiered ROI Simulator)")
+st.caption("Tùy biến các tham số chi phí và tỷ lệ giữ chân thành công để kiểm định tính khả thi kinh tế của chiến dịch.")
 
 sim_col1, sim_col2, sim_col3 = st.columns(3)
 
 with sim_col1:
-    st.markdown("#### 🎯 Phân khúc Q1: VIP At-Risk")
-    vip_cost = st.slider("Chi phí Can thiệp Q1 (EUR/khách):", min_value=50, max_value=500, value=150, step=10, help="Private Banker liên hệ trực tiếp, đàm phán lãi suất đặc quyền, tặng quà tri ân.")
-    vip_save = st.slider("Tỷ lệ Giữ chân Thành công Q1 (%):", min_value=10, max_value=80, value=40, step=5, help="Tỷ lệ khách hàng đồng ý ở lại khi được chăm sóc chuyên biệt 1-1.") / 100.0
+    st.markdown("##### 💎 Phân khúc Q1: VIP At-Risk")
+    vip_cost = st.slider("Chi phí Can thiệp Q1 (EUR/khách):", min_value=50, max_value=500, value=150, step=10, help="RM liên hệ trực tiếp, đàm phán lãi suất đặc quyền, quà tri ân.")
+    vip_save = st.slider("Tỷ lệ Giữ chân Thành công Q1 (%):", min_value=10, max_value=80, value=40, step=5, help="Tỷ lệ khách hàng đồng ý ở lại khi được chăm sóc 1-1.") / 100.0
 
 with sim_col2:
-    st.markdown("#### 📱 Phân khúc Q2: Standard At-Risk")
-    std_cost = st.slider("Chi phí Can thiệp Q2 (EUR/khách):", min_value=5, max_value=100, value=25, step=5, help="Thông báo App tự động, chiến dịch email, voucher điện tử.")
+    st.markdown("##### 📱 Phân khúc Q2: Standard At-Risk")
+    std_cost = st.slider("Chi phí Can thiệp Q2 (EUR/khách):", min_value=5, max_value=100, value=25, step=5, help="Thông báo App tự động, chiến dịch email, voucher số.")
     std_save = st.slider("Tỷ lệ Giữ chân Thành công Q2 (%):", min_value=5, max_value=60, value=25, step=5, help="Tỷ lệ khách hàng quay lại giao dịch khi nhận ưu đãi số.") / 100.0
 
 with sim_col3:
-    st.markdown("#### 🏦 Tham số Biên Lợi nhuận Ngân hàng")
-    margin_rate = st.slider("Biên Lợi nhuận trên Tiền gửi (%/năm):", min_value=1.0, max_value=10.0, value=5.0, step=0.5, help="Tỷ suất lợi nhuận ròng ngân hàng tạo ra từ vốn huy động cho vay.") / 100.0
-    base_fee = st.number_input("Phí Dịch vụ Cơ sở Hàng năm (EUR/khách):", min_value=50, max_value=1000, value=200, step=50, help="Phí quản lý tài khoản, phí thẻ thường niên.")
+    st.markdown("##### 🏛️ Tham số Biên Lợi Nhuận Ngân Hàng")
+    margin_rate = st.slider("Biên Lãi Ròng NIM trên Tiền gửi (%/năm):", min_value=1.0, max_value=10.0, value=5.0, step=0.5, help="Tỷ suất lợi nhuận ròng ngân hàng tạo ra từ vốn huy động.") / 100.0
+    base_fee = st.number_input("Phí Dịch vụ Hàng năm (EUR/khách):", min_value=50, max_value=1000, value=200, step=50, help="Phí thường niên tài khoản, thẻ và dịch vụ bán kèm.")
 
 # Calculate Live ROI
 live_roi = calculate_tiered_roi(
@@ -107,22 +127,48 @@ live_roi = calculate_tiered_roi(
     base_service_fee=base_fee
 )
 
-st.divider()
+st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
 
 # ROI Results Display
-st.subheader("3. Kết Quả Cân Đối Tài Chính Dự Kiến")
+st.markdown("#### 📈 3. Kết Quả Cân Đối Tài Chính Chiến Dịch")
 
 m1, m2, m3, m4 = st.columns(4)
 with m1:
-    st.metric("Tổng Ngân sách Can thiệp", f"{live_roi['Total_Campaign']['total_intervention_cost_eur']:,.0f} EUR")
+    render_stat_card(
+        title="Tổng Ngân Sách Can Thiệp",
+        value=f"{live_roi['Total_Campaign']['total_intervention_cost_eur']:,.0f} €",
+        delta="Chi phí đầu tư giữ chân",
+        delta_type="neutral",
+        icon="💳"
+    )
 with m2:
-    st.metric("Số Khách hàng Giữ chân Kỳ vọng", f"{live_roi['Total_Campaign']['total_customers_saved']:.0f} khách", f"{live_roi['Total_Campaign']['total_targeted_count']:,} tiếp cận")
+    render_stat_card(
+        title="Số Khách Hàng Cứu Được",
+        value=f"{live_roi['Total_Campaign']['total_customers_saved']:.0f} KH",
+        delta=f"Trên {live_roi['Total_Campaign']['total_targeted_count']:,} tiếp cận",
+        delta_type="info",
+        icon="🛡️"
+    )
 with m3:
-    st.metric("Vốn Tiền gửi Được Bảo toàn", f"{live_roi['Total_Campaign']['total_deposit_saved_m_eur']:.2f}M EUR")
+    render_stat_card(
+        title="Vốn Tiền Gửi Được Bảo Toàn",
+        value=f"{live_roi['Total_Campaign']['total_deposit_saved_m_eur']:.2f}M €",
+        delta="Nguồn vốn huy động cứu vớt",
+        delta_type="success",
+        icon="💰"
+    )
 with m4:
     net_p = live_roi['Total_Campaign']['total_net_profit_eur']
     roi_p = live_roi['Total_Campaign']['total_roi_pct']
-    st.metric("Lợi nhuận Ròng Dự kiến (Net Gain)", f"{net_p:,.0f} EUR", f"ROI: {roi_p:.1f}%")
+    render_stat_card(
+        title="Lợi Nhuận Ròng Dự Kiến (Net Gain)",
+        value=f"{net_p:,.0f} €",
+        delta=f"ROI: {roi_p:,.1f}%",
+        delta_type="success" if net_p > 0 else "danger",
+        icon="🚀"
+    )
+
+st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
 
 # Comparison Chart: Cost vs Value vs Profit
 bar_col1, bar_col2 = st.columns([1.2, 1])
@@ -134,38 +180,45 @@ with bar_col1:
     profit_vals = [live_roi['Q1_VIP']['net_profit_eur']/1e3, live_roi['Q2_Standard']['net_profit_eur']/1e3, live_roi['Total_Campaign']['total_net_profit_eur']/1e3]
 
     fig_bar = go.Figure(data=[
-        go.Bar(name='Chi phí Can thiệp (k EUR)', x=categories, y=cost_vals, marker_color='#d9534f'),
-        go.Bar(name='Giá trị CLV Bảo toàn (k EUR)', x=categories, y=clv_vals, marker_color='#5bc0de'),
-        go.Bar(name='Lợi nhuận Ròng (k EUR)', x=categories, y=profit_vals, marker_color='#5cb85c')
+        go.Bar(name='Chi phí Can thiệp (k €)', x=categories, y=cost_vals, marker_color='#ef4444'),
+        go.Bar(name='Giá trị CLV Bảo toàn (k €)', x=categories, y=clv_vals, marker_color='#2563eb'),
+        go.Bar(name='Lợi nhuận Ròng (k €)', x=categories, y=profit_vals, marker_color='#10b981')
     ])
-    fig_bar.update_layout(barmode='group', title="So sánh Chi phí, Giá trị Bảo toàn và Lợi nhuận Ròng (k EUR)", template='ggplot2', height=360)
+    fig_bar.update_layout(
+        theme_layout,
+        barmode='group',
+        title="So sánh Chi Phí, Giá Trị Bảo Toàn và Lợi Nhuận Ròng (Nghìn EUR)",
+        height=360,
+        legend=dict(x=0.02, y=0.98, bgcolor="rgba(255,255,255,0.8)")
+    )
     st.plotly_chart(fig_bar, use_container_width=True)
 
 with bar_col2:
-    st.markdown("#### 📋 Bảng Chi tiết Hiệu quả Kinh tế:")
-    st.table(pd.DataFrame([
+    st.markdown("##### 📋 Bảng Chi Tiết Hiệu Quả Kinh Tế:")
+    table_data = pd.DataFrame([
         {
             'Phân khúc': 'Q1: VIP At-Risk',
             'Khách tiếp cận': f"{live_roi['Q1_VIP']['targeted_count']:,}",
             'Khách giữ lại': f"{live_roi['Q1_VIP']['expected_customers_saved']:.0f}",
-            'Vốn cứu (M EUR)': f"{live_roi['Q1_VIP']['deposit_volume_saved_m_eur']:.2f}M",
-            'Net Gain': f"{live_roi['Q1_VIP']['net_profit_eur']:,.0f} EUR",
-            'ROI': f"{live_roi['Q1_VIP']['roi_pct']:.1f}%"
+            'Vốn cứu (M €)': f"{live_roi['Q1_VIP']['deposit_volume_saved_m_eur']:.2f}M",
+            'Net Gain (€)': f"{live_roi['Q1_VIP']['net_profit_eur']:,.0f} €",
+            'ROI (%)': f"{live_roi['Q1_VIP']['roi_pct']:.1f}%"
         },
         {
             'Phân khúc': 'Q2: Standard At-Risk',
             'Khách tiếp cận': f"{live_roi['Q2_Standard']['targeted_count']:,}",
             'Khách giữ lại': f"{live_roi['Q2_Standard']['expected_customers_saved']:.0f}",
-            'Vốn cứu (M EUR)': f"{live_roi['Q2_Standard']['deposit_volume_saved_m_eur']:.2f}M",
-            'Net Gain': f"{live_roi['Q2_Standard']['net_profit_eur']:,.0f} EUR",
-            'ROI': f"{live_roi['Q2_Standard']['roi_pct']:.1f}%"
+            'Vốn cứu (M €)': f"{live_roi['Q2_Standard']['deposit_volume_saved_m_eur']:.2f}M",
+            'Net Gain (€)': f"{live_roi['Q2_Standard']['net_profit_eur']:,.0f} €",
+            'ROI (%)': f"{live_roi['Q2_Standard']['roi_pct']:.1f}%"
         },
         {
             'Phân khúc': 'TOÀN CHIẾN DỊCH',
             'Khách tiếp cận': f"{live_roi['Total_Campaign']['total_targeted_count']:,}",
             'Khách giữ lại': f"{live_roi['Total_Campaign']['total_customers_saved']:.0f}",
-            'Vốn cứu (M EUR)': f"{live_roi['Total_Campaign']['total_deposit_saved_m_eur']:.2f}M",
-            'Net Gain': f"{live_roi['Total_Campaign']['total_net_profit_eur']:,.0f} EUR",
-            'ROI': f"{live_roi['Total_Campaign']['total_roi_pct']:.1f}%"
+            'Vốn cứu (M €)': f"{live_roi['Total_Campaign']['total_deposit_saved_m_eur']:.2f}M",
+            'Net Gain (€)': f"{live_roi['Total_Campaign']['total_net_profit_eur']:,.0f} €",
+            'ROI (%)': f"{live_roi['Total_Campaign']['total_roi_pct']:.1f}%"
         }
-    ]))
+    ])
+    st.dataframe(table_data, use_container_width=True, height=280)

@@ -2,6 +2,7 @@
 Model Governance, SHAP Explainability & AI Ethics Compliance Page.
 Provides model registry metadata, decile lift table, ablation comparisons,
 global/local SHAP plots, and Basel III / SR 11-7 audit checklists.
+Roleplay: EuroVanguard Bank.
 """
 
 import os
@@ -17,71 +18,95 @@ PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, '..', '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
+from app.ui_theme import (
+    apply_theme,
+    render_sidebar_brand,
+    render_page_header,
+    render_stat_card
+)
 from app.utils import load_metadata
 
 st.set_page_config(page_title="Model Governance & SHAP - EuroVanguard", page_icon="🛡️", layout="wide")
 
-st.title("🛡️ Quản Trị Mô Hình & Minh Bạch SHAP (Model Governance & Explainability)")
-st.caption("Nhật Ký Phiên Bản, Khoảng Tin Cậy 95% Bootstrap CI, Bảng Decile Lift, Bóc Tách Đóng Góp SHAP & Kiểm Soát Đạo Đức AI")
+apply_theme()
+render_sidebar_brand()
+
+render_page_header(
+    title="QUẢN TRỊ MÔ HÌNH & MINH BẠCH SHAP (MODEL GOVERNANCE)",
+    subtitle="Nhật Ký Phiên Bản, Khoảng Tin Cậy 95% Bootstrap CI, Bảng Decile Lift & Kiểm Soát Đạo Đức AI",
+    badge="AI GOVERNANCE & EXPLAINABILITY"
+)
 
 metadata = load_metadata()
 test_metrics = metadata.get('test_holdout_metrics', {})
 
 # 1. Model Registry & Provenance
-st.subheader("1. Hồ Sơ Xuất Xưởng Mô Hình (Model Registry & Metadata)")
+st.markdown("### 🏛️ 1. Hồ Sơ Xuất Xưởng Mô Hình (Model Registry & Metadata)")
 m_col1, m_col2, m_col3 = st.columns(3)
 
 with m_col1:
-    st.info(f"""
-    **Thông Tin Mô Hình Quán Quân:**  
-    • Định danh: `{metadata.get('model_name', 'XGBoost_StandardScaler_Proactive')}`  
-    • Thuật toán: `{metadata.get('champion_model_type', 'XGBClassifier')}`  
-    • Bộ Chuẩn hóa: `{metadata.get('scaler', 'StandardScaler')}`  
-    • Ngưỡng Quyết định T*: `{metadata.get('optimal_decision_threshold', 0.45)}`
-    """)
+    st.markdown(f"""
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+        <h5 style="margin: 0 0 10px 0; color: #1e3a8a;">🤖 Mô Hình Quán Quân:</h5>
+        <div style="font-size: 0.88rem; color: #475569; line-height: 1.6;">
+            • <b>Mã định danh:</b> <code>{metadata.get('model_name', 'XGBoost_StandardScaler_Proactive')}</code><br>
+            • <b>Thuật toán:</b> <code>{metadata.get('champion_model_type', 'XGBClassifier')}</code><br>
+            • <b>Tiền xử lý:</b> <code>{metadata.get('scaler', 'StandardScaler')}</code> + OneHotEncoder<br>
+            • <b>Ngưỡng quyết định T*:</b> <b>{metadata.get('optimal_decision_threshold', 0.45)}</b>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with m_col2:
     runtime = metadata.get('runtime_environment', {})
-    st.info(f"""
-    **Môi Trường Thực Thi (Certified Runtime):**  
-    • Python: `{runtime.get('python_version', '3.13.2')}`  
-    • Scikit-Learn: `{runtime.get('scikit_learn_version', '1.9.1')}`  
-    • XGBoost: `{runtime.get('xgboost_version', '3.4.1')}`  
-    • Joblib: `{runtime.get('joblib_version', '1.6.0')}`
-    """)
+    st.markdown(f"""
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+        <h5 style="margin: 0 0 10px 0; color: #1e3a8a;">⚙️ Môi Trường Thực Thi Chứng Nhận:</h5>
+        <div style="font-size: 0.88rem; color: #475569; line-height: 1.6;">
+            • <b>Python Runtime:</b> <code>{runtime.get('python_version', '3.13.2')}</code><br>
+            • <b>Scikit-Learn:</b> <code>{runtime.get('scikit_learn_version', '1.9.1')}</code><br>
+            • <b>XGBoost:</b> <code>{runtime.get('xgboost_version', '3.4.1')}</code><br>
+            • <b>Đóng gói:</b> <code>Joblib v{runtime.get('joblib_version', '1.6.0')}</code>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with m_col3:
-    st.info(f"""
-    **Nguyên Tắc Khử Rò Rỉ Dữ Liệu:**  
-    • Biến bị loại bỏ triệt để (Leakage): `{metadata.get('excluded_features_target_leakage', ['Complain'])}`  
-    • Định danh không tham gia huấn luyện: `RowNumber, CustomerId, Surname`  
-    • Tổng số đặc trưng đầu vào: `{len(metadata.get('feature_columns', []))}`
-    """)
+    st.markdown(f"""
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+        <h5 style="margin: 0 0 10px 0; color: #1e3a8a;">🛡️ Kiểm Soát Rò Rỉ Dữ Liệu (Leakage):</h5>
+        <div style="font-size: 0.88rem; color: #475569; line-height: 1.6;">
+            • <b>Biến bị loại bỏ triệt để:</b> <code>{metadata.get('excluded_features_target_leakage', ['Complain'])}</code><br>
+            • <b>Định danh cấm đưa vào ML:</b> <code>RowNumber, CustomerId, Surname</code><br>
+            • <b>Số đặc trưng đầu vào chuẩn:</b> <b>{len(metadata.get('feature_columns', []))} đặc trưng</b>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-st.divider()
+st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
 
 # 2. Test Set Holdout Metrics with 95% Bootstrap CI
-st.subheader("2. Hiệu Năng Kiểm Thử Độc Lập 1 Lần (1-Time Untouched Test Holdout - 1,500 Khách hàng)")
-st.caption("Được niêm phong hoàn toàn và chỉ mở duy nhất 1 lần để thẩm định khách quan năng lực thực chiến ngoài môi trường sản xuất.")
+st.markdown("### 🎯 2. Hiệu Năng Kiểm Thử Độc Lập 1 Lần (1-Time Untouched Test Holdout - 1,500 Khách Hàng)")
+st.caption("Tập kiểm thử được niêm phong hoàn toàn và chỉ mở duy nhất 1 lần để thẩm định khách quan năng lực thực chiến ngoài môi trường sản xuất.")
 
 k1, k2, k3, k4, k5 = st.columns(5)
 with k1:
-    st.metric("Accuracy", f"{test_metrics.get('accuracy', 0.8467)*100:.2f}%")
+    render_stat_card("Accuracy", f"{test_metrics.get('accuracy', 0.8467)*100:.2f}%", "Độ chính xác tổng thể", "success", "🎯")
 with k2:
-    st.metric("Precision", f"{test_metrics.get('precision', 0.6448)*100:.2f}%")
+    render_stat_card("Precision", f"{test_metrics.get('precision', 0.6448)*100:.2f}%", "Độ chuẩn xác cảnh báo", "info", "🔍")
 with k3:
-    st.metric("Recall", f"{test_metrics.get('recall', 0.5475)*100:.2f}%")
+    render_stat_card("Recall", f"{test_metrics.get('recall', 0.5475)*100:.2f}%", "Tỷ lệ bắt trúng Churn", "info", "🎯")
 with k4:
     f1_ci = test_metrics.get('f1_95_ci', [0.5428, 0.6348])
-    st.metric("F1-Score", f"{test_metrics.get('f1_score', 0.5922):.4f}", f"95% CI: [{f1_ci[0]:.2f}, {f1_ci[1]:.2f}]")
+    render_stat_card("F1-Score", f"{test_metrics.get('f1_score', 0.5922):.4f}", f"95% CI: [{f1_ci[0]:.2f}, {f1_ci[1]:.2f}]", "success", "⚖️")
 with k5:
     auc_ci = test_metrics.get('roc_auc_95_ci', [0.8179, 0.8693])
-    st.metric("ROC-AUC", f"{test_metrics.get('roc_auc', 0.8437):.4f}", f"95% CI: [{auc_ci[0]:.2f}, {auc_ci[1]:.2f}]")
+    render_stat_card("ROC-AUC", f"{test_metrics.get('roc_auc', 0.8437):.4f}", f"95% CI: [{auc_ci[0]:.2f}, {auc_ci[1]:.2f}]", "success", "📈")
 
-st.divider()
+st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
 
 # 3. Decile Gain & Cumulative Lift Table
-st.subheader("3. Bảng Phân Vị Tích Lũy (Decile Gain & Cumulative Lift Table)")
+st.markdown("### 📊 3. Bảng Phân Vị Tích Lũy (Decile Gain & Cumulative Lift Table)")
 st.caption("Đo lường năng lực tập trung khách hàng rủi ro cao của mô hình trên tập kiểm thử độc lập.")
 
 decile_data = [
@@ -97,12 +122,19 @@ decile_data = [
     {'Decile': 10, 'Khách hàng': 150, 'Số Churn': 5, 'Tỷ lệ Churn Decile (%)': '3.33%', 'Tích lũy Churn Bắt được (%)': '100.00%', 'Hệ số Nâng (Lift)': '1.00x'}
 ]
 st.dataframe(pd.DataFrame(decile_data), use_container_width=True)
-st.success("🎯 **Ý nghĩa Thực tiễn:** Decile 1 đạt hệ số Lift **3.97x**! Chỉ cần can thiệp 10% khách hàng rủi ro cao nhất, ngân hàng đã chặn đứng **gần 40% toàn bộ khách hàng rời bỏ**.")
 
-st.divider()
+st.markdown("""
+<div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px 16px; color: #166534; font-size: 0.9rem;">
+    🎯 <b>Ý nghĩa Thực tiễn Xuất sắc:</b> Decile 1 đạt hệ số Lift lên tới <b>3.97x</b>! 
+    Ngân hàng chỉ cần tập trung nguồn lực can thiệp vào đúng 10% khách hàng có điểm rủi ro cao nhất là đã chặn đứng được 
+    <b>gần 40% (39.67%) toàn bộ lượng khách hàng rời bỏ</b>!
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
 
 # 4. Ablation Studies Matrix
-st.subheader("4. Nghiên Cứu Triệt Tiêu (Ablation Studies: 4 Kịch Bản Độc Lập)")
+st.markdown("### 🧪 4. Nghiên Cứu Triệt Tiêu (Ablation Studies: 4 Kịch Bản Độc Lập)")
 ab_table = pd.DataFrame([
     {
         'Kịch bản': 'Scenario A (Champion Proactive)',
@@ -129,43 +161,65 @@ ab_table = pd.DataFrame([
         'Trạng thái': 'RÒ RỈ DỮ LIỆU NẶNG (Bị từ chối đưa vào sản xuất)'
     }
 ])
-st.table(ab_table)
+st.dataframe(ab_table, use_container_width=True)
 
-st.divider()
+st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
 
 # 5. SHAP Visualizations
-st.subheader("5. Minh Bạch Hóa Mô Hình với SHAP (Global & Local Explainability)")
+st.markdown("### 🔍 5. Minh Bạch Hóa Mô Hình với SHAP (Explainability)")
 shap_c1, shap_c2 = st.columns(2)
 
 fig14_path = os.path.join(PROJECT_ROOT, 'reports', 'figures', 'fig_14_shap_summary.png')
 fig15_path = os.path.join(PROJECT_ROOT, 'reports', 'figures', 'fig_15_shap_waterfall_sample.png')
 
 with shap_c1:
-    st.markdown("#### Đóng Góp Đặc Trưng Toàn Cục (Global SHAP Beeswarm)")
+    st.markdown("##### Đóng Góp Đặc Trưng Toàn Cục (Global SHAP Beeswarm)")
     if os.path.exists(fig14_path):
         st.image(fig14_path, use_container_width=True)
     else:
         st.info("Chưa tìm thấy fig_14_shap_summary.png")
 
 with shap_c2:
-    st.markdown("#### Giải Thích Cục Bộ Cho 1 Khách Hàng (Local SHAP Waterfall)")
+    st.markdown("##### Giải Thích Cục Bộ Cho 1 Khách Hàng (Local SHAP Waterfall)")
     if os.path.exists(fig15_path):
         st.image(fig15_path, use_container_width=True)
     else:
         st.info("Chưa tìm thấy fig_15_shap_waterfall_sample.png")
 
-st.divider()
+st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
 
 # 6. Model Governance Audit Checklist
-st.subheader("6. Danh Mục Kiểm Soát Tuân Thủ Quản Trị Mô Hình (Basel III / SR 11-7 / AI Ethics)")
+st.markdown("### 📋 6. Danh Mục Kiểm Soát Tuân Thủ Quản Trị Mô Hình (Basel III / SR 11-7 / AI Ethics)")
 g1, g2 = st.columns(2)
 
 with g1:
-    st.checkbox("✅ [SR 11-7] Phân lập tuyệt đối dữ liệu: Pipeline tiền xử lý độc lập, không rò rỉ dữ liệu qua các tập Train/Val/Test.", value=True, disabled=True)
-    st.checkbox("✅ [Leakage Audit] Loại bỏ triệt để biến Complain trong mô hình dự báo sớm để ngăn ngừa rò rỉ mục tiêu.", value=True, disabled=True)
-    st.checkbox("✅ [Basel III] Đánh giá khả năng tổng quát hóa với khoảng tin cậy 95% Bootstrap CI trên tập Test độc lập.", value=True, disabled=True)
+    st.markdown("""
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 10px;">
+        <div style="font-weight: 700; color: #166534; font-size: 0.9rem;">✅ [SR 11-7] Phân Lập Tuyệt Đối Dữ Liệu</div>
+        <div style="font-size: 0.85rem; color: #475569; margin-top: 4px;">Pipeline tiền xử lý độc lập, không rò rỉ dữ liệu qua các tập Train / Val / Test.</div>
+    </div>
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 10px;">
+        <div style="font-weight: 700; color: #166534; font-size: 0.9rem;">✅ [Leakage Audit] Loại Bỏ Triệt Để Biến Complain</div>
+        <div style="font-size: 0.85rem; color: #475569; margin-top: 4px;">Chặn đứng hiện tượng Target Leakage (tương quan 99.86%) trong luồng dự báo sớm.</div>
+    </div>
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
+        <div style="font-weight: 700; color: #166534; font-size: 0.9rem;">✅ [Basel III] Đánh Giá Khả Năng Tổng Quát Hóa</div>
+        <div style="font-size: 0.85rem; color: #475569; margin-top: 4px;">Kiểm định nghiêm ngặt với khoảng tin cậy 95% Bootstrap CI trên tập Test độc lập.</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with g2:
-    st.checkbox("✅ [AI Fairness] Kiểm định phi định kiến giới tính: Mô hình Gender-blind duy trì AUC 0.8661.", value=True, disabled=True)
-    st.checkbox("✅ [Operational SLA] Thiết lập quy tắc cứng SLA 4-Hour Escalation cho 100% trường hợp khiếu nại phát sinh.", value=True, disabled=True)
-    st.checkbox("✅ [Version Provenance] Lưu trữ đầy đủ Metadata cấu hình, siêu tham số và phiên bản thư viện tại models/model_metadata.json.", value=True, disabled=True)
+    st.markdown("""
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 10px;">
+        <div style="font-weight: 700; color: #166534; font-size: 0.9rem;">✅ [AI Fairness] Kiểm Định Phi Định Kiến Giới Tính</div>
+        <div style="font-size: 0.85rem; color: #475569; margin-top: 4px;">Mô hình Gender-blind duy trì AUC 0.8661, không phân biệt đối xử theo quy định EU GDPR.</div>
+    </div>
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 10px;">
+        <div style="font-weight: 700; color: #166534; font-size: 0.9rem;">✅ [Operational SLA] Quy Trình Cứng SLA 4-Hour Escalation</div>
+        <div style="font-size: 0.85rem; color: #475569; margin-top: 4px;">100% khách hàng có khiếu nại mở được kích hoạt chuyển tiếp can thiệp khẩn cấp.</div>
+    </div>
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
+        <div style="font-weight: 700; color: #166534; font-size: 0.9rem;">✅ [Version Provenance] Lưu Trữ Đầy Đủ Metadata</div>
+        <div style="font-size: 0.85rem; color: #475569; margin-top: 4px;">Ghi nhận cấu hình, siêu tham số và phiên bản thư viện tại <code>models/model_metadata.json</code>.</div>
+    </div>
+    """, unsafe_allow_html=True)
