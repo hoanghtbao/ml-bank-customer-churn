@@ -203,24 +203,27 @@ with dash_tab2:
 
     with r2_c2:
         st.markdown("##### 👥 Rủi Ro Theo Nhóm Tuổi & Trạng Thái Tương Tác")
-        age_stat = df_full.groupby(['Age_Lifecycle_Stage', 'IsActiveMember'])['Exited'].mean().reset_index()
-        age_stat['Churn_Pct'] = age_stat['Exited'] * 100
-        age_stat['Trạng thái'] = age_stat['IsActiveMember'].map({1: 'Đang hoạt động', 0: 'Bất hoạt'})
+        age_col = 'age_groups' if 'age_groups' in df_full.columns else ('Age_Lifecycle_Stage' if 'Age_Lifecycle_Stage' in df_full.columns else 'Age')
+        if age_col in ['age_groups', 'Age_Lifecycle_Stage']:
+            age_stat = df_full.groupby([age_col, 'IsActiveMember'])['Exited'].mean().reset_index()
+            age_stat['Churn_Pct'] = age_stat['Exited'] * 100
+            age_stat['Trạng thái'] = age_stat['IsActiveMember'].map({1: 'Đang hoạt động', 0: 'Bất hoạt'})
 
-        fig_age = px.bar(
-            age_stat, x='Age_Lifecycle_Stage', y='Churn_Pct', color='Trạng thái',
-            barmode='group',
-            category_orders={'Age_Lifecycle_Stage': ['<30', '30-40', '41-50', '51-60', '>60']},
-            color_discrete_map={'Đang hoạt động': '#10b981', 'Bất hoạt': '#ef4444'}
-        )
-        fig_age.update_layout(
-            theme_layout,
-            xaxis=dict(title="Nhóm Tuổi Vòng Đời"),
-            yaxis=dict(title="Tỷ lệ Rời bỏ Churn (%)"),
-            legend=dict(x=0.02, y=0.98, bgcolor="rgba(255,255,255,0.8)"),
-            height=370
-        )
-        st.plotly_chart(fig_age, use_container_width=True)
+            cats = ['youth', 'adult_prime', 'adult_mature', 'senior'] if age_col == 'age_groups' else ['<30', '30-40', '41-50', '51-60', '>60']
+            fig_age = px.bar(
+                age_stat, x=age_col, y='Churn_Pct', color='Trạng thái',
+                barmode='group',
+                category_orders={age_col: cats},
+                color_discrete_map={'Đang hoạt động': '#10b981', 'Bất hoạt': '#ef4444'}
+            )
+            fig_age.update_layout(
+                theme_layout,
+                xaxis=dict(title="Nhóm Tuổi (Age Groups)"),
+                yaxis=dict(title="Tỷ lệ Rời bỏ Churn (%)"),
+                legend=dict(x=0.02, y=0.98, bgcolor="rgba(255,255,255,0.8)"),
+                height=370
+            )
+            st.plotly_chart(fig_age, use_container_width=True)
 
     st.markdown("""
     <div class="action-box">

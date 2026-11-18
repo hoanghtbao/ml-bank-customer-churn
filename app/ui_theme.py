@@ -1,10 +1,17 @@
 """
 UI/UX Theme and Enterprise Component Library for EuroVanguard Bank DSS.
 Provides modern CSS injection, custom HTML cards, branded badges, and Plotly styling.
+Roleplay: EuroVanguard Bank.
 """
 
+import os
 import streamlit as st
 import plotly.graph_objects as go
+
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+ASSETS_DIR = os.path.join(CURRENT_DIR, 'assets')
+LOGO_PATH = os.path.join(ASSETS_DIR, 'eurovanguard_logo.png')
+ICON_PATH = os.path.join(ASSETS_DIR, 'eurovanguard_icon.png')
 
 # Central CSS for EuroVanguard Enterprise Theme
 CUSTOM_CSS = """
@@ -18,27 +25,149 @@ html, body, [class*="css"] {
 
 /* Background & Main container padding */
 .main .block-container {
-    padding-top: 1.8rem;
+    padding-top: 2rem;
     padding-bottom: 3.5rem;
     max-width: 1350px;
 }
 
+/* Make Streamlit top header bar transparent so it never obscures any buttons */
+header[data-testid="stHeader"] {
+    background: transparent !important;
+    z-index: 100 !important;
+}
+
 /* Sidebar Styling */
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0a192f 0%, #0d213f 100%);
-    color: #e2e8f0;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(180deg, #0a192f 0%, #0d213f 100%) !important;
+    color: #e2e8f0 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
 [data-testid="stSidebar"] hr {
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
     color: #cbd5e1;
 }
 
-/* Sleek Modern Header Container */
+/* =========================================================================
+   SIDEBAR COLLAPSE & EXPAND BUTTONS - FIX CONTRAST & VISIBILITY
+   ========================================================================= */
+
+/* 1. Collapse button inside the sidebar (when sidebar is open) */
+[data-testid="stSidebarCollapseButton"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+[data-testid="stSidebarCollapseButton"] button {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    padding: 6px 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+[data-testid="stSidebarCollapseButton"] button:hover {
+    background-color: #2563eb !important;
+    border-color: #60a5fa !important;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5) !important;
+}
+
+[data-testid="stSidebarCollapseButton"] svg {
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
+    color: #ffffff !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+/* 2. Re-open / Expand button (when sidebar is closed/collapsed) */
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"],
+button[data-testid="baseButton-headerNoPadding"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 999999 !important;
+    background: #0a192f !important;
+    color: #ffffff !important;
+    border: 2px solid #3b82f6 !important;
+    border-radius: 0 10px 10px 0 !important;
+    box-shadow: 2px 4px 14px rgba(0, 0, 0, 0.35) !important;
+    padding: 8px 12px !important;
+    margin-top: 10px !important;
+    transition: all 0.2s ease !important;
+}
+
+[data-testid="collapsedControl"] svg,
+[data-testid="stSidebarCollapsedControl"] svg {
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
+    color: #ffffff !important;
+    width: 22px !important;
+    height: 22px !important;
+}
+
+[data-testid="collapsedControl"]:hover,
+[data-testid="stSidebarCollapsedControl"]:hover {
+    background: #1e3a8a !important;
+    box-shadow: 2px 6px 18px rgba(37, 99, 235, 0.5) !important;
+    transform: scale(1.05) !important;
+}
+
+/* =========================================================================
+   SIDEBAR LOGO & NAVIGATION MENU ENHANCEMENT
+   ========================================================================= */
+
+/* Top Sidebar Header holding st.logo */
+[data-testid="stSidebarHeader"] {
+    background: transparent !important;
+    padding: 16px 16px 8px 16px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-testid="stLogo"] {
+    height: 2.8rem !important;
+}
+
+/* Multipage Nav links styling */
+[data-testid="stSidebarNav"] {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    margin-bottom: 16px !important;
+}
+
+[data-testid="stSidebarNav"] span {
+    color: #cbd5e1 !important;
+    font-weight: 500 !important;
+    font-size: 0.92rem !important;
+}
+
+[data-testid="stSidebarNav"] a[aria-current="page"] {
+    background: rgba(37, 99, 235, 0.25) !important;
+    border-left: 3px solid #3b82f6 !important;
+    border-radius: 6px !important;
+}
+
+[data-testid="stSidebarNav"] a[aria-current="page"] span {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+[data-testid="stSidebarNav"] a:hover {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-radius: 6px !important;
+}
+
+/* =========================================================================
+   PAGE HERO BANNER & COMPONENTS
+   ========================================================================= */
+
 .euro-header {
     background: linear-gradient(135deg, #0a192f 0%, #1e3a8a 50%, #0f172a 100%);
     padding: 24px 28px;
@@ -285,26 +414,22 @@ div[data-testid="stForm"] {
 
 
 def apply_theme():
-    """Injects central enterprise theme CSS."""
+    """Injects central enterprise theme CSS and renders official logo at top of sidebar."""
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+    if os.path.exists(LOGO_PATH) and hasattr(st, 'logo'):
+        try:
+            st.logo(LOGO_PATH, icon_image=ICON_PATH, size="large")
+        except Exception:
+            pass
 
 
 def render_sidebar_brand():
-    """Renders sleek EuroVanguard Bank branding on sidebar."""
+    """Renders system status pill in sidebar (Logo is placed at TOP via st.logo)."""
     st.sidebar.markdown("""
-    <div style="padding: 12px 4px 20px 4px; text-align: left;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4);">
-                🏛️
-            </div>
-            <div>
-                <div style="font-weight: 800; font-size: 1.1rem; color: #ffffff; letter-spacing: -0.01em; line-height: 1.1;">EUROVANGUARD</div>
-                <div style="font-size: 0.72rem; color: #94a3b8; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;">Bank Decision Support</div>
-            </div>
-        </div>
-        <div style="margin-top: 14px; display: flex; gap: 6px; align-items: center;">
+    <div style="padding: 4px 4px 14px 4px;">
+        <div style="display: flex; gap: 8px; align-items: center; background: rgba(255, 255, 255, 0.05); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
             <span style="display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981;"></span>
-            <span style="font-size: 0.75rem; color: #cbd5e1; font-weight: 600;">System Live (Production v2.4)</span>
+            <span style="font-size: 0.78rem; color: #e2e8f0; font-weight: 600;">System Live (Production v2.4)</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
