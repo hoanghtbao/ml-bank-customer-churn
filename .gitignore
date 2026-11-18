@@ -48,6 +48,12 @@ venv.bak/
 # Project specific
 # Never commit large or sensitive models if not needed
 models/*.pkl
+
+# Frontend Node / Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
 # models/*.joblib  # Commented out if we want to track lightweight models
 
 # Temporary reports/data
