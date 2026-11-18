@@ -7,13 +7,14 @@ import pytest
 import pandas as pd
 import numpy as np
 
-from app.utils import (
+from src.modeling.predict import (
+    predict_customer,
+    predict_batch,
     load_champion_pipeline,
     load_metadata,
     load_full_dataset,
     get_pre_scored_data
 )
-from src.modeling.predict import predict_customer, predict_batch
 from src.business.segmentation import assign_four_quadrants
 
 

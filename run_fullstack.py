@@ -23,7 +23,6 @@ def print_banner():
       >> Web Application UI:    http://localhost:3000
       >> Interactive API Docs:  http://127.0.0.1:8000/docs
       >> Health Check:          http://127.0.0.1:8000/health
-      >> Streamlit (Fallback):  http://localhost:8501
     ------------------------------------------------------------------------
      Press CTRL + C to stop all services cleanly.
     ========================================================================

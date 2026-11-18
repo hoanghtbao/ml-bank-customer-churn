@@ -4,12 +4,18 @@ Roleplay: EuroVanguard Bank.
 Implements the Proactive ML Pipeline combined with the Hard Business Rule Override for Complaints.
 """
 
-from typing import Dict, Any, Union
+import os
+import json
+import joblib
+from typing import Dict, Any, Union, Optional
 import pandas as pd
 import numpy as np
 from sklearn.pipeline import Pipeline
 
 from src.preprocessing.feature_engineering import create_domain_features
+
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+
 
 
 def calibrate_risk_tier(prob: float) -> str:
@@ -109,3 +115,49 @@ def predict_batch(
     df_scored['Risk_Tier'] = df_scored['Predicted_Probability'].apply(calibrate_risk_tier)
 
     return df_scored
+
+
+def load_champion_pipeline(model_path: Optional[str] = None) -> Pipeline:
+    """Loads the trained champion model pipeline."""
+    if model_path is None:
+        model_path = os.path.join(PROJECT_ROOT, 'models', 'churn_early_warning_pipeline.joblib')
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"Model file not found at: {model_path}")
+    return joblib.load(model_path)
+
+
+def load_metadata(meta_path: Optional[str] = None) -> Dict[str, Any]:
+    """Loads model governance metadata."""
+    if meta_path is None:
+        meta_path = os.path.join(PROJECT_ROOT, 'models', 'model_metadata.json')
+    if os.path.exists(meta_path):
+        with open(meta_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return {}
+
+
+def load_full_dataset(data_path: Optional[str] = None) -> pd.DataFrame:
+    """Loads the full engineered dataset (10,000 customers)."""
+    if data_path is None:
+        data_path = os.path.join(PROJECT_ROOT, 'data', 'processed', 'full_engineered.csv')
+        if not os.path.exists(data_path):
+            data_path = os.path.join(PROJECT_ROOT, 'Customer-Churn-Records.csv')
+    return pd.read_csv(data_path)
+
+
+def get_pre_scored_data(
+    pipeline: Optional[Pipeline] = None,
+    df: Optional[pd.DataFrame] = None,
+    threshold: float = 0.45,
+    high_value_threshold: float = 80000.0
+) -> pd.DataFrame:
+    """Returns the full dataset pre-scored with 4 Quadrants for analytics and UI rendering."""
+    from src.business.segmentation import assign_four_quadrants
+    if pipeline is None:
+        pipeline = load_champion_pipeline()
+    if df is None:
+        df = load_full_dataset()
+    scored = predict_batch(pipeline, df, threshold=threshold, enforce_complain_rule=True)
+    scored = assign_four_quadrants(scored, risk_threshold=threshold, high_value_threshold=high_value_threshold)
+    return scored
+
