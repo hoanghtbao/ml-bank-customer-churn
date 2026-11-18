@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import PageHeader from "@/components/PageHeader";
+import InteractiveRegionMap from "@/components/InteractiveRegionMap";
 import { fetchApi } from "@/lib/api";
 import { Users, DollarSign, AlertTriangle, TrendingDown, ArrowRight, ShieldCheck, Cpu } from "lucide-react";
 import Link from "next/link";
@@ -34,9 +35,12 @@ export default function HomePage() {
         subtitle="Hệ thống quản trị rủi ro rời bỏ và ra quyết định giữ chân khách hàng (Thị trường: Pháp, Đức, Tây Ban Nha)"
       />
 
-      {/* Dual Baseline KPIs */}
+      {/* 1. THE FIRST THING DISPLAYED: INTERACTIVE GLOWING 3-COUNTRY REGIONAL SURVEILLANCE MAP */}
+      <InteractiveRegionMap />
+
+      {/* 2. Dual Baseline KPIs */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs hover:shadow-sm transition-all">
           <div className="flex items-center justify-between text-slate-500 mb-2">
             <span className="text-xs font-bold uppercase tracking-wider">Tổng Quy Mô Danh Mục</span>
             <Users className="w-5 h-5 text-blue-600" />
@@ -49,7 +53,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs hover:shadow-sm transition-all">
           <div className="flex items-center justify-between text-slate-500 mb-2">
             <span className="text-xs font-bold uppercase tracking-wider">Tổng Tiền Gửi Huy Động</span>
             <DollarSign className="w-5 h-5 text-emerald-600" />
@@ -62,7 +66,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs hover:shadow-sm transition-all">
           <div className="flex items-center justify-between text-slate-500 mb-2">
             <span className="text-xs font-bold uppercase tracking-wider">Tỷ Lệ Churn Đầu Người</span>
             <TrendingDown className="w-5 h-5 text-rose-600" />
@@ -75,7 +79,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs hover:shadow-sm transition-all">
           <div className="flex items-center justify-between text-slate-500 mb-2">
             <span className="text-xs font-bold uppercase tracking-wider">Tiền Gửi Rủi Ro (At-Risk)</span>
             <AlertTriangle className="w-5 h-5 text-amber-500" />
@@ -89,7 +93,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Gartner 4 Analytics Levels */}
+      {/* 3. Gartner 4 Analytics Levels */}
       <div className="mb-8">
         <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
           <Cpu className="w-5 h-5 text-blue-600" />
@@ -97,7 +101,7 @@ export default function HomePage() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs">
             <div className="flex items-center justify-between mb-3">
               <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
                 TẦNG 1 • DESCRIPTIVE
@@ -111,7 +115,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs">
             <div className="flex items-center justify-between mb-3">
               <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
                 TẦNG 2 • DIAGNOSTIC
@@ -125,7 +129,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs">
             <div className="flex items-center justify-between mb-3">
               <span className="px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
                 TẦNG 3 • PREDICTIVE
@@ -141,7 +145,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm">
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-xs">
             <div className="flex items-center justify-between mb-3">
               <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                 TẦNG 4 • PRESCRIPTIVE
@@ -158,7 +162,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Navigation Quick Links */}
+      {/* 4. Navigation Quick Links */}
       <div>
         <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
           <ShieldCheck className="w-5 h-5 text-blue-600" />
@@ -168,7 +172,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Link
             href="/dashboard"
-            className="group bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm hover:border-blue-500 hover:shadow-md transition-all flex items-center justify-between"
+            className="group bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs hover:border-blue-500 hover:shadow-sm transition-all flex items-center justify-between"
           >
             <div>
               <div className="text-xs font-bold text-blue-600 uppercase mb-1">Báo Cáo Điều Hành</div>
@@ -182,7 +186,7 @@ export default function HomePage() {
 
           <Link
             href="/advisor"
-            className="group bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm hover:border-blue-500 hover:shadow-md transition-all flex items-center justify-between"
+            className="group bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs hover:border-blue-500 hover:shadow-sm transition-all flex items-center justify-between"
           >
             <div>
               <div className="text-xs font-bold text-blue-600 uppercase mb-1">Tư Vấn Giữ Chân 1-1</div>
@@ -196,7 +200,7 @@ export default function HomePage() {
 
           <Link
             href="/strategy"
-            className="group bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm hover:border-blue-500 hover:shadow-md transition-all flex items-center justify-between"
+            className="group bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs hover:border-blue-500 hover:shadow-sm transition-all flex items-center justify-between"
           >
             <div>
               <div className="text-xs font-bold text-blue-600 uppercase mb-1">Chiến Lược & Tiered ROI</div>
