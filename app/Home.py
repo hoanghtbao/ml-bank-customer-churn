@@ -27,31 +27,28 @@ st.set_page_config(
 # Apply global styling
 apply_theme()
 render_sidebar_brand()
+render_sidebar_footer()
 
 # Sidebar Info
 st.sidebar.markdown("""
----
-<div style="font-size: 0.8rem; color: #94a3b8; line-height: 1.5;">
-    <strong style="color: #f1f5f9;">Khung Tiêu Chuẩn Áp Dụng:</strong><br>
+<div style="font-size: 0.78rem; color: #94a3b8; line-height: 1.5; margin-top: 10px;">
+    <strong style="color: #cbd5e1;">Chuẩn mực Nghiệp vụ:</strong><br>
     • <b>CRISP-DM Standard</b> (6 Phases)<br>
     • <b>Gartner 4 Analytics Levels</b><br>
     • <b>Basel III / SR 11-7 Compliance</b><br>
     • <b>EU GDPR Article 22 Fairness</b>
 </div>
-<div style="margin-top: 15px; padding: 10px; background: rgba(59, 130, 246, 0.1); border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.2); font-size: 0.78rem; color: #93c5fd;">
-    💡 <b>Mục tiêu trọng tâm:</b> Bảo vệ 185.68M EUR tiền gửi rủi ro thông qua dự báo sớm và giữ chân khách hàng giá trị cao.
-</div>
 """, unsafe_allow_html=True)
 
 # Hero Banner
 render_page_header(
-    title="EUROVANGUARD BANK",
-    subtitle="Hệ Thống Quản Trị Rủi Ro Rời Bỏ & Hỗ Trợ Quyết Định Giữ Chân Khách Hàng (Customer Churn DSS)",
-    badge="HỆ THỐNG QUẢN TRỊ NGÂN HÀNG BÁN LẺ CHÂU ÂU (FRANCE • GERMANY • SPAIN)"
+    title="EuroVanguard Bank — Churn Analytics & Retention DSS",
+    subtitle="Hệ thống quản trị rủi ro rời bỏ và hỗ trợ quyết định giữ chân khách hàng (Pháp, Đức, Tây Ban Nha)",
+    category="Enterprise Portfolio Analytics"
 )
 
 # Top KPI Metric Cards (Dual Baseline Framework)
-st.markdown("### 📊 Hệ Thống Chỉ Tiêu Kép Toàn Ngân Hàng (Executive Dual Baseline)")
+st.markdown('<div class="section-title">Hệ Thống Mục Tiêu Kép Toàn Ngân Hàng (Executive Dual Baseline)</div>', unsafe_allow_html=True)
 
 c1, c2, c3, c4 = st.columns(4)
 with c1:

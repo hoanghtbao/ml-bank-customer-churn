@@ -1,7 +1,7 @@
 """
 UI/UX Theme and Enterprise Component Library for EuroVanguard Bank DSS.
-Provides modern CSS injection, custom HTML cards, branded badges, and Plotly styling.
-Roleplay: EuroVanguard Bank.
+Roleplay: EuroVanguard Bank (France, Germany, Spain).
+Design System: Modern Enterprise FinTech (Stripe/Linear/TailwindUI inspired).
 """
 
 import os
@@ -13,241 +13,262 @@ ASSETS_DIR = os.path.join(CURRENT_DIR, 'assets')
 LOGO_PATH = os.path.join(ASSETS_DIR, 'eurovanguard_logo.png')
 ICON_PATH = os.path.join(ASSETS_DIR, 'eurovanguard_icon.png')
 
-# Central CSS for EuroVanguard Enterprise Theme
+# Central Modern FinTech Design System
 CUSTOM_CSS = """
 <style>
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 html, body, [class*="css"] {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
-/* Background & Main container padding */
-.main .block-container {
-    padding-top: 2rem;
-    padding-bottom: 3.5rem;
-    max-width: 1350px;
+/* App Background: Clean modern Slate 50 instead of harsh blinding white */
+.stApp {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
 }
 
-/* Make Streamlit top header bar transparent so it never obscures any buttons */
+/* Hide Streamlit top header banner ("Deploy", "Made with Streamlit") */
 header[data-testid="stHeader"] {
-    background: transparent !important;
-    z-index: 100 !important;
+    display: none !important;
 }
 
-/* Sidebar Styling */
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0a192f 0%, #0d213f 100%) !important;
-    color: #e2e8f0 !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
-
-[data-testid="stSidebar"] hr {
-    border-color: rgba(255, 255, 255, 0.12) !important;
-}
-
-[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
-    color: #cbd5e1;
+/* Main Container: Compact, clean padding */
+.main .block-container {
+    padding-top: 1.5rem !important;
+    padding-bottom: 3rem !important;
+    padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
+    max-width: 1400px !important;
 }
 
 /* =========================================================================
-   SIDEBAR COLLAPSE & EXPAND BUTTONS - FIX CONTRAST & VISIBILITY
+   SIDEBAR: MODERN DEEP SAPPHIRE & SLATE FINTECH
    ========================================================================= */
 
-/* 1. Collapse button inside the sidebar (when sidebar is open) */
-[data-testid="stSidebarCollapseButton"] {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+[data-testid="stSidebar"] {
+    background: #091426 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
-[data-testid="stSidebarCollapseButton"] button {
-    background-color: rgba(255, 255, 255, 0.15) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+/* Top Sidebar Brand Container */
+.sidebar-brand-box {
+    padding: 18px 16px 14px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 12px;
+}
+
+.sidebar-brand-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-brand-sub {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #60a5fa;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+}
+
+/* Multipage Nav Links */
+[data-testid="stSidebarNav"] {
+    padding: 6px 12px 14px 12px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-testid="stSidebarNav"] ul {
+    gap: 4px !important;
+}
+
+[data-testid="stSidebarNav"] li a {
+    padding: 9px 14px !important;
     border-radius: 8px !important;
-    color: #ffffff !important;
-    padding: 6px 8px !important;
     transition: all 0.2s ease !important;
+    color: #94a3b8 !important;
+    font-weight: 500 !important;
+    font-size: 0.88rem !important;
+}
+
+[data-testid="stSidebarNav"] li a:hover {
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #ffffff !important;
+}
+
+[data-testid="stSidebarNav"] li a[aria-current="page"] {
+    background: #1e3a8a !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.4) !important;
+}
+
+[data-testid="stSidebarNav"] li a[aria-current="page"] span {
+    color: #ffffff !important;
+}
+
+/* Collapse Button Inside Sidebar */
+[data-testid="stSidebarCollapseButton"] button {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+    padding: 6px !important;
 }
 
 [data-testid="stSidebarCollapseButton"] button:hover {
-    background-color: #2563eb !important;
+    background: #2563eb !important;
     border-color: #60a5fa !important;
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5) !important;
 }
 
 [data-testid="stSidebarCollapseButton"] svg {
     fill: #ffffff !important;
     stroke: #ffffff !important;
-    color: #ffffff !important;
-    width: 20px !important;
-    height: 20px !important;
 }
 
-/* 2. Re-open / Expand button (when sidebar is closed/collapsed) */
+/* Floating Re-Open Button when Sidebar is Collapsed */
 [data-testid="collapsedControl"],
 [data-testid="stSidebarCollapsedControl"],
 button[data-testid="baseButton-headerNoPadding"] {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    position: fixed !important;
+    top: 14px !important;
+    left: 14px !important;
     z-index: 999999 !important;
-    background: #0a192f !important;
+    background: #091426 !important;
+    border: 1px solid #2563eb !important;
     color: #ffffff !important;
-    border: 2px solid #3b82f6 !important;
-    border-radius: 0 10px 10px 0 !important;
-    box-shadow: 2px 4px 14px rgba(0, 0, 0, 0.35) !important;
-    padding: 8px 12px !important;
-    margin-top: 10px !important;
-    transition: all 0.2s ease !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
+    padding: 8px 10px !important;
 }
 
-[data-testid="collapsedControl"] svg,
-[data-testid="stSidebarCollapsedControl"] svg {
+[data-testid="collapsedControl"] svg {
     fill: #ffffff !important;
-    stroke: #ffffff !important;
-    color: #ffffff !important;
-    width: 22px !important;
-    height: 22px !important;
 }
 
-[data-testid="collapsedControl"]:hover,
-[data-testid="stSidebarCollapsedControl"]:hover {
-    background: #1e3a8a !important;
-    box-shadow: 2px 6px 18px rgba(37, 99, 235, 0.5) !important;
-    transform: scale(1.05) !important;
+/* Sidebar Operator Card at Bottom */
+.sidebar-footer-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-top: 18px;
 }
 
-/* =========================================================================
-   SIDEBAR LOGO & NAVIGATION MENU ENHANCEMENT
-   ========================================================================= */
-
-/* Top Sidebar Header holding st.logo */
-[data-testid="stSidebarHeader"] {
-    background: transparent !important;
-    padding: 16px 16px 8px 16px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
-
-[data-testid="stLogo"] {
-    height: 2.8rem !important;
-}
-
-/* Multipage Nav links styling */
-[data-testid="stSidebarNav"] {
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-    margin-bottom: 16px !important;
-}
-
-[data-testid="stSidebarNav"] span {
-    color: #cbd5e1 !important;
-    font-weight: 500 !important;
-    font-size: 0.92rem !important;
-}
-
-[data-testid="stSidebarNav"] a[aria-current="page"] {
-    background: rgba(37, 99, 235, 0.25) !important;
-    border-left: 3px solid #3b82f6 !important;
-    border-radius: 6px !important;
-}
-
-[data-testid="stSidebarNav"] a[aria-current="page"] span {
-    color: #ffffff !important;
-    font-weight: 700 !important;
-}
-
-[data-testid="stSidebarNav"] a:hover {
-    background: rgba(255, 255, 255, 0.06) !important;
-    border-radius: 6px !important;
-}
-
-/* =========================================================================
-   PAGE HERO BANNER & COMPONENTS
-   ========================================================================= */
-
-.euro-header {
-    background: linear-gradient(135deg, #0a192f 0%, #1e3a8a 50%, #0f172a 100%);
-    padding: 24px 28px;
-    border-radius: 16px;
-    color: white;
-    margin-bottom: 24px;
-    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25), 0 8px 10px -6px rgba(15, 23, 42, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.euro-header::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, rgba(0,0,0,0) 70%);
-    border-radius: 50%;
-    pointer-events: none;
-}
-
-.euro-header h1 {
-    font-size: 1.85rem;
-    font-weight: 800;
-    margin: 0;
-    letter-spacing: -0.02em;
-    color: #ffffff;
+.operator-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
-.euro-header p {
-    margin: 6px 0 0 0;
-    font-size: 0.95rem;
-    color: #cbd5e1;
-    font-weight: 400;
-}
-
-.euro-header-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    background: rgba(59, 130, 246, 0.25);
-    border: 1px solid rgba(96, 165, 250, 0.4);
-    border-radius: 20px;
+.operator-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 0.78rem;
-    font-weight: 600;
-    color: #93c5fd;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-weight: 700;
+    color: white;
 }
 
-/* Metric Cards - Premium FinTech Style */
-.stat-card {
+/* =========================================================================
+   PAGE HERO: MODERN STREAMLINED SAAS HEADER
+   ========================================================================= */
+
+.page-header-box {
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 14px;
+    padding: 22px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.page-breadcrumb {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #2563eb;
+    margin-bottom: 4px;
+}
+
+.page-title {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1.25;
+}
+
+.page-desc {
+    font-size: 0.92rem;
+    color: #64748b;
+    margin: 4px 0 0 0;
+    line-height: 1.4;
+}
+
+.page-badge-pill {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 9999px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #334155;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 6px #10b981;
+}
+
+/* =========================================================================
+   STAT CARDS: METRIC CARDS WITH SOFT SHADOWS
+   ========================================================================= */
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
     padding: 18px 20px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease;
     height: 100%;
 }
 
 .stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 20px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
     border-color: #cbd5e1;
+    box-shadow: 0 8px 16px -4px rgba(15, 23, 42, 0.06);
+    transform: translateY(-2px);
 }
 
 .stat-card-title {
-    font-size: 0.82rem;
-    font-weight: 600;
+    font-size: 0.78rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     color: #64748b;
     margin-bottom: 6px;
     display: flex;
@@ -256,12 +277,12 @@ button[data-testid="baseButton-headerNoPadding"] {
 }
 
 .stat-card-value {
-    font-size: 1.75rem;
+    font-size: 1.7rem;
     font-weight: 800;
     color: #0f172a;
     letter-spacing: -0.03em;
     line-height: 1.2;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .stat-card-delta {
@@ -277,7 +298,64 @@ button[data-testid="baseButton-headerNoPadding"] {
 .delta-info { color: #2563eb; }
 .delta-neutral { color: #64748b; }
 
-/* Custom Pill Badges */
+/* =========================================================================
+   STRUCTURED METADATA AUDIT CARDS
+   ========================================================================= */
+
+.meta-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    height: 100%;
+}
+
+.meta-card-header {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px dashed #f1f5f9;
+    font-size: 0.85rem;
+}
+
+.meta-row:last-child {
+    border-bottom: none;
+}
+
+.meta-label {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.meta-value {
+    color: #0f172a;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    background: #f8fafc;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    font-size: 0.82rem;
+}
+
+/* =========================================================================
+   CUSTOM BADGES & PILLS
+   ========================================================================= */
+
 .badge-pill {
     display: inline-flex;
     align-items: center;
@@ -312,136 +390,151 @@ button[data-testid="baseButton-headerNoPadding"] {
     border: 1px solid #bfdbfe;
 }
 
-/* Call Script Box - Tele-banking CRM */
+/* Section Heading Style */
+.section-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 24px 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Tele-banking Call Script Box */
 .call-script-box {
-    background: #f8fafc;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     border-left: 4px solid #2563eb;
-    border-radius: 0 12px 12px 0;
-    padding: 16px 20px;
+    border-radius: 8px 12px 12px 8px;
+    padding: 18px 22px;
     margin: 16px 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
 }
 
 .call-script-title {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 700;
     color: #1e3a8a;
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .call-script-dialog {
-    font-style: italic;
     color: #334155;
     font-size: 0.92rem;
-    line-height: 1.6;
-    background: #ffffff;
-    padding: 12px 16px;
+    line-height: 1.7;
+    background: #f8fafc;
+    padding: 14px 18px;
     border-radius: 8px;
-    border: 1px dashed #cbd5e1;
+    border: 1px solid #e2e8f0;
 }
 
-/* Highlight Action Box */
+/* Action Box */
 .action-box {
-    background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
-    border: 1px solid #bfdbfe;
-    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #10b981;
+    border-radius: 8px 12px 12px 8px;
     padding: 16px 20px;
     margin: 14px 0;
 }
 
-/* Clean Form & Input enhancements */
+/* Forms */
 div[data-testid="stForm"] {
-    background: #ffffff;
-    padding: 24px;
-    border-radius: 16px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+    background: #ffffff !important;
+    padding: 24px !important;
+    border-radius: 12px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
 }
 
-/* Custom Tabs Styling */
+/* Tabs */
 .stTabs [data-baseweb="tab-list"] {
-    gap: 8px;
+    gap: 6px;
     border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 4px;
 }
 
 .stTabs [data-baseweb="tab"] {
-    height: 42px;
-    border-radius: 8px 8px 0 0;
+    height: 40px;
+    border-radius: 6px 6px 0 0;
     font-weight: 600;
-    font-size: 0.9rem;
-    padding: 0 18px;
+    font-size: 0.88rem;
+    padding: 0 16px;
     color: #64748b;
-    border: none;
 }
 
 .stTabs [aria-selected="true"] {
-    color: #1e40af !important;
-    background-color: rgba(37, 99, 235, 0.08) !important;
-    border-bottom: 3px solid #2563eb !important;
+    color: #2563eb !important;
+    background-color: transparent !important;
+    border-bottom: 2px solid #2563eb !important;
 }
 
-/* Button Elevation */
-.stButton > button {
+/* Table formatting */
+div[data-testid="stDataFrame"] {
+    border: 1px solid #e2e8f0;
     border-radius: 10px;
-    font-weight: 600;
-    padding: 8px 20px;
-    transition: all 0.2s ease;
-    border: 1px solid transparent;
-}
-
-.stButton > button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-}
-
-/* Pulse Animation for Critical Alerts */
-@keyframes pulseGlow {
-    0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5); }
-    70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
-}
-
-.critical-pulse {
-    animation: pulseGlow 2s infinite;
-    border: 1px solid #dc2626 !important;
+    overflow: hidden;
+    background: #ffffff;
 }
 </style>
 """
 
 
 def apply_theme():
-    """Injects central enterprise theme CSS and renders official logo at top of sidebar."""
+    """Injects central enterprise theme CSS."""
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
-    if os.path.exists(LOGO_PATH) and hasattr(st, 'logo'):
-        try:
-            st.logo(LOGO_PATH, icon_image=ICON_PATH, size="large")
-        except Exception:
-            pass
 
 
 def render_sidebar_brand():
-    """Renders system status pill in sidebar (Logo is placed at TOP via st.logo)."""
+    """Renders sleek EuroVanguard branding and operator card in sidebar."""
     st.sidebar.markdown("""
-    <div style="padding: 4px 4px 14px 4px;">
-        <div style="display: flex; gap: 8px; align-items: center; background: rgba(255, 255, 255, 0.05); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
-            <span style="display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981;"></span>
-            <span style="font-size: 0.78rem; color: #e2e8f0; font-weight: 600;">System Live (Production v2.4)</span>
+    <div class="sidebar-brand-box">
+        <div class="sidebar-brand-title">
+            <span style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); width: 28px; height: 28px; border-radius: 7px; display: inline-flex; align-items: center; justify-content: center; font-size: 15px;">🏛️</span>
+            <span>EUROVANGUARD</span>
+        </div>
+        <div class="sidebar-brand-sub">Decision Support System</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+def render_sidebar_footer():
+    """Renders active operator and certified governance footer in sidebar."""
+    st.sidebar.markdown("""
+    <div class="sidebar-footer-card">
+        <div class="operator-row">
+            <div class="operator-avatar">HB</div>
+            <div>
+                <div style="font-size: 0.82rem; font-weight: 700; color: #ffffff;">Hoàng Hữu Bảo</div>
+                <div style="font-size: 0.72rem; color: #94a3b8;">Senior CVM Analyst</div>
+            </div>
+        </div>
+        <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 0.72rem; color: #64748b; display: flex; justify-content: space-between;">
+            <span style="color: #10b981;">● Certified Prod v2.4</span>
+            <span>Basel III / GDPR</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 
-def render_page_header(title: str, subtitle: str, badge: str = "Enterprise Banking DSS"):
-    """Renders a polished, glassmorphic hero banner for pages."""
+def render_page_header(title: str, subtitle: str, category: str = "EuroVanguard DSS"):
+    """Renders a sleek, modern SaaS page header."""
     st.markdown(f"""
-    <div class="euro-header">
-        <div class="euro-header-badge">🏛️ {badge}</div>
-        <h1>{title}</h1>
-        <p>{subtitle}</p>
+    <div class="page-header-box">
+        <div>
+            <div class="page-breadcrumb">{category}</div>
+            <h1 class="page-title">{title}</h1>
+            <p class="page-desc">{subtitle}</p>
+        </div>
+        <div>
+            <div class="page-badge-pill">
+                <span class="live-dot"></span>
+                <span>System Production v2.4</span>
+            </div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -454,10 +547,7 @@ def render_stat_card(
     icon: str = "📊",
     tooltip: str = ""
 ):
-    """
-    Renders an enterprise KPI card with hover elevation.
-    delta_type: 'danger' | 'success' | 'info' | 'neutral'
-    """
+    """Renders an enterprise stat card."""
     delta_html = ""
     if delta:
         delta_class = f"delta-{delta_type}"
@@ -467,7 +557,7 @@ def render_stat_card(
     <div class="stat-card" title="{tooltip}">
         <div class="stat-card-title">
             <span>{title}</span>
-            <span style="font-size: 1.1rem;">{icon}</span>
+            <span style="font-size: 1rem;">{icon}</span>
         </div>
         <div class="stat-card-value">{value}</div>
         {delta_html}
@@ -476,22 +566,47 @@ def render_stat_card(
     st.markdown(html, unsafe_allow_html=True)
 
 
+def render_meta_card(title: str, icon: str, items: dict):
+    """Renders a structured key-value audit card."""
+    rows_html = ""
+    for label, val in items.items():
+        rows_html += f"""
+        <div class="meta-row">
+            <span class="meta-label">{label}</span>
+            <span class="meta-value">{val}</span>
+        </div>
+        """
+
+    html = f"""
+    <div class="meta-card">
+        <div class="meta-card-header">
+            <span>{icon}</span>
+            <span>{title}</span>
+        </div>
+        <div>
+            {rows_html}
+        </div>
+    </div>
+    """
+    st.markdown(html, unsafe_allow_html=True)
+
+
 def get_plotly_theme():
-    """Returns a unified clean plotly layout matching EuroVanguard theme."""
+    """Unified clean plotly layout matching EuroVanguard theme."""
     layout = go.Layout(
         font=dict(family="Plus Jakarta Sans, sans-serif", color="#334155", size=12),
-        title_font=dict(family="Plus Jakarta Sans, sans-serif", size=15, color="#0f172a"),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
+        title_font=dict(family="Plus Jakarta Sans, sans-serif", size=14, color="#0f172a"),
+        paper_bgcolor="#ffffff",
+        plot_bgcolor="#ffffff",
         margin=dict(l=40, r=30, t=50, b=40),
         xaxis=dict(
             gridcolor="#f1f5f9",
-            linecolor="#cbd5e1",
+            linecolor="#e2e8f0",
             tickfont=dict(size=11, color="#64748b")
         ),
         yaxis=dict(
             gridcolor="#f1f5f9",
-            linecolor="#cbd5e1",
+            linecolor="#e2e8f0",
             tickfont=dict(size=11, color="#64748b")
         ),
         colorway=["#2563eb", "#ef4444", "#10b981", "#f59e0b", "#8b5cf6", "#06b6d4"]

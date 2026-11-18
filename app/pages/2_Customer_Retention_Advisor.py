@@ -21,6 +21,7 @@ if PROJECT_ROOT not in sys.path:
 from app.ui_theme import (
     apply_theme,
     render_sidebar_brand,
+    render_sidebar_footer,
     render_page_header,
     render_stat_card,
     get_plotly_theme
@@ -37,11 +38,12 @@ st.set_page_config(page_title="Retention Advisor - EuroVanguard", page_icon="�
 
 apply_theme()
 render_sidebar_brand()
+render_sidebar_footer()
 
 render_page_header(
-    title="TƯ VẤN GIỮ CHÂN KHÁCH HÀNG CÁ NHÂN (RETENTION ADVISOR)",
-    subtitle="Chấm Điểm Rủi Ro Thời Gian Thực, Khuyến Nghị Next-Best-Action & Trợ Lý Tạo Kịch Bản Cuộc Gọi RM",
-    badge="1-ON-1 DECISION SUPPORT SYSTEM"
+    title="Tư Vấn Giữ Chân Khách Hàng Cá Nhân (Retention Advisor)",
+    subtitle="Chấm điểm rủi ro thời gian thực, khuyến nghị Next-Best-Action & trợ lý tạo kịch bản cuộc gọi RM",
+    category="1-on-1 Decision Support System"
 )
 
 pipeline = load_champion_pipeline()

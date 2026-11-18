@@ -21,6 +21,7 @@ if PROJECT_ROOT not in sys.path:
 from app.ui_theme import (
     apply_theme,
     render_sidebar_brand,
+    render_sidebar_footer,
     render_page_header,
     render_stat_card,
     get_plotly_theme
@@ -35,11 +36,12 @@ st.set_page_config(page_title="Prescriptive Strategy & ROI - EuroVanguard", page
 
 apply_theme()
 render_sidebar_brand()
+render_sidebar_footer()
 
 render_page_header(
-    title="CHIẾN LƯỢC ĐỀ XUẤT & MÔ PHỎNG LỢI NHUẬN RÒNG (TIERED ROI)",
-    subtitle="Ma Trận Phân Khúc 4 Góc Phần Tư (Value × Risk) & Bảng Tính Lợi Nhuận Ròng Thời Gian Thực",
-    badge="PRESCRIPTIVE ANALYTICS & SIMULATION"
+    title="Chiến Lược Đề Xuất & Mô Phỏng Lợi Nhuận Ròng (Tiered ROI)",
+    subtitle="Ma trận phân khúc 4 góc phần tư (Value × Risk) & bảng tính lợi nhuận ròng thời gian thực",
+    category="Prescriptive Analytics & Simulation"
 )
 
 df_quad = get_pre_scored_data()

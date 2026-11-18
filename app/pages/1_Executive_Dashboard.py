@@ -21,6 +21,7 @@ if PROJECT_ROOT not in sys.path:
 from app.ui_theme import (
     apply_theme,
     render_sidebar_brand,
+    render_sidebar_footer,
     render_page_header,
     render_stat_card,
     get_plotly_theme
@@ -31,11 +32,12 @@ st.set_page_config(page_title="Executive Dashboard - EuroVanguard", page_icon="�
 
 apply_theme()
 render_sidebar_brand()
+render_sidebar_footer()
 
 render_page_header(
-    title="BÁO CÁO QUẢN TRỊ ĐIỀU HÀNH (EXECUTIVE DASHBOARD)",
-    subtitle="Tổng quan Hiện trạng Danh mục, Chẩn đoán Thất thoát Vốn và Tâm chấn Rủi ro 3 Quốc gia",
-    badge="DESCRIPTIVE & DIAGNOSTIC ANALYTICS"
+    title="Báo Cáo Quản Trị Điều Hành (Executive Dashboard)",
+    subtitle="Tổng quan hiện trạng danh mục, chẩn đoán thất thoát vốn và tâm chấn rủi ro 3 quốc gia",
+    category="Descriptive & Diagnostic Analytics"
 )
 
 df_full = load_full_dataset()

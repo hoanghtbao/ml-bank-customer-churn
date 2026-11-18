@@ -21,72 +21,76 @@ if PROJECT_ROOT not in sys.path:
 from app.ui_theme import (
     apply_theme,
     render_sidebar_brand,
+    render_sidebar_footer,
     render_page_header,
-    render_stat_card
+    render_stat_card,
+    render_meta_card
 )
 from app.utils import load_metadata
 
-st.set_page_config(page_title="Model Governance & SHAP - EuroVanguard", page_icon="🛡️", layout="wide")
+st.set_page_config(page_title="Model Governance - EuroVanguard", page_icon="🛡️", layout="wide")
 
 apply_theme()
 render_sidebar_brand()
+render_sidebar_footer()
 
 render_page_header(
-    title="QUẢN TRỊ MÔ HÌNH & MINH BẠCH SHAP (MODEL GOVERNANCE)",
-    subtitle="Nhật Ký Phiên Bản, Khoảng Tin Cậy 95% Bootstrap CI, Bảng Decile Lift & Kiểm Soát Đạo Đức AI",
-    badge="AI GOVERNANCE & EXPLAINABILITY"
+    title="Quản Trị Mô Hình & Minh Bạch SHAP (Model Governance)",
+    subtitle="Nhật ký phiên bản xuất xưởng, khoảng tin cậy 95% Bootstrap CI, phân vị Decile Lift và kiểm soát đạo đức AI",
+    category="AI Governance & Explainability"
 )
 
 metadata = load_metadata()
 test_metrics = metadata.get('test_holdout_metrics', {})
+runtime = metadata.get('runtime_environment', {})
 
-# 1. Model Registry & Provenance
-st.markdown("### 🏛️ 1. Hồ Sơ Xuất Xưởng Mô Hình (Model Registry & Metadata)")
+# 1. Model Registry & Metadata Audit Cards
+st.markdown('<div class="section-title">1. Hồ Sơ Xuất Xưởng Mô Hình (Model Registry & Provenance)</div>', unsafe_allow_html=True)
 m_col1, m_col2, m_col3 = st.columns(3)
 
 with m_col1:
-    st.markdown(f"""
-    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-        <h5 style="margin: 0 0 10px 0; color: #1e3a8a;">🤖 Mô Hình Quán Quân:</h5>
-        <div style="font-size: 0.88rem; color: #475569; line-height: 1.6;">
-            • <b>Mã định danh:</b> <code>{metadata.get('model_name', 'XGBoost_StandardScaler_Proactive')}</code><br>
-            • <b>Thuật toán:</b> <code>{metadata.get('champion_model_type', 'XGBClassifier')}</code><br>
-            • <b>Tiền xử lý:</b> <code>{metadata.get('scaler', 'StandardScaler')}</code> + OneHotEncoder<br>
-            • <b>Ngưỡng quyết định T*:</b> <b>{metadata.get('optimal_decision_threshold', 0.45)}</b>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    render_meta_card(
+        title="Mô Hình Quán Quân",
+        icon="🤖",
+        items={
+            "Mã định danh": metadata.get('model_name', 'XGBoost_StandardScaler_Proactive'),
+            "Thuật toán": metadata.get('champion_model_type', 'XGBClassifier'),
+            "Bộ chuẩn hóa": metadata.get('scaler', 'StandardScaler'),
+            "Ngưỡng T*": str(metadata.get('optimal_decision_threshold', 0.45)),
+            "Chiến lược": "Proactive Early-Warning"
+        }
+    )
 
 with m_col2:
-    runtime = metadata.get('runtime_environment', {})
-    st.markdown(f"""
-    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-        <h5 style="margin: 0 0 10px 0; color: #1e3a8a;">⚙️ Môi Trường Thực Thi Chứng Nhận:</h5>
-        <div style="font-size: 0.88rem; color: #475569; line-height: 1.6;">
-            • <b>Python Runtime:</b> <code>{runtime.get('python_version', '3.13.2')}</code><br>
-            • <b>Scikit-Learn:</b> <code>{runtime.get('scikit_learn_version', '1.9.1')}</code><br>
-            • <b>XGBoost:</b> <code>{runtime.get('xgboost_version', '3.4.1')}</code><br>
-            • <b>Đóng gói:</b> <code>Joblib v{runtime.get('joblib_version', '1.6.0')}</code>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    render_meta_card(
+        title="Môi Trường Thực Thi (Certified)",
+        icon="⚙️",
+        items={
+            "Python": runtime.get('python_version', '3.13.2'),
+            "Scikit-Learn": runtime.get('scikit_learn_version', '1.9.1'),
+            "XGBoost": runtime.get('xgboost_version', '3.4.1'),
+            "Joblib": f"v{runtime.get('joblib_version', '1.6.0')}",
+            "Nền tảng": "Windows x64 Enterprise"
+        }
+    )
 
 with m_col3:
-    st.markdown(f"""
-    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-        <h5 style="margin: 0 0 10px 0; color: #1e3a8a;">🛡️ Kiểm Soát Rò Rỉ Dữ Liệu (Leakage):</h5>
-        <div style="font-size: 0.88rem; color: #475569; line-height: 1.6;">
-            • <b>Biến bị loại bỏ triệt để:</b> <code>{metadata.get('excluded_features_target_leakage', ['Complain'])}</code><br>
-            • <b>Định danh cấm đưa vào ML:</b> <code>RowNumber, CustomerId, Surname</code><br>
-            • <b>Số đặc trưng đầu vào chuẩn:</b> <b>{len(metadata.get('feature_columns', []))} đặc trưng</b>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    render_meta_card(
+        title="Kiểm Soát Rò Rỉ Dữ Liệu (Leakage)",
+        icon="🛡️",
+        items={
+            "Khử rò rỉ (Leakage)": "Complain (Loại bỏ 100%)",
+            "Định danh cấm đưa vào": "RowNumber, CustomerId, Surname",
+            "Số biến đầu vào": f"{len(metadata.get('feature_columns', []))} đặc trưng",
+            "Quy tắc ghi đè SLA": "SLA 4-Hour khiếu nại mở",
+            "Tuân thủ": "EU GDPR Art. 22 & Basel III"
+        }
+    )
 
-st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
 
 # 2. Test Set Holdout Metrics with 95% Bootstrap CI
-st.markdown("### 🎯 2. Hiệu Năng Kiểm Thử Độc Lập 1 Lần (1-Time Untouched Test Holdout - 1,500 Khách Hàng)")
+st.markdown('<div class="section-title">2. Hiệu Năng Kiểm Thử Độc Lập 1 Lần (Untouched Test Holdout - 1,500 Khách Hàng)</div>', unsafe_allow_html=True)
 st.caption("Tập kiểm thử được niêm phong hoàn toàn và chỉ mở duy nhất 1 lần để thẩm định khách quan năng lực thực chiến ngoài môi trường sản xuất.")
 
 k1, k2, k3, k4, k5 = st.columns(5)
@@ -103,11 +107,10 @@ with k5:
     auc_ci = test_metrics.get('roc_auc_95_ci', [0.8179, 0.8693])
     render_stat_card("ROC-AUC", f"{test_metrics.get('roc_auc', 0.8437):.4f}", f"95% CI: [{auc_ci[0]:.2f}, {auc_ci[1]:.2f}]", "success", "📈")
 
-st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
 
 # 3. Decile Gain & Cumulative Lift Table
-st.markdown("### 📊 3. Bảng Phân Vị Tích Lũy (Decile Gain & Cumulative Lift Table)")
-st.caption("Đo lường năng lực tập trung khách hàng rủi ro cao của mô hình trên tập kiểm thử độc lập.")
+st.markdown('<div class="section-title">3. Bảng Phân Vị Tích Lũy (Decile Gain & Cumulative Lift Table)</div>', unsafe_allow_html=True)
 
 decile_data = [
     {'Decile': 1, 'Khách hàng': 150, 'Số Churn': 121, 'Tỷ lệ Churn Decile (%)': '80.67%', 'Tích lũy Churn Bắt được (%)': '39.67%', 'Hệ số Nâng (Lift)': '3.97x'},
@@ -124,17 +127,17 @@ decile_data = [
 st.dataframe(pd.DataFrame(decile_data), use_container_width=True)
 
 st.markdown("""
-<div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px 16px; color: #166534; font-size: 0.9rem;">
-    🎯 <b>Ý nghĩa Thực tiễn Xuất sắc:</b> Decile 1 đạt hệ số Lift lên tới <b>3.97x</b>! 
-    Ngân hàng chỉ cần tập trung nguồn lực can thiệp vào đúng 10% khách hàng có điểm rủi ro cao nhất là đã chặn đứng được 
-    <b>gần 40% (39.67%) toàn bộ lượng khách hàng rời bỏ</b>!
+<div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px 16px; color: #166534; font-size: 0.9rem; margin-top: 8px;">
+    🎯 <b>Ý nghĩa Thực tiễn:</b> Decile 1 đạt hệ số Lift lên tới <b>3.97x</b>. 
+    Chỉ cần tập trung nguồn lực can thiệp vào đúng 10% khách hàng có điểm rủi ro cao nhất là ngân hàng đã chặn đứng 
+    <b>gần 40% (39.67%) toàn bộ lượng khách hàng rời bỏ</b>.
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
 
 # 4. Ablation Studies Matrix
-st.markdown("### 🧪 4. Nghiên Cứu Triệt Tiêu (Ablation Studies: 4 Kịch Bản Độc Lập)")
+st.markdown('<div class="section-title">4. Nghiên Cứu Triệt Tiêu (Ablation Studies: 4 Kịch Bản Độc Lập)</div>', unsafe_allow_html=True)
 ab_table = pd.DataFrame([
     {
         'Kịch bản': 'Scenario A (Champion Proactive)',
@@ -163,63 +166,63 @@ ab_table = pd.DataFrame([
 ])
 st.dataframe(ab_table, use_container_width=True)
 
-st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
 
 # 5. SHAP Visualizations
-st.markdown("### 🔍 5. Minh Bạch Hóa Mô Hình với SHAP (Explainability)")
+st.markdown('<div class="section-title">5. Minh Bạch Hóa Mô Hình với SHAP (Explainability)</div>', unsafe_allow_html=True)
 shap_c1, shap_c2 = st.columns(2)
 
 fig14_path = os.path.join(PROJECT_ROOT, 'reports', 'figures', 'fig_14_shap_summary.png')
 fig15_path = os.path.join(PROJECT_ROOT, 'reports', 'figures', 'fig_15_shap_waterfall_sample.png')
 
 with shap_c1:
-    st.markdown("##### Đóng Góp Đặc Trưng Toàn Cục (Global SHAP Beeswarm)")
+    st.markdown("**Đóng Góp Đặc Trưng Toàn Cục (Global SHAP Beeswarm)**")
     if os.path.exists(fig14_path):
         st.image(fig14_path, use_container_width=True)
     else:
         st.info("Chưa tìm thấy fig_14_shap_summary.png")
 
 with shap_c2:
-    st.markdown("##### Giải Thích Cục Bộ Cho 1 Khách Hàng (Local SHAP Waterfall)")
+    st.markdown("**Giải Thích Cục Bộ Cho 1 Khách Hàng (Local SHAP Waterfall)**")
     if os.path.exists(fig15_path):
         st.image(fig15_path, use_container_width=True)
     else:
         st.info("Chưa tìm thấy fig_15_shap_waterfall_sample.png")
 
-st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
 
 # 6. Model Governance Audit Checklist
-st.markdown("### 📋 6. Danh Mục Kiểm Soát Tuân Thủ Quản Trị Mô Hình (Basel III / SR 11-7 / AI Ethics)")
+st.markdown('<div class="section-title">6. Danh Mục Kiểm Soát Tuân Thủ Quản Trị Mô Hình (Basel III / SR 11-7 / AI Ethics)</div>', unsafe_allow_html=True)
 g1, g2 = st.columns(2)
 
 with g1:
     st.markdown("""
-    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 10px;">
-        <div style="font-weight: 700; color: #166534; font-size: 0.9rem;">✅ [SR 11-7] Phân Lập Tuyệt Đối Dữ Liệu</div>
-        <div style="font-size: 0.85rem; color: #475569; margin-top: 4px;">Pipeline tiền xử lý độc lập, không rò rỉ dữ liệu qua các tập Train / Val / Test.</div>
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; margin-bottom: 8px;">
+        <div style="font-weight: 700; color: #166534; font-size: 0.88rem;">✅ [SR 11-7] Phân Lập Tuyệt Đối Dữ Liệu</div>
+        <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">Pipeline tiền xử lý độc lập, không rò rỉ dữ liệu qua các tập Train / Val / Test.</div>
     </div>
-    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 10px;">
-        <div style="font-weight: 700; color: #166534; font-size: 0.9rem;">✅ [Leakage Audit] Loại Bỏ Triệt Để Biến Complain</div>
-        <div style="font-size: 0.85rem; color: #475569; margin-top: 4px;">Chặn đứng hiện tượng Target Leakage (tương quan 99.86%) trong luồng dự báo sớm.</div>
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; margin-bottom: 8px;">
+        <div style="font-weight: 700; color: #166534; font-size: 0.88rem;">✅ [Leakage Audit] Loại Bỏ Triệt Để Biến Complain</div>
+        <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">Chặn đứng hiện tượng Target Leakage (tương quan 99.86%) trong luồng dự báo sớm.</div>
     </div>
-    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
-        <div style="font-weight: 700; color: #166534; font-size: 0.9rem;">✅ [Basel III] Đánh Giá Khả Năng Tổng Quát Hóa</div>
-        <div style="font-size: 0.85rem; color: #475569; margin-top: 4px;">Kiểm định nghiêm ngặt với khoảng tin cậy 95% Bootstrap CI trên tập Test độc lập.</div>
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px;">
+        <div style="font-weight: 700; color: #166534; font-size: 0.88rem;">✅ [Basel III] Đánh Giá Khả Năng Tổng Quát Hóa</div>
+        <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">Kiểm định nghiêm ngặt với khoảng tin cậy 95% Bootstrap CI trên tập Test độc lập.</div>
     </div>
     """, unsafe_allow_html=True)
 
 with g2:
     st.markdown("""
-    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 10px;">
-        <div style="font-weight: 700; color: #166534; font-size: 0.9rem;">✅ [AI Fairness] Kiểm Định Phi Định Kiến Giới Tính</div>
-        <div style="font-size: 0.85rem; color: #475569; margin-top: 4px;">Mô hình Gender-blind duy trì AUC 0.8661, không phân biệt đối xử theo quy định EU GDPR.</div>
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; margin-bottom: 8px;">
+        <div style="font-weight: 700; color: #166534; font-size: 0.88rem;">✅ [AI Fairness] Kiểm Định Phi Định Kiến Giới Tính</div>
+        <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">Mô hình Gender-blind duy trì AUC 0.8661, không phân biệt đối xử theo quy định EU GDPR.</div>
     </div>
-    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 10px;">
-        <div style="font-weight: 700; color: #166534; font-size: 0.9rem;">✅ [Operational SLA] Quy Trình Cứng SLA 4-Hour Escalation</div>
-        <div style="font-size: 0.85rem; color: #475569; margin-top: 4px;">100% khách hàng có khiếu nại mở được kích hoạt chuyển tiếp can thiệp khẩn cấp.</div>
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px; margin-bottom: 8px;">
+        <div style="font-weight: 700; color: #166534; font-size: 0.88rem;">✅ [Operational SLA] Quy Trình Cứng SLA 4-Hour Escalation</div>
+        <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">100% khách hàng có khiếu nại mở được kích hoạt chuyển tiếp can thiệp khẩn cấp.</div>
     </div>
-    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
-        <div style="font-weight: 700; color: #166534; font-size: 0.9rem;">✅ [Version Provenance] Lưu Trữ Đầy Đủ Metadata</div>
-        <div style="font-size: 0.85rem; color: #475569; margin-top: 4px;">Ghi nhận cấu hình, siêu tham số và phiên bản thư viện tại <code>models/model_metadata.json</code>.</div>
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 18px;">
+        <div style="font-weight: 700; color: #166534; font-size: 0.88rem;">✅ [Version Provenance] Lưu Trữ Đầy Đủ Metadata</div>
+        <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">Ghi nhận cấu hình, siêu tham số và phiên bản thư viện tại models/model_metadata.json.</div>
     </div>
     """, unsafe_allow_html=True)

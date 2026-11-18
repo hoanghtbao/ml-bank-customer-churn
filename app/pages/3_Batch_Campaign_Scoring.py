@@ -20,6 +20,7 @@ if PROJECT_ROOT not in sys.path:
 from app.ui_theme import (
     apply_theme,
     render_sidebar_brand,
+    render_sidebar_footer,
     render_page_header,
     render_stat_card
 )
@@ -36,11 +37,12 @@ st.set_page_config(page_title="Batch Campaign Scoring - EuroVanguard", page_icon
 
 apply_theme()
 render_sidebar_brand()
+render_sidebar_footer()
 
 render_page_header(
-    title="CHẤM ĐIỂM & PHÂN LUỒNG CHIẾN DỊCH HÀNG LOẠT (BATCH SCORING)",
-    subtitle="Xử Lý Dữ Liệu Khách Hàng Quy Mô Lớn, Phân Tầng Rủi Ro Tự Động & Xuất Danh Sách Can Thiệp Cho Marketing / RM",
-    badge="BATCH OPERATIONAL WORKFLOW"
+    title="Chấm Điểm & Phân Luồng Chiến Dịch Hàng Loạt (Batch Scoring)",
+    subtitle="Xử lý dữ liệu khách hàng quy mô lớn, phân tầng rủi ro tự động & xuất danh sách can thiệp cho Marketing / RM",
+    category="Batch Operational Workflow"
 )
 
 pipeline = load_champion_pipeline()
