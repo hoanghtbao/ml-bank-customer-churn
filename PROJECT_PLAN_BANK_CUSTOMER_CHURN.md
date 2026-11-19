@@ -495,4 +495,26 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
 - [x] **Giai đoạn 4:** Domain Feature Engineering (6 biến tường minh, an toàn với `Tenure = 0` + `categorize_age`) & Chia 3 tập `Train / Validation / Test` + Pipeline chống Leakage.
 - [x] **Giai đoạn 5:** Predictive Analytics – Huấn luyện ML (4 Kịch bản Ablation `A, A1, A2, B`), Chọn ngưỡng `T*` trên Validation/OOF, Báo cáo Test kèm **95% Bootstrap CI**, **Decile Gain/Lift** & **SHAP**.
 - [x] **Giai đoạn 6:** Prescriptive Analytics – Phân khúc **Predicted Risk x Balance Value**, Chiến lược Giữ chân tuân thủ Fairness & Mô phỏng **Tiered ROI**.
-- [x] **Giai đoạn 7:** Xây dựng Phần mềm Tư vấn & Dự đoán trên Streamlit GUI + Kiểm thử tự động (`pytest`) & Hoàn thiện Báo cáo/Slide.
+- [x] **Giai đoạn 7:** Xây dựng Phần mềm Tư vấn & Dự đoán trên Web App (Đã nâng cấp từ Streamlit lên **Next.js 16 + Tailwind CSS + React-Leaflet + FastAPI**) + Kiểm thử tự động (`47/47 pytest PASSED`) & Hoàn thiện Báo cáo/Notebook tổng hợp.
+
+---
+
+## 8. Nhật ký Thay đổi & Nâng cấp so với Kế hoạch Gốc (Changelog & Plan Deviations)
+
+> **Quy tắc Quản trị Dự án:** Mọi chỉnh sửa, nâng cấp hoặc thay đổi kiến trúc so với kế hoạch ban đầu đều được ghi chép đầy đủ tại báo cáo chuyên trách `reports/05_progress_and_changelog_report.md` và cập nhật tóm tắt tại mục này.
+
+1. **Thay thế hoàn toàn Streamlit GUI (`app/`) bằng Kiến trúc Web Doanh nghiệp Next.js 16 + FastAPI (`frontend/` & `api/`):**
+   * Xóa bỏ thư mục `app/` (Streamlit cũ) để khắc phục triệt để độ trễ rerun (~1s) và giới hạn giao diện.
+   * Triển khai Backend `api/` (FastAPI + Uvicorn tại cổng `8000`) và Frontend `frontend/` (Next.js 16 + Tailwind CSS + Recharts tại cổng `3000`) kèm Sidebar thu gọn/mở rộng (`Collapsible Sidebar`) và TopNavbar thời gian thực.
+2. **Bổ sung Bản đồ Địa lý Thực tế 3 Quốc gia (`React-Leaflet` + `OpenStreetMap` + `GeoJSON`) trên Trang chủ:**
+   * Hiển thị bản đồ tương tác thực tế của 3 thị trường (`France`, `Germany`, `Spain`) với 4 chế độ nền (OpenStreetMap, Google Voyager Style, Vệ tinh Esri, FinTech Dark), tô màu đường biên giới bằng dữ liệu `GeoJSON` thật và đặt đúng **3 Trạm phát sáng Quốc gia** khớp 1-1 với cột `Geography` trong CSV (kèm bảng phân tích 4 nhóm `Q1–Q4` bên phải).
+3. **Nâng cấp Bảng Chấm điểm Hàng loạt (Top 150 Khách hàng) thành Bảng tính Lưới Mô phỏng Microsoft Excel (`/batch`):**
+   * Bổ sung thanh công thức $f_x$, ô địa chỉ tọa độ (`Name Box`), tiêu đề cột chữ cái `A–N`, số thứ tự dòng `1–150`, đóng băng tiêu đề (`Freeze Panes`), thanh dữ liệu màu `Data Bars`, `Sheet Tabs` và thanh trạng thái tự động tính `COUNT / SUM / AVG`.
+4. **Hợp nhất 100% của 8 File Notebook Thành phần vào 1 File Tổng hợp Duy nhất (`Project_Source_Code.ipynb` - 161 Cells):**
+   * Giữ nguyên vẹn 156/156 cells của 8 file notebook (`01` $\rightarrow$ `08`) và toàn bộ 18/18 biểu đồ trong báo cáo (`fig_01` $\rightarrow$ `fig_18`), cộng thêm 5 cells mở rộng theo phong cách của giảng viên (`categorize_age`, `plot_categorical_analysis_3subfigs`, `kdeplot` theo `age_groups`).
+   * Gom 100% lệnh `import` về duy nhất Ô Code Đầu Tiên (`Cell #4 / In [1]`) theo đúng phong cách của thầy và xử lý triệt để toàn bộ cảnh báo `FutureWarning` / `UserWarning` của Seaborn & Matplotlib mới.
+5. **Làm rõ Quy tắc Biến đổi Số lượng Cột (`18 -> 19 -> 26 -> 19`) & Bổ sung Đặc trưng `age_groups`:**
+   * Ghi nhận rõ lộ trình: `18 cột gốc` $\rightarrow$ `+1 cờ Surname_Encoding_Issue = 19 cột (Giai đoạn 2)` $\rightarrow$ `+7 đặc trưng mới (có IsZeroBalance và age_groups) = 26 cột (Giai đoạn 4)` $\rightarrow$ `Loại bỏ 7 cột (Exited, định danh, cờ lỗi font, Complain rò rỉ, Age_Lifecycle_Stage trùng lặp) = 19 đặc trưng đầu vào mô hình ML (Giai đoạn 5)`.
+6. **Tách rời Bộ nạp Mô hình về `src/modeling/predict.py` & Mở rộng Bộ Kiểm thử lên 47 Tests:**
+   * Đưa các hàm nạp pipeline/dữ liệu về `src/modeling/predict.py` thuần Python và bổ sung `tests/test_api_endpoints.py` (tổng cộng **47/47 tests PASSED**).
+
