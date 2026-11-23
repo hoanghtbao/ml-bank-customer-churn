@@ -34,7 +34,10 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${ibmPlexSans.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="antialiased min-h-screen bg-[#f8fafc] dark:bg-[#020617] text-slate-900 dark:text-slate-100 selection:bg-blue-600 selection:text-white transition-colors duration-200">
+      <body
+        suppressHydrationWarning
+        className="antialiased min-h-screen bg-[#f8fafc] dark:bg-[#020617] text-slate-900 dark:text-slate-100 selection:bg-blue-600 selection:text-white transition-colors duration-200"
+      >
         <AppShell>{children}</AppShell>
       </body>
     </html>
