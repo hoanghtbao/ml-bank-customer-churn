@@ -135,6 +135,15 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
   * Tạo module định dạng dùng chung [formatters.ts](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/frontend/src/lib/formatters.ts) (`formatInt`, `formatDecimal`, `formatAuto`, `formatPercent`, `formatViDisplay` dùng `Intl.NumberFormat("vi-VN")`) và áp dụng đồng bộ lên toàn bộ 6 trang Web (`page.tsx`, `dashboard`, `advisor`, `batch`, `strategy`, `governance`), dữ liệu bản đồ (`mapBranchesData.ts`, `InteractiveRegionMap.tsx`, `LeafletMapInner.tsx`), `TopNavbar.tsx`, cũng như tooltip/trục biểu đồ Recharts.
   * Chuẩn hóa đồng nhất toàn bộ 5 báo cáo (`reports/01`–`05`) sang quy ước tiếng Việt (`.` phân cách hàng nghìn, `,` dấu thập phân, `;` ngăn cách khoảng tin cậy `[0,8179; 0,8693]`), giữ nguyên mã nguồn Python/JSON, tệp CSV xuất thô, URL và số hiệu phiên bản phần mềm.
 
+### Thay đổi 11: Hoàn Thiện Thanh `TopNavbar`: Căn Thẳng `h-16`, Kiểm Tra `/api/health` Thực & Tìm Kiếm Nhanh 10.000 KH (`Ctrl+K`) (23/11/2026)
+
+* **Trong Thanh điều hướng trên trước đó:**
+  * Chiều cao `TopNavbar` (`py-3`) lệch ~6px so với `Sidebar` (`h-16`), badge `FastAPI Live` gắn tĩnh không phản ánh trạng thái backend thực, và ô tìm kiếm `Tìm khách hàng theo ID, Họ... (Ctrl+K)` mới chỉ là vỏ UI tĩnh (lại ẩn ở màn hình `< 2xl`).
+* **Thay đổi đã thực hiện:**
+  * Cố định chiều cao `h-16` trên `TopNavbar.tsx` để đường viền đáy khớp thẳng tắp với `Sidebar.tsx`; mở hiển thị thanh tìm kiếm từ breakpoint `lg` (`1024px+`) mà không làm tràn hay cắt chữ ở mép phải.
+  * Bổ sung 2 endpoint `GET /api/batch/search` và `GET /api/batch/customer/{customer_id}` trong `api/routes/batch.py`; kết nối phím tắt `Ctrl+K` + dropdown gợi ý thời gian thực để bấm chọn mở thẳng hồ sơ khách hàng trong `advisor/page.tsx` hoặc nhấn `Enter` sang lưới `batch/page.tsx`.
+  * Nối badge `FastAPI Live` với endpoint `/api/health` kiểm tra định kỳ mỗi 30 giây (`online` / `offline`).
+
 ---
 
 ## 3. DANH MỤC TỆP BÁO CÁO & TÀI LIỆU HIỆN CÓ TRONG DỰ ÁN

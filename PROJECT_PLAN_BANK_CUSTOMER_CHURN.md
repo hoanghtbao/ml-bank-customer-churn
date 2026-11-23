@@ -525,5 +525,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
    * Đổi mặc định `python run_fullstack.py` sang chạy `npm run dev` + `uvicorn --reload` để giao diện và API tự cập nhật ngay khi sửa code (giữ cờ `--prod` cho Production và dùng `taskkill /T` khi dừng trên Windows).
 10. **Chuẩn Hóa Định Dạng Số Tiếng Việt (`vi-VN`) Xuyên Suốt Toàn Dự Án (23/11/2026):**
     * Xây dựng bộ hàm định dạng dùng chung `frontend/src/lib/formatters.ts` (`Intl.NumberFormat("vi-VN")`) cho toàn bộ Web Next.js (6 trang, Bản đồ GIS, Lưới Excel, biểu đồ Recharts) và chuẩn hóa đồng bộ toàn bộ `reports/01`–`05` theo quy ước `.` phân cách hàng nghìn (`10.000`), `,` thập phân (`32,44%`, `300,40M €`).
+11. **Hoàn Thiện `TopNavbar` (`h-16`, `/api/health` Thực & Tìm Kiếm Nhanh `Ctrl+K`) (23/11/2026):**
+    * Căn thẳng chiều cao `h-16` khớp tuyệt đối với `Sidebar`; bổ sung `/api/batch/search` và `/api/batch/customer/{customer_id}` trong `api/routes/batch.py`, kích hoạt tìm kiếm thời gian thực trên `TopNavbar` + liên kết nhảy thẳng sang `advisor/page.tsx` và `batch/page.tsx`; nối `FastAPI Live` với `/api/health`.
 
 

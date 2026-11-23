@@ -142,3 +142,21 @@ def test_governance_metadata():
     assert "metadata" in data
     assert "decile_lift_table" in data
     assert "ablation_studies" in data
+
+
+def test_batch_search_and_customer_lookup():
+    search_res = client.get("/api/batch/search", params={"q": "Hargrave", "limit": 5})
+    assert search_res.status_code == 200
+    payload = search_res.json()
+    assert payload["count"] >= 1
+    first = payload["results"][0]
+    cid = first["CustomerId"]
+
+    detail_res = client.get(f"/api/batch/customer/{cid}")
+    assert detail_res.status_code == 200
+    detail = detail_res.json()
+    assert detail["CustomerId"] == cid
+    assert "Balance" in detail
+
+    missing_res = client.get("/api/batch/customer/999999999")
+    assert missing_res.status_code == 404

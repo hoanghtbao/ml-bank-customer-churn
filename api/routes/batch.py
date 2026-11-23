@@ -23,6 +23,65 @@ router = APIRouter(prefix="/api/batch", tags=["Batch Campaign Scoring"])
 DATA_PATH = os.path.join(PROJECT_ROOT, 'data', 'processed', 'full_engineered.csv')
 MODEL_PATH = os.path.join(PROJECT_ROOT, 'models', 'churn_early_warning_pipeline.joblib')
 
+_PORTFOLIO_DF_CACHE = None
+
+
+def _get_portfolio_df() -> pd.DataFrame:
+    """Lazy-load and cache full_engineered.csv for sub-millisecond customer lookup."""
+    global _PORTFOLIO_DF_CACHE
+    if _PORTFOLIO_DF_CACHE is None:
+        _PORTFOLIO_DF_CACHE = pd.read_csv(DATA_PATH)
+    return _PORTFOLIO_DF_CACHE
+
+
+def _row_to_customer_profile(row: pd.Series) -> dict:
+    return {
+        "CustomerId": int(row["CustomerId"]),
+        "Surname": str(row["Surname"]),
+        "Geography": str(row["Geography"]),
+        "Gender": str(row["Gender"]),
+        "Age": int(row["Age"]),
+        "Tenure": int(row["Tenure"]),
+        "Balance": float(row["Balance"]),
+        "NumOfProducts": int(row["NumOfProducts"]),
+        "HasCrCard": int(row["HasCrCard"]),
+        "IsActiveMember": int(row["IsActiveMember"]),
+        "EstimatedSalary": float(row["EstimatedSalary"]),
+        "Satisfaction_Score": int(row.get("Satisfaction Score", row.get("Satisfaction_Score", 3))),
+        "Card_Type": str(row.get("Card Type", row.get("Card_Type", "GOLD"))),
+        "Point_Earned": int(row.get("Point Earned", row.get("Point_Earned", 500))),
+        "CreditScore": int(row["CreditScore"]),
+        "Complain": int(row.get("Complain", 0)),
+    }
+
+
+@router.get("/search")
+def search_customers(q: str = "", limit: int = 8):
+    """Fast prefix/substring search across all 10,000 customers by CustomerId or Surname."""
+    query = (q or "").strip()
+    if not query:
+        return {"query": query, "count": 0, "results": []}
+
+    df = _get_portfolio_df()
+    q_lower = query.lower()
+    mask = (
+        df["CustomerId"].astype(str).str.contains(q_lower, regex=False, na=False)
+        | df["Surname"].astype(str).str.lower().str.contains(q_lower, regex=False, na=False)
+    )
+    matched = df[mask].sort_values(by="Balance", ascending=False).head(max(1, min(limit, 25)))
+    results = [_row_to_customer_profile(row) for _, row in matched.iterrows()]
+    return {"query": query, "count": len(results), "results": results}
+
+
+@router.get("/customer/{customer_id}")
+def get_customer_by_id(customer_id: int):
+    """Fetch a single customer's real feature profile by CustomerId."""
+    df = _get_portfolio_df()
+    matched = df[df["CustomerId"].astype(int) == customer_id]
+    if matched.empty:
+        raise HTTPException(status_code=404, detail=f"CustomerId {customer_id} not found.")
+    return _row_to_customer_profile(matched.iloc[0])
+
 
 @router.get("/portfolio-scored")
 def get_portfolio_scored(limit: int = 200, risk_only: bool = False):

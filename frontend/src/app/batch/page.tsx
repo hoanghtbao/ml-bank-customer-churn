@@ -82,7 +82,21 @@ export default function BatchScoringPage() {
   };
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const qParam = params.get("q");
+    if (qParam) {
+      setSearchQuery(qParam);
+    }
+
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ query: string }>).detail;
+      if (typeof detail?.query === "string") {
+        setSearchQuery(detail.query);
+      }
+    };
+    window.addEventListener("bb-batch-search", handler);
     loadData();
+    return () => window.removeEventListener("bb-batch-search", handler);
   }, []);
 
   const filteredRecords = useMemo(() => {

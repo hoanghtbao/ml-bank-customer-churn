@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PageHeader from "@/components/PageHeader";
 import { fetchApi } from "@/lib/api";
 import { formatInt, formatDecimal } from "@/lib/formatters";
@@ -123,6 +123,40 @@ export default function RetentionAdvisorPage() {
   const [whatIfBalance, setWhatIfBalance] = useState(145000);
   const [whatIfResult, setWhatIfResult] = useState<any>(null);
   const [whatIfLoading, setWhatIfLoading] = useState(false);
+
+  // Allow TopNavbar Quick Search to jump straight into scoring any customerId
+  useEffect(() => {
+    const loadById = async (cid: number) => {
+      try {
+        const customer = await fetchApi(`/api/batch/customer/${cid}`);
+        if (customer && customer.CustomerId) {
+          setFormData(customer);
+          setPrediction(null);
+          setWhatIfActive(customer.IsActiveMember);
+          setWhatIfProducts(customer.NumOfProducts);
+          setWhatIfBalance(customer.Balance);
+          setWhatIfResult(null);
+        }
+      } catch (err) {
+        console.error("Failed to load searched customer:", err);
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const cidParam = params.get("customerId");
+    if (cidParam && !Number.isNaN(Number(cidParam))) {
+      loadById(Number(cidParam));
+    }
+
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ customerId: number }>).detail;
+      if (detail?.customerId) {
+        loadById(detail.customerId);
+      }
+    };
+    window.addEventListener("bb-select-customer", handler);
+    return () => window.removeEventListener("bb-select-customer", handler);
+  }, []);
 
   const handleScore = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
