@@ -83,42 +83,42 @@ export default function InteractiveRegionMap() {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#cbd5e125_1px,transparent_1px),linear-gradient(to_bottom,#cbd5e125_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1e293b18_1px,transparent_1px),linear-gradient(to_bottom,#1e293b18_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
 
       {/* HEADER BAR */}
-      <div className="relative z-10 flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-5 pb-5 border-b border-slate-200/80 dark:border-slate-800/90">
-        <div>
-          <div className="flex flex-wrap items-center gap-2 mb-2">
-            <span className="flex h-2.5 w-2.5 relative">
+      <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-200/80 dark:border-slate-800/90">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2 mb-1.5">
+            <span className="flex h-2.5 w-2.5 relative shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
             </span>
             <span className="text-[11px] font-bold tracking-widest text-emerald-700 dark:text-emerald-400 uppercase font-mono">
               3 QUỐC GIA TRONG DATABASE (GERMANY &bull; FRANCE &bull; SPAIN)
             </span>
-            <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-500/20 border border-blue-200 dark:border-blue-500/40 text-[10px] text-blue-700 dark:text-blue-300 font-mono font-bold">
+            <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-500/20 border border-blue-200 dark:border-blue-500/40 text-[10px] text-blue-700 dark:text-blue-300 font-mono font-bold whitespace-nowrap">
               10,000 Khách Hàng Thực Tế
             </span>
           </div>
 
-          <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-2.5">
-            <Globe2 className="w-6 h-6 text-blue-600 dark:text-blue-400 shrink-0" />
-            <span>Bản Đồ Địa Lý 3 Quốc Gia Hoạt Động (OpenStreetMap &amp; GeoJSON)</span>
+          <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+            <Globe2 className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
+            <span>Bản Đồ Địa Lý 3 Quốc Gia (OpenStreetMap &amp; GeoJSON)</span>
           </h2>
-          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 max-w-3xl leading-relaxed">
-            Hiển thị chính xác <b>3 vùng lãnh thổ quốc gia</b> tương ứng với cột{" "}
-            <code className="px-1 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-[11px]">
-              Geography
-            </code>{" "}
-            trong dữ liệu: <b>France (5,014 KH)</b>, <b>Germany (2,509 KH)</b> và{" "}
-            <b>Spain (2,477 KH)</b>. Nhấp vào từng nước để xem phân tích chi tiết bên phải.
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed">
+            Phân bổ <code className="px-1 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-[11px]">Geography</code>:{" "}
+            <b>France (5,014 KH)</b>, <b>Germany (2,509 KH)</b> và <b>Spain (2,477 KH)</b>. Chọn quốc gia bên dưới hoặc nhấp trên bản đồ để xem chi tiết.
           </p>
         </div>
 
-        {/* MAP TILE SWITCHER */}
-        <div className="flex flex-wrap items-center gap-1 bg-slate-100 dark:bg-slate-900/95 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 self-start xl:self-auto">
+        {/* MAP TILE SWITCHER — Single-row compact segmented track */}
+        <div
+          role="group"
+          aria-label="Chọn nền bản đồ"
+          className="inline-flex items-center gap-0.5 bg-slate-100 dark:bg-slate-900/95 p-1 rounded-xl border border-slate-200/90 dark:border-slate-800 self-start lg:self-center shrink-0"
+        >
           {[
-            { id: "voyager", label: "Bản đồ Sáng", icon: MapIcon },
-            { id: "osm", label: "OpenStreetMap", icon: Globe2 },
-            { id: "satellite", label: "Vệ Tinh", icon: Satellite },
-            { id: "dark", label: "Bản đồ Tối", icon: Moon },
+            { id: "voyager", label: "Sáng", fullTitle: "Nền Bản đồ Sáng (CartoDB Voyager)", icon: MapIcon },
+            { id: "osm", label: "OSM", fullTitle: "OpenStreetMap Tiêu chuẩn", icon: Globe2 },
+            { id: "satellite", label: "Vệ tinh", fullTitle: "Ảnh Vệ tinh (ESRI)", icon: Satellite },
+            { id: "dark", label: "Tối", fullTitle: "Nền Bản đồ Tối (Dark Matter)", icon: Moon },
           ].map((t) => {
             const Icon = t.icon;
             const active = mapStyle === t.id;
@@ -126,13 +126,16 @@ export default function InteractiveRegionMap() {
               <button
                 key={t.id}
                 onClick={() => handleMapStyleChange(t.id as MapStyle)}
-                className={`px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer inline-flex items-center gap-1.5 ${
+                title={t.fullTitle}
+                aria-label={t.fullTitle}
+                aria-pressed={active}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap ${
                   active
-                    ? "bg-blue-600 text-white shadow-xs"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-slate-800"
+                    ? "bg-white dark:bg-blue-600 text-blue-600 dark:text-white shadow-xs"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
-                <Icon className="w-3.5 h-3.5" />
+                <Icon className="w-3.5 h-3.5 shrink-0" />
                 <span>{t.label}</span>
               </button>
             );
@@ -140,25 +143,55 @@ export default function InteractiveRegionMap() {
         </div>
       </div>
 
-      {/* COUNTRY SELECTION BAR */}
-      <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 mb-5 bg-slate-50 dark:bg-slate-900/80 p-3 rounded-2xl border border-slate-200/90 dark:border-slate-800/90">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-bold text-slate-600 dark:text-slate-400 flex items-center gap-1.5 mr-1">
-            <Compass className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-            <span>Chọn Quốc Gia:</span>
+      {/* UNIFIED MAP CONTROL TOOLBAR — Left: Market Pills | Right: Camera & GeoJSON */}
+      <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 mb-5 bg-slate-50/90 dark:bg-slate-900/80 px-3 py-2.5 rounded-2xl border border-slate-200/90 dark:border-slate-800/90">
+        <div className="flex flex-wrap xl:flex-nowrap items-center gap-1.5 min-w-0">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 hidden sm:inline-flex items-center gap-1.5 mr-1 whitespace-nowrap shrink-0">
+            <Compass className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>Khu vực:</span>
           </span>
           {[
-            { id: "ALL", code: "EU", label: "Toàn Cảnh 3 Nước (10,000 KH)" },
-            { id: "Germany", code: "DE", label: "Germany • 2,509 KH (Churn 32.44%)" },
-            { id: "France", code: "FR", label: "France • 5,014 KH (Churn 16.17%)" },
-            { id: "Spain", code: "ES", label: "Spain • 2,477 KH (Churn 16.67%)" },
+            {
+              id: "ALL",
+              code: "EU",
+              label: "Toàn cảnh",
+              stat: "10k KH",
+              fullTitle: "Toàn Cảnh 3 Nước (10,000 KH)",
+              danger: false,
+            },
+            {
+              id: "Germany",
+              code: "DE",
+              label: "Germany",
+              stat: "32.4%",
+              fullTitle: "Germany • 2,509 KH (Churn 32.44% - Tâm chấn)",
+              danger: true,
+            },
+            {
+              id: "France",
+              code: "FR",
+              label: "France",
+              stat: "16.2%",
+              fullTitle: "France • 5,014 KH (Churn 16.17%)",
+              danger: false,
+            },
+            {
+              id: "Spain",
+              code: "ES",
+              label: "Spain",
+              stat: "16.7%",
+              fullTitle: "Spain • 2,477 KH (Churn 16.67%)",
+              danger: false,
+            },
           ].map((c) => {
             const isSelected = selectedCountry === c.id;
             return (
               <button
                 key={c.id}
                 onClick={() => handleSelectCountry(c.id)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer inline-flex items-center gap-1.5 ${
+                title={c.fullTitle}
+                aria-pressed={isSelected}
+                className={`px-2.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 tabular-nums ${
                   isSelected
                     ? "bg-blue-600 text-white border-blue-600 shadow-xs"
                     : "bg-white dark:bg-slate-950/80 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -168,37 +201,59 @@ export default function InteractiveRegionMap() {
                   className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded ${
                     isSelected
                       ? "bg-white/20 text-white"
-                      : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                      : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
                   }`}
                 >
                   {c.code}
                 </span>
                 <span>{c.label}</span>
+                <span
+                  className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded-md ${
+                    isSelected
+                      ? "bg-white/15 text-blue-50"
+                      : c.danger
+                      ? "bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400"
+                      : "bg-slate-100/80 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400"
+                  }`}
+                >
+                  {c.stat}
+                </span>
               </button>
             );
           })}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0 lg:pl-2.5 lg:border-l border-slate-200 dark:border-slate-800">
           <button
             onClick={() => handleSelectCountry("ALL")}
             title="Đặt lại góc nhìn Châu Âu"
-            className="px-2.5 py-1.5 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer inline-flex items-center gap-1"
+            className="px-2.5 py-1.5 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shrink-0"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-3.5 h-3.5 shrink-0" />
             <span>Về Châu Âu</span>
           </button>
 
           <button
             onClick={() => setShowGeoJson(!showGeoJson)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer inline-flex items-center gap-1.5 ${
+            aria-pressed={showGeoJson}
+            title="Bật hoặc tắt lớp tô màu ranh giới quốc gia GeoJSON"
+            className={`px-2.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
               showGeoJson
                 ? "bg-indigo-50 dark:bg-indigo-950/70 border-indigo-300 dark:border-indigo-500/60 text-indigo-700 dark:text-indigo-300"
                 : "bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400"
             }`}
           >
-            <Layers className="w-3.5 h-3.5" />
-            <span>Biên giới GeoJSON: {showGeoJson ? "BẬT" : "TẮT"}</span>
+            <Layers className="w-3.5 h-3.5 shrink-0" />
+            <span>GeoJSON</span>
+            <span
+              className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded ${
+                showGeoJson
+                  ? "bg-indigo-600 text-white"
+                  : "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
+              }`}
+            >
+              {showGeoJson ? "BẬT" : "TẮT"}
+            </span>
           </button>
         </div>
       </div>

@@ -520,7 +520,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
 7. **Chuẩn hóa Tên Thương Hiệu Ngân Hàng Thành `BB Bank` (23/11/2026):**
    * Cập nhật đồng bộ tên doanh nghiệp giả định từ tên ban đầu sang **`BB Bank`** (`BB Bank AG`, `BB_Bank_Scored_Portfolio_2026.xlsx`) trên toàn bộ 37 tệp mã nguồn Web, API, Python, Notebook, Báo cáo và Kiểm thử.
 8. **Cài Đặt Skill `ui-ux-pro-max` & Đồng Bộ Giao Diện Sáng/Tối (Light/Dark Mode) Toàn Web App (23/11/2026):**
-   * Cài đặt skill `ui-ux-pro-max` tại `.agents/skills/ui-ux-pro-max/` và khởi tạo Design System (`design-system/bb-bank-churn-dss/MASTER.md`); bổ sung nút chuyển **Sáng / Tối** trên `TopNavbar`, đồng bộ giao diện Sáng & Tối cho Sidebar, Bản đồ GIS (`InteractiveRegionMap` + `LeafletMapInner` kèm khóa `maxBounds` Châu Âu), 6 trang Next.js và sửa lỗi tràn lề phải `TopNavbar`.
+   * Cài đặt skill `ui-ux-pro-max` tại `.agents/skills/ui-ux-pro-max/` và khởi tạo Design System (`design-system/bb-bank-churn-dss/MASTER.md`); bổ sung nút chuyển **Sáng / Tối** trên `TopNavbar`, đồng bộ giao diện Sáng & Tối cho Sidebar, Bản đồ GIS (`InteractiveRegionMap` + `LeafletMapInner` kèm khóa `maxBounds` Châu Âu), 6 trang Next.js, sửa tràn lề phải `TopNavbar`, bỏ nút thu gọn trùng lặp và gom thanh chọn nền/khu vực bản đồ thành 1 hàng gọn gàng.
 9. **Bật Chế Độ Auto-Reload (Hot Refresh) Mặc Định Trong `run_fullstack.py` (23/11/2026):**
    * Đổi mặc định `python run_fullstack.py` sang chạy `npm run dev` + `uvicorn --reload` để giao diện và API tự cập nhật ngay khi sửa code (giữ cờ `--prod` cho Production và dùng `taskkill /T` khi dừng trên Windows).
 
