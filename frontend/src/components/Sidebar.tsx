@@ -10,8 +10,6 @@ import {
   FileSpreadsheet,
   TrendingUp,
   ShieldCheck,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -61,7 +59,7 @@ const NAV_ITEMS = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { collapsed, toggleSidebar } = useSidebar();
+  const { collapsed } = useSidebar();
 
   return (
     <aside
@@ -69,11 +67,11 @@ export default function Sidebar() {
         collapsed ? "w-20" : "w-64"
       }`}
     >
-      {/* Brand & Toggle Header */}
+      {/* Brand Header (Sidebar collapse/expand toggle lives canonically in TopNavbar) */}
       <div>
         <div
           className={`h-16 flex items-center border-b border-slate-200/80 dark:border-slate-800/90 transition-all ${
-            collapsed ? "justify-center px-2" : "justify-between px-4"
+            collapsed ? "justify-center px-2" : "justify-start px-4"
           }`}
         >
           <Link href="/" className="flex items-center gap-3 group cursor-pointer">
@@ -92,32 +90,7 @@ export default function Sidebar() {
               </div>
             )}
           </Link>
-
-          {!collapsed && (
-            <button
-              onClick={toggleSidebar}
-              aria-label="Thu gọn thanh điều hướng"
-              title="Thu gọn thanh điều hướng"
-              className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors border border-slate-200 dark:border-slate-700/60 cursor-pointer"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-          )}
         </div>
-
-        {/* Collapsed Expand Button */}
-        {collapsed && (
-          <div className="flex justify-center pt-3 pb-1">
-            <button
-              onClick={toggleSidebar}
-              aria-label="Mở rộng thanh điều hướng"
-              title="Mở rộng thanh điều hướng"
-              className="p-1.5 rounded-lg text-blue-600 dark:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border border-slate-200 dark:border-slate-800 cursor-pointer"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        )}
 
         {/* Navigation Items */}
         <nav className={`py-4 space-y-1.5 ${collapsed ? "px-2" : "px-3"}`} aria-label="Điều hướng chính">
