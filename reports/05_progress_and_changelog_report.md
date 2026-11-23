@@ -120,6 +120,13 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
   * Đồng bộ toàn diện giao diện **Sáng** (nền trắng/xám tinh gọn cho Sidebar, TopNavbar, khung Bản đồ GIS dùng lớp nền CartoDB Voyager, toàn bộ 6 trang và biểu đồ Recharts) và **Tối** (tông Navy `#091426` / `#020617` và bản đồ CartoDB Dark Matter tự đồng bộ theo chế độ chủ đề).
   * Khắc phục tràn lề phải `TopNavbar` (`min-w-0` trên flex container), thay emoji cờ bằng huy hiệu ISO (`FR`, `DE`, `ES`) kết hợp icon Lucide SVG, khóa `maxBounds` vùng Tây Âu (`[[30, -16], [60, 24]]`) và bổ sung nút **Về Châu Âu** trên `LeafletMapInner.tsx` / `InteractiveRegionMap.tsx`.
 
+### Thay đổi 9: Bật Chế Độ Tự Động Cập Nhật (Hot-Reload) Mặc Định Trong `run_fullstack.py` (23/11/2026)
+
+* **Trong Script khởi chạy trước đó:**
+  * Khi tồn tại thư mục `.next`, `run_fullstack.py` tự động chọn `npm run start` (Production) và chạy `uvicorn` không có `--reload`, buộc phải tắt và chạy lại `python run_fullstack.py` mỗi lần sửa code.
+* **Thay đổi đã thực hiện:**
+  * Chuyển mặc định `python run_fullstack.py` sang chế độ **Auto-Reload Dev Mode** (`npm run dev -- -p 3000` với Turbopack Fast Refresh + `uvicorn --reload --reload-dir api --reload-dir src`), bổ sung tùy chọn `--prod` để chạy bản Production khi cần và thêm `stop_process_tree` (`taskkill /F /T /PID`) để dọn sạch tiến trình con trên Windows khi nhấn `Ctrl + C`.
+
 ---
 
 ## 3. DANH MỤC TỆP BÁO CÁO & TÀI LIỆU HIỆN CÓ TRONG DỰ ÁN
