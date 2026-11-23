@@ -110,6 +110,16 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
 * **Thay đổi đã thực hiện:**
   * Đổi đồng bộ tên ngân hàng thành **`BB Bank`** (`BB Bank AG` ở chân trang Web, `BB BANK` trên banner/Sidebar, `BB_Bank_Scored_Portfolio_2026.xlsx` trên lưới Excel và `bb_bank_retention_call_list.csv` khi xuất file) trên toàn bộ **37 tệp** gồm: Giao diện Web Next.js (`frontend/`), Backend FastAPI (`api/`), mã nguồn Python (`src/`), kiểm thử (`tests/test_business_strategy.py`), Notebook tổng hợp (`Project_Source_Code.ipynb`), các notebook thành phần (`notebooks/`), kế hoạch và toàn bộ báo cáo (`reports/`).
 
+### Thay đổi 8: Áp Dụng Skill `ui-ux-pro-max` & Đồng Bộ Hệ Thống Sáng/Tối (Light/Dark Mode) Toàn Trang (23/11/2026)
+
+* **Trong Kế hoạch / Giao diện trước đó:**
+  * Sidebar và khung Bản đồ Địa lý GIS (`InteractiveRegionMap.tsx`) bị khóa cứng nền tối `#091426` trong khi thanh điều hướng trên và nền trang là giao diện sáng, gây lệch tông thị giác; chưa có nút chuyển đổi Sáng/Tối (`Light / Dark Mode`), thanh TopNavbar bị tràn mép phải ở màn hình laptop, emoji cờ bị hiển thị thành ký tự chữ trên Windows, và bản đồ Leaflet có thể trôi sang vùng Caribe.
+* **Thay đổi đã thực hiện:**
+  * Cài đặt bộ skill **`ui-ux-pro-max`** (clone từ `https://github.com/nextlevelbuilder/ui-ux-pro-max-skill`) vào `.agents/skills/ui-ux-pro-max/` và sinh chuẩn thiết kế tại `design-system/bb-bank-churn-dss/MASTER.md` (`IBM Plex Sans`, `JetBrains Mono`, tỷ lệ tương phản $\ge 4.5:1$, `tabular-nums`).
+  * Kích hoạt biến thể `@custom-variant dark (&:where(.dark, .dark *));` cho Tailwind CSS v4 (`frontend/src/app/globals.css`), xây dựng `ThemeContext` / `useTheme()` trong `AppShell.tsx` (lưu `bb_bank_theme` trong `localStorage`) cùng nút chuyển **Sáng / Tối** ngay trên `TopNavbar.tsx`.
+  * Đồng bộ toàn diện giao diện **Sáng** (nền trắng/xám tinh gọn cho Sidebar, TopNavbar, khung Bản đồ GIS dùng lớp nền CartoDB Voyager, toàn bộ 6 trang và biểu đồ Recharts) và **Tối** (tông Navy `#091426` / `#020617` và bản đồ CartoDB Dark Matter tự đồng bộ theo chế độ chủ đề).
+  * Khắc phục tràn lề phải `TopNavbar` (`min-w-0` trên flex container), thay emoji cờ bằng huy hiệu ISO (`FR`, `DE`, `ES`) kết hợp icon Lucide SVG, khóa `maxBounds` vùng Tây Âu (`[[30, -16], [60, 24]]`) và bổ sung nút **Về Châu Âu** trên `LeafletMapInner.tsx` / `InteractiveRegionMap.tsx`.
+
 ---
 
 ## 3. DANH MỤC TỆP BÁO CÁO & TÀI LIỆU HIỆN CÓ TRONG DỰ ÁN

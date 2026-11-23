@@ -1,16 +1,22 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
-@import "leaflet.markercluster/dist/MarkerCluster.css";
-@import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   body {
     background-color: #f8fafc;
     color: #0f172a;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-ibm-plex-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+
+  .dark body,
+  html.dark body {
+    background-color: #020617;
+    color: #f8fafc;
   }
 }
 
@@ -30,18 +36,25 @@
   background: #94a3b8;
 }
 
+.dark ::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Tabular numbers for FinTech precision */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
 /* Range Input Styling for Simulators */
 input[type="range"] {
   accent-color: #2563eb;
   cursor: pointer;
-}
-
-/* Subtle Card Glow */
-.glow-card {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
-}
-.glow-card:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
 }
 
 /* Telemetry Laser & Radar Animation */
@@ -57,43 +70,47 @@ input[type="range"] {
   animation: dashFlow 1.8s linear infinite;
 }
 
-@keyframes pulseGlow {
-  0%, 100% {
-    opacity: 0.8;
-    transform: scale(1);
+@media (prefers-reduced-motion: reduce) {
+  .animate-dash-flow,
+  .animate-ping,
+  .animate-pulse {
+    animation: none !important;
   }
-  50% {
-    opacity: 0.3;
-    transform: scale(1.6);
-  }
-}
-.animate-pulse-glow {
-  animation: pulseGlow 2.5s ease-in-out infinite;
-  transform-origin: center;
 }
 
-/* Leaflet Custom Glowing Markers, Clusters & Popups */
-.custom-glowing-marker,
-.custom-cluster-icon {
+/* Leaflet Custom Glowing Markers & Theme-Aware Popups */
+.custom-glowing-marker {
   background: transparent !important;
   border: none !important;
 }
 .leaflet-popup-content-wrapper {
-  background: rgba(15, 23, 42, 0.96) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(51, 65, 85, 0.85) !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #e2e8f0 !important;
   border-radius: 16px !important;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
-  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.14), 0 8px 10px -6px rgba(15, 23, 42, 0.08) !important;
   padding: 0 !important;
 }
+.leaflet-popup-tip {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.dark .leaflet-popup-content-wrapper {
+  background: rgba(15, 23, 42, 0.96) !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(51, 65, 85, 0.85) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(10px) !important;
+}
+.dark .leaflet-popup-tip {
+  background: rgba(15, 23, 42, 0.96) !important;
+  border: 1px solid rgba(51, 65, 85, 0.85) !important;
+}
+
 .leaflet-popup-content {
   margin: 14px 16px !important;
   line-height: 1.45 !important;
-}
-.leaflet-popup-tip {
-  background: rgba(15, 23, 42, 0.96) !important;
-  border: 1px solid rgba(51, 65, 85, 0.85) !important;
 }
 .leaflet-container {
   font-family: inherit !important;

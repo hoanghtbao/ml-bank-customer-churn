@@ -519,5 +519,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
    * Đưa các hàm nạp pipeline/dữ liệu về `src/modeling/predict.py` thuần Python và bổ sung `tests/test_api_endpoints.py` (tổng cộng **47/47 tests PASSED**).
 7. **Chuẩn hóa Tên Thương Hiệu Ngân Hàng Thành `BB Bank` (23/11/2026):**
    * Cập nhật đồng bộ tên doanh nghiệp giả định từ tên ban đầu sang **`BB Bank`** (`BB Bank AG`, `BB_Bank_Scored_Portfolio_2026.xlsx`) trên toàn bộ 37 tệp mã nguồn Web, API, Python, Notebook, Báo cáo và Kiểm thử.
+8. **Cài Đặt Skill `ui-ux-pro-max` & Đồng Bộ Giao Diện Sáng/Tối (Light/Dark Mode) Toàn Web App (23/11/2026):**
+   * Cài đặt skill `ui-ux-pro-max` tại `.agents/skills/ui-ux-pro-max/` và khởi tạo Design System (`design-system/bb-bank-churn-dss/MASTER.md`); bổ sung nút chuyển **Sáng / Tối** trên `TopNavbar`, đồng bộ giao diện Sáng & Tối cho Sidebar, Bản đồ GIS (`InteractiveRegionMap` + `LeafletMapInner` kèm khóa `maxBounds` Châu Âu), 6 trang Next.js và sửa lỗi tràn lề phải `TopNavbar`.
 
 
