@@ -108,7 +108,7 @@ export default function TopNavbar() {
           <Cpu className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
           <span>XGBoost</span>
           <span className="px-1.5 py-0.2 rounded bg-blue-200/70 dark:bg-blue-900 text-blue-900 dark:text-blue-200 text-[10px] font-bold">
-            T* 0.45
+            T* 0,45
           </span>
         </div>
 

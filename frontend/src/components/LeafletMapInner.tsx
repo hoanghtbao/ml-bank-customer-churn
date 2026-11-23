@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, GeoJSON, Polyline, useMap } from "react-leaflet";
 import L from "leaflet";
 import { COUNTRIES_DATA, CountryStat } from "@/lib/mapBranchesData";
+import { formatInt } from "@/lib/formatters";
 import type { ThemeMode } from "./AppShell";
 
 export type MapStyle = "osm" | "voyager" | "satellite" | "dark";
@@ -95,7 +96,7 @@ function NationalMarkersLayer({
             isSelected ? (isDark ? "#ffffff" : "#0f172a") : pinColor
           }; border-radius: 8px; padding: 2px 8px; white-space: nowrap; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);">
             <div style="font-size: 10px; font-weight: 800; color: ${labelTitleColor}; text-align: center; line-height: 1.25;">
-              ${country.geographyValue.toUpperCase()} &bull; ${country.customers.toLocaleString()} KH
+              ${country.geographyValue.toUpperCase()} &bull; ${formatInt(country.customers)} KH
             </div>
             <div style="font-size: 9px; font-weight: 700; color: ${labelSubColor}; text-align: center; font-family: monospace; line-height: 1.15;">
               Churn: ${country.churnRatePct} (${country.totalBalanceMEur})
@@ -139,7 +140,7 @@ function NationalMarkersLayer({
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: ${cardBg}; padding: 8px; border-radius: 10px; border: 1px solid ${cardBorder};">
             <div>
               <div style="font-size: 9px; color: ${labelMuted}; font-weight: 700;">QUY MÔ KHÁCH</div>
-              <div style="font-size: 12px; font-weight: 800; color: ${headingColor};">${country.customers.toLocaleString()} (${country.pctCustomers})</div>
+              <div style="font-size: 12px; font-weight: 800; color: ${headingColor};">${formatInt(country.customers)} (${country.pctCustomers})</div>
             </div>
             <div>
               <div style="font-size: 9px; color: ${labelMuted}; font-weight: 700;">TỔNG SỐ DƯ</div>
@@ -149,11 +150,11 @@ function NationalMarkersLayer({
               <div style="font-size: 9px; color: ${labelMuted}; font-weight: 700;">TỶ LỆ CHURN</div>
               <div style="font-size: 12px; font-weight: 800; color: ${
                 country.isEpicenter ? (isDark ? "#f87171" : "#dc2626") : isDark ? "#38bdf8" : "#2563eb"
-              };">${country.churnRatePct} (${country.churners})</div>
+              };">${country.churnRatePct} (${formatInt(country.churners)})</div>
             </div>
             <div>
               <div style="font-size: 9px; color: ${labelMuted}; font-weight: 700;">SỐ DƯ = 0 &euro;</div>
-              <div style="font-size: 12px; font-weight: 800; color: ${isDark ? "#fbbf24" : "#d97706"};">${country.zeroBalanceCount.toLocaleString()} (${country.zeroBalancePct})</div>
+              <div style="font-size: 12px; font-weight: 800; color: ${isDark ? "#fbbf24" : "#d97706"};">${formatInt(country.zeroBalanceCount)} (${country.zeroBalancePct})</div>
             </div>
           </div>
           <div style="margin-top: 8px; font-size: 10px; color: ${labelMuted}; text-align: center;">
@@ -279,7 +280,7 @@ export default function LeafletMapInner({
       layer.bindTooltip(
         `<div style="font-family: sans-serif; font-size: 11px; font-weight: 700;">
           [${stat.code}] ${stat.name}<br/>
-          <span style="color: #2563eb;">Quy mô: ${stat.customers.toLocaleString()} KH (${stat.pctCustomers})</span> &bull; 
+          <span style="color: #2563eb;">Quy mô: ${formatInt(stat.customers)} KH (${stat.pctCustomers})</span> &bull; 
           <span style="color: ${stat.isEpicenter ? "#dc2626" : "#059669"};">Churn: ${stat.churnRatePct}</span>
         </div>`,
         { sticky: true, direction: "top" }

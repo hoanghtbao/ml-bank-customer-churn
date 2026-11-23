@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import PageHeader from "@/components/PageHeader";
 import InteractiveRegionMap from "@/components/InteractiveRegionMap";
 import { fetchApi } from "@/lib/api";
+import { formatInt, formatDecimal } from "@/lib/formatters";
 import { Users, DollarSign, AlertTriangle, TrendingDown, ArrowRight, ShieldCheck, Cpu } from "lucide-react";
 import Link from "next/link";
 
@@ -46,10 +47,10 @@ export default function HomePage() {
             <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           </div>
           <div className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            {kpis.total_customers.toLocaleString()}
+            {formatInt(kpis.total_customers)}
           </div>
           <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 mt-2">
-            Pháp (50.1%), Đức (25.1%), TBN (24.8%)
+            Pháp (50,1%), Đức (25,1%), TBN (24,8%)
           </div>
         </div>
 
@@ -59,7 +60,7 @@ export default function HomePage() {
             <DollarSign className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
           </div>
           <div className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            {kpis.total_balance_m_eur}M &euro;
+            {formatDecimal(kpis.total_balance_m_eur, 2)}M &euro;
           </div>
           <div className="text-xs font-semibold text-slate-600 dark:text-slate-400 mt-2">
             Nguồn vốn tiền gửi huy động
@@ -72,10 +73,10 @@ export default function HomePage() {
             <TrendingDown className="w-5 h-5 text-rose-600 dark:text-rose-400" />
           </div>
           <div className="text-3xl font-extrabold text-rose-600 dark:text-rose-400 tracking-tight">
-            {kpis.churn_rate_pct}%
+            {formatDecimal(kpis.churn_rate_pct, 2)}%
           </div>
           <div className="text-xs font-semibold text-rose-600 dark:text-rose-400 mt-2">
-            {kpis.churn_headcount.toLocaleString()} khách hàng rời bỏ
+            {formatInt(kpis.churn_headcount)} khách hàng rời bỏ
           </div>
         </div>
 
@@ -85,10 +86,10 @@ export default function HomePage() {
             <AlertTriangle className="w-5 h-5 text-amber-500 dark:text-amber-400" />
           </div>
           <div className="text-3xl font-extrabold text-rose-600 dark:text-rose-400 tracking-tight">
-            {kpis.balance_at_risk_m_eur}M &euro;
+            {formatDecimal(kpis.balance_at_risk_m_eur, 2)}M &euro;
           </div>
           <div className="text-xs font-semibold text-rose-600 dark:text-rose-400 mt-2">
-            {kpis.balance_at_risk_pct}% tổng vốn (Chênh lệch +25.2%)
+            {formatDecimal(kpis.balance_at_risk_pct, 2)}% tổng vốn (Chênh lệch +25,2%)
           </div>
         </div>
       </div>
@@ -112,8 +113,8 @@ export default function HomePage() {
               Phân Tích Mô Tả &amp; Bẫy Tiền Gửi Hai Đỉnh
             </h3>
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              Phát hiện cấu trúc bimodal đặc thù: <b>36.17% khách hàng (3,617 người) có số dư bằng 0 EUR</b>, tập trung chủ yếu ở Pháp và Tây Ban Nha.
-              Đặc biệt, khách hàng rời bỏ nắm giữ số dư trung bình <b>91,109 EUR</b>, cao hơn nhóm trung thành <b>+25.2%</b> (72,743 EUR).
+              Phát hiện cấu trúc bimodal đặc thù: <b>36,17% khách hàng (3.617 người) có số dư bằng 0 EUR</b>, tập trung chủ yếu ở Pháp và Tây Ban Nha.
+              Đặc biệt, khách hàng rời bỏ nắm giữ số dư trung bình <b>91.109 EUR</b>, cao hơn nhóm trung thành <b>+25,2%</b> (72.743 EUR).
             </p>
           </div>
 
@@ -128,8 +129,8 @@ export default function HomePage() {
               Chẩn Đoán Tâm Chấn Đức &amp; Bẫy Bán Chéo
             </h3>
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              <b>Thị trường Đức là tâm chấn:</b> Tỷ lệ rời bỏ <b>32.44%</b>, 100% có số dư dương, gây thất thoát <b>97.97M EUR</b> (52.76% tổng vốn mất toàn ngân hàng).
-              <b>Đường cong chữ U ngược:</b> Khách dùng 2 sản phẩm là tối ưu nhất (churn 7.60%), nhưng khi ép lên 3-4 sản phẩm churn vọt lên <b>82.71% và 100.0%</b>!
+              <b>Thị trường Đức là tâm chấn:</b> Tỷ lệ rời bỏ <b>32,44%</b>, 100% có số dư dương, gây thất thoát <b>97,97M EUR</b> (52,76% tổng vốn mất toàn ngân hàng).
+              <b>Đường cong chữ U ngược:</b> Khách dùng 2 sản phẩm là tối ưu nhất (churn 7,60%), nhưng khi ép lên 3-4 sản phẩm churn vọt lên <b>82,71% và 100,0%</b>!
             </p>
           </div>
 
@@ -146,9 +147,9 @@ export default function HomePage() {
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
               Khử triệt để rò rỉ nhãn{" "}
               <code className="px-1 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono">Complain</code>{" "}
-              (tương quan 99.86%). Kết quả kiểm thử độc lập 1 lần trên tập Test (1,500 khách):
-              Accuracy <b>84.67%</b>, ROC-AUC <b>0.8437</b> (95% CI: [0.8179, 0.8693]), F1 <b>0.5922</b> tại ngưỡng <b>T* = 0.45</b>.
-              <b>Decile 1 Lift 3.97x</b> (chặn đứng 39.67% lượng rời bỏ chỉ với 10% khách hàng rủi ro nhất).
+              (tương quan 99,86%). Kết quả kiểm thử độc lập 1 lần trên tập Test (1.500 khách):
+              Accuracy <b>84,67%</b>, ROC-AUC <b>0,8437</b> (95% CI: [0,8179; 0,8693]), F1 <b>0,5922</b> tại ngưỡng <b>T* = 0,45</b>.
+              <b>Decile 1 Lift 3,97x</b> (chặn đứng 39,67% lượng rời bỏ chỉ với 10% khách hàng rủi ro nhất).
             </p>
           </div>
 
@@ -163,9 +164,9 @@ export default function HomePage() {
               Ma Trận 4 Quadrants &amp; Mô Hình Tiered ROI
             </h3>
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              Tập trung 90% nguồn lực vào <b>Q1 (VIP At-Risk)</b> — nhóm nắm giữ <b>242.81M EUR tiền gửi (31.75% toàn ngân hàng)</b>.
-              Chiến dịch giữ chân đầu tư ngân sách <b>303,700 EUR</b> giúp giữ lại <b>720 khách hàng</b>, bảo vệ <b>73.95M EUR</b> vốn tiền gửi,
-              mang lại lợi nhuận ròng <b>3.54 triệu EUR</b> (ROI <b>1,164.96%</b>).
+              Tập trung 90% nguồn lực vào <b>Q1 (VIP At-Risk)</b> — nhóm nắm giữ <b>242,81M EUR tiền gửi (31,75% toàn ngân hàng)</b>.
+              Chiến dịch giữ chân đầu tư ngân sách <b>303.700 EUR</b> giúp giữ lại <b>720 khách hàng</b>, bảo vệ <b>73,95M EUR</b> vốn tiền gửi,
+              mang lại lợi nhuận ròng <b>3,54 triệu EUR</b> (ROI <b>1.164,96%</b>).
             </p>
           </div>
         </div>

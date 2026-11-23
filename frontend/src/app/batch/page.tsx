@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import PageHeader from "@/components/PageHeader";
 import { fetchApi } from "@/lib/api";
+import { formatInt, formatDecimal } from "@/lib/formatters";
 import {
   FileSpreadsheet,
   Download,
@@ -55,7 +56,7 @@ export default function BatchScoringPage() {
   const [selectedCell, setSelectedCell] = useState<{ row: number; col: string; val: any }>({
     row: 1,
     col: "J",
-    val: "82.5%",
+    val: "82,5%",
   });
   const [conditionalFormatting, setConditionalFormatting] = useState(true);
   const [isExpandedView, setIsExpandedView] = useState(false);
@@ -213,7 +214,7 @@ export default function BatchScoringPage() {
             Tổng Danh Mục Đã Chấm Điểm
           </div>
           <div className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            {kpis.total_records?.toLocaleString()} Khách Hàng
+            {formatInt(kpis.total_records || 0)} Khách Hàng
           </div>
           <div className="text-xs text-blue-600 dark:text-blue-400 mt-2 font-medium">
             Dữ liệu nạp từ kho data/processed
@@ -225,10 +226,10 @@ export default function BatchScoringPage() {
             Số Lượng Rủi Ro Rời Bỏ Cao (&ge; T*)
           </div>
           <div className="text-2xl font-extrabold text-rose-600 dark:text-rose-400 tracking-tight">
-            {kpis.total_high_risk?.toLocaleString()} Khách Hàng
+            {formatInt(kpis.total_high_risk || 0)} Khách Hàng
           </div>
           <div className="text-xs text-rose-600 dark:text-rose-400 mt-2 font-semibold">
-            Chiếm 15.30% tổng quy mô toàn ngân hàng
+            Chiếm 15,30% tổng quy mô toàn ngân hàng
           </div>
         </div>
 
@@ -237,7 +238,7 @@ export default function BatchScoringPage() {
             Tiền Gửi Rủi Ro Cần Can Thiệp
           </div>
           <div className="text-2xl font-extrabold text-amber-600 dark:text-amber-400 tracking-tight">
-            {kpis.total_balance_at_risk_m_eur}M &euro;
+            {formatDecimal(kpis.total_balance_at_risk_m_eur || 0, 2)}M &euro;
           </div>
           <div className="text-xs text-amber-700 dark:text-amber-300 mt-2 font-semibold">
             Mục tiêu bảo vệ của chiến dịch giữ chân
@@ -265,7 +266,7 @@ export default function BatchScoringPage() {
                 </span>
               </div>
               <div className="text-[10px] text-emerald-100 font-mono">
-                Mô hình: XGBoost Proactive &bull; Ngưỡng T* = 0.45 &bull; Chế độ Lưới Excel 60fps
+                Mô hình: XGBoost Proactive &bull; Ngưỡng T* = 0,45 &bull; Chế độ Lưới Excel 60fps
               </div>
             </div>
           </div>
@@ -355,7 +356,7 @@ export default function BatchScoringPage() {
                 onChange={(e) => setFilterRiskOnly(e.target.checked)}
                 className="rounded text-[#107c41] focus:ring-[#107c41]"
               />
-              <span>Chỉ khách nguy cơ cao (&ge; 0.45)</span>
+              <span>Chỉ khách nguy cơ cao (&ge; 0,45)</span>
             </label>
           </div>
 
@@ -605,11 +606,7 @@ export default function BatchScoringPage() {
                             : "text-slate-700 dark:text-slate-300"
                         } ${selectedCell.row === rowNum && selectedCell.col === "F" ? activeCellRing : ""}`}
                       >
-                        {r.Balance.toLocaleString("en-US", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}{" "}
-                        &euro;
+                        {formatDecimal(r.Balance, 2)} &euro;
                       </td>
 
                       <td
@@ -656,7 +653,7 @@ export default function BatchScoringPage() {
                           setSelectedCell({
                             row: rowNum,
                             col: "J",
-                            val: `${(r.Predicted_Probability * 100).toFixed(1)}%`,
+                            val: `${formatDecimal(r.Predicted_Probability * 100, 1)}%`,
                           })
                         }
                         className={`${cellBorder} px-2 py-1.5 text-right relative overflow-hidden cursor-pointer ${
@@ -681,7 +678,7 @@ export default function BatchScoringPage() {
                               : "text-emerald-700 dark:text-emerald-400"
                           }`}
                         >
-                          {(r.Predicted_Probability * 100).toFixed(1)}%
+                          {formatDecimal(r.Predicted_Probability * 100, 1)}%
                         </span>
                       </td>
 
@@ -775,13 +772,13 @@ export default function BatchScoringPage() {
               SẴN SÀNG
             </span>
             <span className="border-l border-slate-300 dark:border-slate-700 pl-3">
-              COUNT: <b>{sortedRecords.length}</b>
+              COUNT: <b>{formatInt(sortedRecords.length)}</b>
             </span>
             <span className="border-l border-slate-300 dark:border-slate-700 pl-3">
-              SUM (&euro;): <b>{totalBalance.toLocaleString("en-US", { maximumFractionDigits: 0 })} &euro;</b>
+              SUM (&euro;): <b>{formatInt(totalBalance)} &euro;</b>
             </span>
             <span className="border-l border-slate-300 dark:border-slate-700 pl-3">
-              AVG CHURN: <b>{avgRisk.toFixed(1)}%</b>
+              AVG CHURN: <b>{formatDecimal(avgRisk, 1)}%</b>
             </span>
           </div>
         </div>

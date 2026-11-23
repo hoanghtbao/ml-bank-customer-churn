@@ -3,6 +3,7 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import { fetchApi } from "@/lib/api";
+import { formatInt, formatDecimal } from "@/lib/formatters";
 import {
   UserCheck,
   PhoneCall,
@@ -376,7 +377,7 @@ export default function RetentionAdvisorPage() {
                       KÍCH HOẠT QUY TRÌNH KHẨN CẤP SLA 4-HOUR ESCALATION
                     </h3>
                     <p className="text-xs text-rose-800 dark:text-rose-300 mt-1 leading-relaxed">
-                      <b>Hard Business Rule:</b> Khách hàng đang có khiếu nại mở chưa giải quyết. Dữ liệu chứng minh <b>99.86%</b> khách hàng khiếu nại sẽ rời bỏ ngân hàng.
+                      <b>Hard Business Rule:</b> Khách hàng đang có khiếu nại mở chưa giải quyết. Dữ liệu chứng minh <b>99,86%</b> khách hàng khiếu nại sẽ rời bỏ ngân hàng.
                       Hồ sơ đã được chuyển tiếp khẩn cấp tới Trưởng phòng CSKH Chi nhánh để gọi điện trong vòng 4 giờ.
                     </p>
                   </div>
@@ -392,7 +393,7 @@ export default function RetentionAdvisorPage() {
                     </div>
                     <div className="flex items-center gap-3 mt-1">
                       <span className="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                        {(prediction.churn_probability * 100).toFixed(1)}%
+                        {formatDecimal(prediction.churn_probability * 100, 1)}%
                       </span>
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
@@ -410,24 +411,24 @@ export default function RetentionAdvisorPage() {
                     <div className="text-slate-500 dark:text-slate-400">
                       Giá trị KH (V_annual):{" "}
                       <b className="text-slate-900 dark:text-white">
-                        {prediction.annual_customer_value_eur.toLocaleString()} &euro;
+                        {formatInt(prediction.annual_customer_value_eur)} &euro;
                       </b>
                     </div>
                     <div className="text-slate-500 dark:text-slate-400">
                       Chi phí can thiệp (C_action):{" "}
-                      <b className="text-slate-900 dark:text-white">{prediction.action_cost_eur} &euro;</b>
+                      <b className="text-slate-900 dark:text-white">{formatInt(prediction.action_cost_eur)} &euro;</b>
                     </div>
                     <div className="text-slate-500 dark:text-slate-400">
                       Ngưỡng hòa vốn T*:{" "}
                       <b className="text-blue-600 dark:text-blue-400">
-                        {(prediction.break_even_threshold * 100).toFixed(1)}%
+                        {formatDecimal(prediction.break_even_threshold * 100, 1)}%
                       </b>
                     </div>
                     <div className="font-bold text-emerald-600 dark:text-emerald-400">
                       Lợi ích ròng kỳ vọng:{" "}
                       {prediction.expected_net_gain_eur > 0
-                        ? `+${prediction.expected_net_gain_eur.toLocaleString()} €`
-                        : `${prediction.expected_net_gain_eur.toLocaleString()} €`}
+                        ? `+${formatInt(prediction.expected_net_gain_eur)} €`
+                        : `${formatInt(prediction.expected_net_gain_eur)} €`}
                     </div>
                   </div>
                 </div>
@@ -539,7 +540,7 @@ export default function RetentionAdvisorPage() {
                     <div>
                       <div className="text-xs text-slate-500 dark:text-slate-400">Xác suất Rời bỏ Mới:</div>
                       <div className="text-lg font-extrabold text-slate-900 dark:text-white">
-                        {(whatIfResult.simulated_probability * 100).toFixed(1)}%{" "}
+                        {formatDecimal(whatIfResult.simulated_probability * 100, 1)}%{" "}
                         <span
                           className={`text-xs font-bold ${
                             whatIfResult.delta_probability < 0
@@ -549,8 +550,8 @@ export default function RetentionAdvisorPage() {
                         >
                           (
                           {whatIfResult.delta_probability > 0
-                            ? `+${(whatIfResult.delta_probability * 100).toFixed(1)}%`
-                            : `${(whatIfResult.delta_probability * 100).toFixed(1)}%`}
+                            ? `+${formatDecimal(whatIfResult.delta_probability * 100, 1)}%`
+                            : `${formatDecimal(whatIfResult.delta_probability * 100, 1)}%`}
                           )
                         </span>
                       </div>

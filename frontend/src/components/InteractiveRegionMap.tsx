@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { COUNTRIES_DATA, QuadrantBreakdown } from "@/lib/mapBranchesData";
+import { formatInt, formatAuto } from "@/lib/formatters";
 import { useTheme } from "./AppShell";
 import type { MapStyle } from "./LeafletMapInner";
 
@@ -94,7 +95,7 @@ export default function InteractiveRegionMap() {
               3 QUỐC GIA TRONG DATABASE (GERMANY &bull; FRANCE &bull; SPAIN)
             </span>
             <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-500/20 border border-blue-200 dark:border-blue-500/40 text-[10px] text-blue-700 dark:text-blue-300 font-mono font-bold whitespace-nowrap">
-              10,000 Khách Hàng Thực Tế
+              10.000 Khách Hàng Thực Tế
             </span>
           </div>
 
@@ -104,7 +105,7 @@ export default function InteractiveRegionMap() {
           </h2>
           <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed">
             Phân bổ <code className="px-1 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-[11px]">Geography</code>:{" "}
-            <b>France (5,014 KH)</b>, <b>Germany (2,509 KH)</b> và <b>Spain (2,477 KH)</b>. Chọn quốc gia bên dưới hoặc nhấp trên bản đồ để xem chi tiết.
+            <b>France (5.014 KH)</b>, <b>Germany (2.509 KH)</b> và <b>Spain (2.477 KH)</b>. Chọn quốc gia bên dưới hoặc nhấp trên bản đồ để xem chi tiết.
           </p>
         </div>
 
@@ -156,31 +157,31 @@ export default function InteractiveRegionMap() {
               code: "EU",
               label: "Toàn cảnh",
               stat: "10k KH",
-              fullTitle: "Toàn Cảnh 3 Nước (10,000 KH)",
+              fullTitle: "Toàn Cảnh 3 Nước (10.000 KH)",
               danger: false,
             },
             {
               id: "Germany",
               code: "DE",
               label: "Germany",
-              stat: "32.4%",
-              fullTitle: "Germany • 2,509 KH (Churn 32.44% - Tâm chấn)",
+              stat: "32,4%",
+              fullTitle: "Germany • 2.509 KH (Churn 32,44% - Tâm chấn)",
               danger: true,
             },
             {
               id: "France",
               code: "FR",
               label: "France",
-              stat: "16.2%",
-              fullTitle: "France • 5,014 KH (Churn 16.17%)",
+              stat: "16,2%",
+              fullTitle: "France • 5.014 KH (Churn 16,17%)",
               danger: false,
             },
             {
               id: "Spain",
               code: "ES",
               label: "Spain",
-              stat: "16.7%",
-              fullTitle: "Spain • 2,477 KH (Churn 16.67%)",
+              stat: "16,7%",
+              fullTitle: "Spain • 2.477 KH (Churn 16,67%)",
               danger: false,
             },
           ].map((c) => {
@@ -275,15 +276,15 @@ export default function InteractiveRegionMap() {
           <div className="absolute bottom-3 left-3 z-20 bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-700/80 px-3.5 py-2 rounded-xl shadow-lg backdrop-blur-md text-[10px] text-slate-800 dark:text-slate-200 flex flex-wrap items-center gap-3">
             <span className="flex items-center gap-1.5 font-bold">
               <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" />
-              DE: Germany (2,509 KH &bull; Churn 32.44%)
+              DE: Germany (2.509 KH &bull; Churn 32,44%)
             </span>
             <span className="flex items-center gap-1.5 font-bold">
               <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block" />
-              FR: France (5,014 KH &bull; Churn 16.17%)
+              FR: France (5.014 KH &bull; Churn 16,17%)
             </span>
             <span className="flex items-center gap-1.5 font-bold">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
-              ES: Spain (2,477 KH &bull; Churn 16.67%)
+              ES: Spain (2.477 KH &bull; Churn 16,67%)
             </span>
           </div>
         </div>
@@ -326,7 +327,7 @@ export default function InteractiveRegionMap() {
                     QUY MÔ &amp; TỔNG TIỀN GỬI
                   </div>
                   <div className="text-sm font-extrabold text-slate-900 dark:text-white mt-0.5">
-                    {activeData.customers.toLocaleString()} KH ({activeData.pctCustomers})
+                    {formatInt(activeData.customers)} KH ({activeData.pctCustomers})
                   </div>
                   <div className="text-[10px] text-blue-600 dark:text-blue-400 font-semibold">
                     Vốn: {activeData.totalBalanceMEur}
@@ -344,7 +345,7 @@ export default function InteractiveRegionMap() {
                         : "text-emerald-600 dark:text-emerald-400"
                     }`}
                   >
-                    {activeData.churnRatePct} ({activeData.churners} KH)
+                    {activeData.churnRatePct} ({formatInt(activeData.churners)} KH)
                   </div>
                   <div className="text-[10px] text-amber-600 dark:text-amber-400 font-semibold">
                     Vốn rủi ro: {activeData.balanceAtRiskMEur}
@@ -356,7 +357,7 @@ export default function InteractiveRegionMap() {
                     TÀI KHOẢN SỐ DƯ = 0 &euro;
                   </div>
                   <div className="text-sm font-extrabold text-slate-900 dark:text-white mt-0.5">
-                    {activeData.zeroBalanceCount.toLocaleString()} KH ({activeData.zeroBalancePct})
+                    {formatInt(activeData.zeroBalanceCount)} KH ({activeData.zeroBalancePct})
                   </div>
                   <div className="text-[10px] text-slate-500 dark:text-slate-400">
                     Active Member: {activeData.activeMemberPct}
@@ -368,10 +369,10 @@ export default function InteractiveRegionMap() {
                     COMPLAIN &amp; BẪY 3–4 SP
                   </div>
                   <div className="text-sm font-extrabold text-rose-600 dark:text-rose-300 mt-0.5">
-                    {activeData.complainCount} KH Complain
+                    {formatInt(activeData.complainCount)} KH Complain
                   </div>
                   <div className="text-[10px] text-amber-600 dark:text-amber-300 font-semibold">
-                    Giữ 3–4 SP: {activeData.products34Count} KH
+                    Giữ 3–4 SP: {formatInt(activeData.products34Count)} KH
                   </div>
                 </div>
               </div>
@@ -384,7 +385,7 @@ export default function InteractiveRegionMap() {
                     Cơ Cấu 4 Nhóm Tại {activeData.shortName}
                   </span>
                   <span className="text-slate-500 dark:text-slate-400 font-mono">
-                    {activeData.customers.toLocaleString()} KH
+                    {formatInt(activeData.customers)} KH
                   </span>
                 </div>
 
@@ -410,11 +411,11 @@ export default function InteractiveRegionMap() {
                             <span>{q.title}</span>
                           </span>
                           <span className="font-mono text-[11px] text-slate-700 dark:text-slate-200 tabular-nums">
-                            {q.customers.toLocaleString()} KH ({q.pctOfCountry}%)
+                            {formatInt(q.customers)} KH ({formatAuto(q.pctOfCountry)}%)
                           </span>
                         </div>
                         <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 mt-1 font-mono tabular-nums">
-                          <span>Tiền gửi: {q.balanceMEur}M &euro;</span>
+                          <span>Tiền gửi: {formatAuto(q.balanceMEur)}M &euro;</span>
                           <span
                             className={
                               q.actualChurnRatePct >= 50
@@ -422,7 +423,7 @@ export default function InteractiveRegionMap() {
                                 : "text-emerald-600 dark:text-emerald-400 font-bold"
                             }
                           >
-                            Churn thực tế: {q.actualChurnRatePct}%
+                            Churn thực tế: {formatAuto(q.actualChurnRatePct)}%
                           </span>
                         </div>
                       </button>

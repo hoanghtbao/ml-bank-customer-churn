@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import PageHeader from "@/components/PageHeader";
 import { useTheme } from "@/components/AppShell";
 import { fetchApi } from "@/lib/api";
+import { formatInt, formatDecimal, formatAuto, formatViDisplay } from "@/lib/formatters";
 import {
   BarChart,
   Bar,
@@ -169,11 +170,11 @@ export default function StrategyPage() {
                       {q.Quadrant_Code}
                     </span>
                   </td>
-                  <td className="p-3 font-mono">{q.Customer_Count.toLocaleString()}</td>
-                  <td className="p-3">{q.Customer_Pct}%</td>
-                  <td className="p-3 font-mono font-semibold">{q.Total_Balance_M_EUR}M &euro;</td>
-                  <td className="p-3 font-semibold text-rose-600 dark:text-rose-400">{q.Balance_Pct}%</td>
-                  <td className="p-3 font-bold text-rose-600 dark:text-rose-400">{q.Actual_Churn_Pct}%</td>
+                  <td className="p-3 font-mono">{formatInt(q.Customer_Count)}</td>
+                  <td className="p-3">{formatViDisplay(q.Customer_Pct)}%</td>
+                  <td className="p-3 font-mono font-semibold">{formatViDisplay(q.Total_Balance_M_EUR)}M &euro;</td>
+                  <td className="p-3 font-semibold text-rose-600 dark:text-rose-400">{formatViDisplay(q.Balance_Pct)}%</td>
+                  <td className="p-3 font-bold text-rose-600 dark:text-rose-400">{formatViDisplay(q.Actual_Churn_Pct)}%</td>
                 </tr>
               ))}
             </tbody>
@@ -183,7 +184,7 @@ export default function StrategyPage() {
         <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/70 text-xs text-rose-800 dark:text-rose-200 leading-relaxed flex items-start gap-2">
           <ShieldAlert className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
           <div>
-            <b>Tâm điểm sống còn Q1 (VIP At-Risk):</b> Nắm giữ <b>31.75% tổng vốn tiền gửi ngân hàng (242.81M EUR)</b> nhưng có tỷ lệ rời bỏ thực tế lên tới <b>74.14%</b>! Mọi chiến dịch tiếp cận 1-1 phải dồn 90% chi phí vào phân khúc này.
+            <b>Tâm điểm sống còn Q1 (VIP At-Risk):</b> Nắm giữ <b>31,75% tổng vốn tiền gửi ngân hàng (242,81M EUR)</b> nhưng có tỷ lệ rời bỏ thực tế lên tới <b>74,14%</b>! Mọi chiến dịch tiếp cận 1-1 phải dồn 90% chi phí vào phân khúc này.
           </div>
         </div>
       </div>
@@ -291,7 +292,7 @@ export default function StrategyPage() {
             <div>
               <div className="flex justify-between text-xs font-medium text-slate-600 dark:text-slate-400">
                 <span>Biên lãi NIM trên tiền gửi:</span>
-                <b className="font-mono text-slate-900 dark:text-white">{marginRate.toFixed(1)}%/năm</b>
+                <b className="font-mono text-slate-900 dark:text-white">{formatDecimal(marginRate, 1)}%/năm</b>
               </div>
               <input
                 type="range"
@@ -307,7 +308,7 @@ export default function StrategyPage() {
             <div>
               <div className="flex justify-between text-xs font-medium text-slate-600 dark:text-slate-400">
                 <span>Phí dịch vụ cơ sở:</span>
-                <b className="font-mono text-slate-900 dark:text-white">{baseFee} &euro;/năm</b>
+                <b className="font-mono text-slate-900 dark:text-white">{formatInt(baseFee)} &euro;/năm</b>
               </div>
               <input
                 type="range"
@@ -330,28 +331,28 @@ export default function StrategyPage() {
               <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800">
                 <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Tổng Chi Phí Đầu Tư</div>
                 <div className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
-                  {Math.round(roiResult.Total_Campaign.total_intervention_cost_eur).toLocaleString()} &euro;
+                  {formatInt(roiResult.Total_Campaign.total_intervention_cost_eur)} &euro;
                 </div>
               </div>
               <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800">
                 <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Khách Hàng Cứu Được</div>
                 <div className="text-2xl font-extrabold text-blue-600 dark:text-blue-400 mt-1">
-                  {Math.round(roiResult.Total_Campaign.total_customers_saved).toLocaleString()} KH
+                  {formatInt(roiResult.Total_Campaign.total_customers_saved)} KH
                 </div>
               </div>
               <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800">
                 <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Tiền Gửi Bảo Toàn</div>
                 <div className="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">
-                  {roiResult.Total_Campaign.total_deposit_saved_m_eur.toFixed(2)}M &euro;
+                  {formatDecimal(roiResult.Total_Campaign.total_deposit_saved_m_eur, 2)}M &euro;
                 </div>
               </div>
               <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800">
                 <div className="text-[11px] font-bold text-emerald-800 dark:text-emerald-300 uppercase">Lợi Nhuận Ròng (Net Gain)</div>
                 <div className="text-2xl font-extrabold text-emerald-700 dark:text-emerald-400 mt-1">
-                  +{Math.round(roiResult.Total_Campaign.total_net_profit_eur).toLocaleString()} &euro;
+                  +{formatInt(roiResult.Total_Campaign.total_net_profit_eur)} &euro;
                 </div>
                 <div className="text-xs font-bold text-emerald-800 dark:text-emerald-300 mt-0.5">
-                  Tỷ suất ROI: {roiResult.Total_Campaign.total_roi_pct.toFixed(1)}%
+                  Tỷ suất ROI: {formatDecimal(roiResult.Total_Campaign.total_roi_pct, 1)}%
                 </div>
               </div>
             </div>
@@ -361,8 +362,8 @@ export default function StrategyPage() {
                 <BarChart data={chartRoiData}>
                   <CartesianGrid strokeDasharray="3 3" stroke={gridStroke} />
                   <XAxis dataKey="name" stroke={axisStroke} fontSize={12} />
-                  <YAxis stroke={axisStroke} fontSize={12} unit="k €" />
-                  <Tooltip contentStyle={tooltipStyle} />
+                  <YAxis stroke={axisStroke} fontSize={12} unit="k €" tickFormatter={(v) => formatAuto(v)} />
+                  <Tooltip contentStyle={tooltipStyle} formatter={(val) => (typeof val === "number" ? formatAuto(val) : val)} />
                   <Legend />
                   <Bar dataKey="Chi phí (k €)" fill="#ef4444" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="Giá trị cứu (k €)" fill="#3b82f6" radius={[4, 4, 0, 0]} />

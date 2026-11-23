@@ -523,5 +523,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
    * Cài đặt skill `ui-ux-pro-max` tại `.agents/skills/ui-ux-pro-max/` và khởi tạo Design System (`design-system/bb-bank-churn-dss/MASTER.md`); bổ sung nút chuyển **Sáng / Tối** trên `TopNavbar`, đồng bộ giao diện Sáng & Tối cho Sidebar, Bản đồ GIS (`InteractiveRegionMap` + `LeafletMapInner` kèm khóa `maxBounds` Châu Âu), 6 trang Next.js, sửa tràn lề phải `TopNavbar`, bỏ nút thu gọn trùng lặp và gom thanh chọn nền/khu vực bản đồ thành 1 hàng gọn gàng.
 9. **Bật Chế Độ Auto-Reload (Hot Refresh) Mặc Định Trong `run_fullstack.py` (23/11/2026):**
    * Đổi mặc định `python run_fullstack.py` sang chạy `npm run dev` + `uvicorn --reload` để giao diện và API tự cập nhật ngay khi sửa code (giữ cờ `--prod` cho Production và dùng `taskkill /T` khi dừng trên Windows).
+10. **Chuẩn Hóa Định Dạng Số Tiếng Việt (`vi-VN`) Xuyên Suốt Toàn Dự Án (23/11/2026):**
+    * Xây dựng bộ hàm định dạng dùng chung `frontend/src/lib/formatters.ts` (`Intl.NumberFormat("vi-VN")`) cho toàn bộ Web Next.js (6 trang, Bản đồ GIS, Lưới Excel, biểu đồ Recharts) và chuẩn hóa đồng bộ toàn bộ `reports/01`–`05` theo quy ước `.` phân cách hàng nghìn (`10.000`), `,` thập phân (`32,44%`, `300,40M €`).
 
 

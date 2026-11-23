@@ -91,7 +91,7 @@ Bảng dữ liệu sạch kỹ thuật tại `data/interim/churn_technical_clean
 | **Tổng số cột (Columns)** | 18 cột | 19 cột (+1 cờ `Surname_Encoding_Issue`) | **Chuẩn hóa schema** |
 | **Tên cột có khoảng trắng** | 3 cột (`Satisfaction Score`, `Card Type`, `Point Earned`) | 0 cột (thay bằng dấu gạch dưới `_`) | **Đạt chuẩn mã hóa** |
 | **Lỗi ký tự font `Surname`** | 92 dòng chứa dấu `?` | 0 dòng chứa dấu `?` | **Đã làm sạch hiển thị** |
-| **Dữ liệu thiếu (NaN)** | 0 giá trị (0.00%) | 0 giá trị (0.00%) | **Hoàn hảo** |
+| **Dữ liệu thiếu (NaN)** | 0 giá trị (0,00%) | 0 giá trị (0,00%) | **Hoàn hảo** |
 | **Bản ghi trùng lặp** | 0 bản ghi trùng | 0 bản ghi trùng | **Hoàn hảo** |
 | **Xác thực miền giá trị** | Chưa xác thực | Đạt 15/15 quy tắc nghiệp vụ | **Hoàn hảo** |
 | **Bảo toàn phân phối gốc** | Headcount Churn: 20,38%<br>Balance Churn: 24,28% | Headcount Churn: 20,38%<br>Balance Churn: 24,28% | **Giữ nguyên 100%** |

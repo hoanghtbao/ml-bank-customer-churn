@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import { fetchApi } from "@/lib/api";
+import { formatDecimal, formatViDisplay } from "@/lib/formatters";
 import { ShieldCheck, CheckCircle2, Cpu, FileText, RefreshCw } from "lucide-react";
 
 export default function GovernancePage() {
@@ -68,7 +69,7 @@ export default function GovernancePage() {
             </div>
             <div className="flex justify-between py-1 border-b border-dashed border-slate-100 dark:border-slate-800">
               <span className="text-slate-500 dark:text-slate-400">Ngưỡng quyết định T*:</span>
-              <span className="font-mono font-bold text-blue-600 dark:text-blue-400">{meta.optimal_decision_threshold || "0.45"}</span>
+              <span className="font-mono font-bold text-blue-600 dark:text-blue-400">{formatViDisplay(meta.optimal_decision_threshold || "0,45")}</span>
             </div>
             <div className="flex justify-between py-1">
               <span className="text-slate-500 dark:text-slate-400">Chiến lược:</span>
@@ -139,7 +140,7 @@ export default function GovernancePage() {
       {/* Untouched Test Holdout Metrics */}
       <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 mb-8 shadow-xs transition-colors">
         <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wide mb-1">
-          2. Hiệu Năng Kiểm Thử Độc Lập 1 Lần (1-Time Untouched Test Holdout - 1,500 Khách Hàng)
+          2. Hiệu Năng Kiểm Thử Độc Lập 1 Lần (1-Time Untouched Test Holdout - 1.500 Khách Hàng)
         </h2>
         <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
           Tập kiểm thử được niêm phong hoàn toàn và chỉ mở duy nhất 1 lần để thẩm định khách quan năng lực thực chiến ngoài môi trường sản xuất.
@@ -149,7 +150,7 @@ export default function GovernancePage() {
           <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 text-center">
             <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Accuracy</div>
             <div className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
-              {(testMetrics.accuracy ? testMetrics.accuracy * 100 : 84.67).toFixed(2)}%
+              {formatDecimal(testMetrics.accuracy ? testMetrics.accuracy * 100 : 84.67, 2)}%
             </div>
             <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Độ chính xác tổng thể</div>
           </div>
@@ -157,7 +158,7 @@ export default function GovernancePage() {
           <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 text-center">
             <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Precision</div>
             <div className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
-              {(testMetrics.precision ? testMetrics.precision * 100 : 64.48).toFixed(2)}%
+              {formatDecimal(testMetrics.precision ? testMetrics.precision * 100 : 64.48, 2)}%
             </div>
             <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Độ chuẩn xác cảnh báo</div>
           </div>
@@ -165,7 +166,7 @@ export default function GovernancePage() {
           <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 text-center">
             <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Recall</div>
             <div className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
-              {(testMetrics.recall ? testMetrics.recall * 100 : 54.75).toFixed(2)}%
+              {formatDecimal(testMetrics.recall ? testMetrics.recall * 100 : 54.75, 2)}%
             </div>
             <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Tỷ lệ bắt trúng Churn</div>
           </div>
@@ -173,17 +174,17 @@ export default function GovernancePage() {
           <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 text-center">
             <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">F1-Score</div>
             <div className="text-2xl font-extrabold text-blue-600 dark:text-blue-400 mt-1">
-              {(testMetrics.f1_score || 0.5922).toFixed(4)}
+              {formatDecimal(testMetrics.f1_score || 0.5922, 4)}
             </div>
-            <div className="text-[10px] text-slate-500 dark:text-slate-400 font-mono mt-0.5">95% CI: [0.54, 0.63]</div>
+            <div className="text-[10px] text-slate-500 dark:text-slate-400 font-mono mt-0.5">95% CI: [0,54; 0,63]</div>
           </div>
 
           <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-center col-span-2 md:col-span-1">
             <div className="text-[11px] font-bold text-emerald-800 dark:text-emerald-300 uppercase">ROC-AUC</div>
             <div className="text-2xl font-extrabold text-emerald-700 dark:text-emerald-400 mt-1">
-              {(testMetrics.roc_auc || 0.8437).toFixed(4)}
+              {formatDecimal(testMetrics.roc_auc || 0.8437, 4)}
             </div>
-            <div className="text-[10px] text-emerald-800 dark:text-emerald-300 font-mono mt-0.5">95% CI: [0.82, 0.87]</div>
+            <div className="text-[10px] text-emerald-800 dark:text-emerald-300 font-mono mt-0.5">95% CI: [0,82; 0,87]</div>
           </div>
         </div>
       </div>
@@ -194,7 +195,7 @@ export default function GovernancePage() {
           3. Bảng Phân Vị Tích Lũy (Decile Gain &amp; Cumulative Lift Table)
         </h2>
         <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-          Chứng minh hiệu quả tiếp cận có trọng tâm: Decile 1 đạt hệ số Lift lên tới <b>3.97x</b>!
+          Chứng minh hiệu quả tiếp cận có trọng tâm: Decile 1 đạt hệ số Lift lên tới <b>3,97x</b>!
         </p>
 
         <div className="overflow-x-auto">
@@ -220,11 +221,11 @@ export default function GovernancePage() {
                   }
                 >
                   <td className="p-3 font-mono">Decile {d.Decile}</td>
-                  <td className="p-3 font-mono">{d["Khách hàng"]}</td>
-                  <td className="p-3 font-mono font-bold text-rose-600 dark:text-rose-400">{d["Số Churn"]}</td>
-                  <td className="p-3">{d["Tỷ lệ Churn Decile (%)"]}</td>
-                  <td className="p-3 font-semibold text-blue-700 dark:text-blue-400">{d["Tích lũy Churn Bắt được (%)"]}</td>
-                  <td className="p-3 font-bold font-mono text-emerald-600 dark:text-emerald-400">{d["Hệ số Nâng (Lift)"]}</td>
+                  <td className="p-3 font-mono">{formatViDisplay(d["Khách hàng"])}</td>
+                  <td className="p-3 font-mono font-bold text-rose-600 dark:text-rose-400">{formatViDisplay(d["Số Churn"])}</td>
+                  <td className="p-3">{formatViDisplay(d["Tỷ lệ Churn Decile (%)"])}</td>
+                  <td className="p-3 font-semibold text-blue-700 dark:text-blue-400">{formatViDisplay(d["Tích lũy Churn Bắt được (%)"])}</td>
+                  <td className="p-3 font-bold font-mono text-emerald-600 dark:text-emerald-400">{formatViDisplay(d["Hệ số Nâng (Lift)"])}</td>
                 </tr>
               ))}
             </tbody>
@@ -263,11 +264,11 @@ export default function GovernancePage() {
                       : "hover:bg-slate-50/70 dark:hover:bg-slate-800/40"
                   }
                 >
-                  <td className="p-3 font-bold text-slate-900 dark:text-white">{a.scenario}</td>
-                  <td className="p-3 text-slate-600 dark:text-slate-400">{a.description}</td>
-                  <td className="p-3 font-mono">{a.val_accuracy}</td>
-                  <td className="p-3 font-mono font-semibold">{a.val_f1}</td>
-                  <td className="p-3 font-mono font-bold text-blue-600 dark:text-blue-400">{a.val_roc_auc}</td>
+                  <td className="p-3 font-bold text-slate-900 dark:text-white">{formatViDisplay(a.scenario)}</td>
+                  <td className="p-3 text-slate-600 dark:text-slate-400">{formatViDisplay(a.description)}</td>
+                  <td className="p-3 font-mono">{formatViDisplay(a.val_accuracy)}</td>
+                  <td className="p-3 font-mono font-semibold">{formatViDisplay(a.val_f1)}</td>
+                  <td className="p-3 font-mono font-bold text-blue-600 dark:text-blue-400">{formatViDisplay(a.val_roc_auc)}</td>
                   <td className="p-3">
                     <span
                       className={`px-2 py-0.5 rounded text-[10px] font-bold ${
@@ -300,7 +301,7 @@ export default function GovernancePage() {
             },
             {
               title: "[Leakage Audit] Loại Bỏ Triệt Để Biến Complain",
-              desc: "Chặn đứng hiện tượng Target Leakage (tương quan 99.86%) trong luồng dự báo sớm.",
+              desc: "Chặn đứng hiện tượng Target Leakage (tương quan 99,86%) trong luồng dự báo sớm.",
             },
             {
               title: "[Basel III] Đánh Giá Khả Năng Tổng Quát Hóa",

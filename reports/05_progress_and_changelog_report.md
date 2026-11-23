@@ -37,7 +37,7 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
   * **Nâng cấp:** Chuyển sang kiến trúc Web Doanh nghiệp hiện đại gồm:
     1. **Backend REST API (`api/`):** Xây dựng bằng **FastAPI + Uvicorn** (chạy tại cổng `8000`), tách biệt hoàn toàn tầng tính toán ML với tầng hiển thị, thời gian phản hồi `< 15ms`.
     2. **Frontend Web App (`frontend/`):** Xây dựng bằng **Next.js 16 (App Router) + TypeScript + Tailwind CSS + Recharts + Lucide Icons** (chạy tại cổng `3000`).
-    3. **Loại bỏ thư mục `app/` (Streamlit):** Đã xóa hoàn toàn thư mục `app/` (2,176 dòng code Streamlit cũ) để dự án gọn gàng, không bị trùng lặp 2 giao diện.
+    3. **Loại bỏ thư mục `app/` (Streamlit):** Đã xóa hoàn toàn thư mục `app/` (2.176 dòng code Streamlit cũ) để dự án gọn gàng, không bị trùng lặp 2 giao diện.
     4. **Tích hợp thanh điều hướng thu gọn (Collapsible Sidebar) & TopNavbar:** Cho phép đóng/mở thanh công cụ mượt mà 60fps, tự động lưu trạng thái vào `localStorage`, kèm đồng hồ giờ chuẩn thị trường Châu Âu (Frankfurt CET) và đèn báo kết nối FastAPI trực tiếp.
 
 ---
@@ -50,7 +50,7 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
   * Nhúng trực tiếp **Bản đồ Địa lý Thực tế (`React-Leaflet` + `OpenStreetMap`)** làm tâm điểm đầu tiên khi mở giao diện Web (`http://localhost:3000`).
   * Hỗ trợ 4 lớp bản đồ nền: **🌍 OpenStreetMap Chuẩn**, **🗺️ Google Voyager Style**, **🛰️ Vệ tinh thực tế (Esri World Imagery)** và **🌙 FinTech Dark**.
   * Sử dụng dữ liệu biên giới thật **GeoJSON (`frontend/public/geo/tri_market_countries.json`)** để tô màu chính xác lãnh thổ đất liền của 3 nước.
-  * **Đồng nhất 100% với Database gốc (`Customer-Churn-Records.csv`):** Chỉ đặt **đúng 3 Trạm phát sáng Quốc gia duy nhất** đại diện cho 3 giá trị của cột `Geography` (`Germany: 2,509 KH - Churn 32.44%`, `France: 5,014 KH - Churn 16.17%`, `Spain: 2,477 KH - Churn 16.67%`), không tạo các chấm chi nhánh giả định gây hiểu nhầm. Khi click vào từng nước, bảng bên phải hiển thị đầy đủ thống kê từ CSV và cơ cấu 4 nhóm `Q1, Q2, Q3, Q4` của nước đó.
+  * **Đồng nhất 100% với Database gốc (`Customer-Churn-Records.csv`):** Chỉ đặt **đúng 3 Trạm phát sáng Quốc gia duy nhất** đại diện cho 3 giá trị của cột `Geography` (`Germany: 2.509 KH - Churn 32,44%`, `France: 5.014 KH - Churn 16,17%`, `Spain: 2.477 KH - Churn 16,67%`), không tạo các chấm chi nhánh giả định gây hiểu nhầm. Khi click vào từng nước, bảng bên phải hiển thị đầy đủ thống kê từ CSV và cơ cấu 4 nhóm `Q1, Q2, Q3, Q4` của nước đó.
 
 ---
 
@@ -115,7 +115,7 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
 * **Trong Kế hoạch / Giao diện trước đó:**
   * Sidebar và khung Bản đồ Địa lý GIS (`InteractiveRegionMap.tsx`) bị khóa cứng nền tối `#091426` trong khi thanh điều hướng trên và nền trang là giao diện sáng, gây lệch tông thị giác; chưa có nút chuyển đổi Sáng/Tối (`Light / Dark Mode`), thanh TopNavbar bị tràn mép phải ở màn hình laptop, emoji cờ bị hiển thị thành ký tự chữ trên Windows, bản đồ Leaflet có thể trôi sang vùng Caribe, xuất hiện 2 nút thu gọn Sidebar trùng nhau (`Sidebar.tsx` + `TopNavbar.tsx`) và thanh nút chọn lớp bản đồ/quốc gia trên `InteractiveRegionMap.tsx` bị rớt dòng lẻ loi.
 * **Thay đổi đã thực hiện:**
-  * Cài đặt bộ skill **`ui-ux-pro-max`** (clone từ `https://github.com/nextlevelbuilder/ui-ux-pro-max-skill`) vào `.agents/skills/ui-ux-pro-max/` và sinh chuẩn thiết kế tại `design-system/bb-bank-churn-dss/MASTER.md` (`IBM Plex Sans`, `JetBrains Mono`, tỷ lệ tương phản $\ge 4.5:1$, `tabular-nums`).
+  * Cài đặt bộ skill **`ui-ux-pro-max`** (clone từ `https://github.com/nextlevelbuilder/ui-ux-pro-max-skill`) vào `.agents/skills/ui-ux-pro-max/` và sinh chuẩn thiết kế tại `design-system/bb-bank-churn-dss/MASTER.md` (`IBM Plex Sans`, `JetBrains Mono`, tỷ lệ tương phản $\ge 4,5:1$, `tabular-nums`).
   * Kích hoạt biến thể `@custom-variant dark (&:where(.dark, .dark *));` cho Tailwind CSS v4 (`frontend/src/app/globals.css`), xây dựng `ThemeContext` / `useTheme()` trong `AppShell.tsx` (lưu `bb_bank_theme` trong `localStorage`) cùng nút chuyển **Sáng / Tối** ngay trên `TopNavbar.tsx`.
   * Đồng bộ toàn diện giao diện **Sáng** (nền trắng/xám tinh gọn cho Sidebar, TopNavbar, khung Bản đồ GIS dùng lớp nền CartoDB Voyager, toàn bộ 6 trang và biểu đồ Recharts) và **Tối** (tông Navy `#091426` / `#020617` và bản đồ CartoDB Dark Matter tự đồng bộ theo chế độ chủ đề).
   * Khắc phục tràn lề phải `TopNavbar` (`min-w-0` trên flex container), gỡ nút thu gọn Sidebar thừa trong `Sidebar.tsx` để giữ duy nhất 1 nút chuẩn trên `TopNavbar.tsx`, gom thanh chọn nền bản đồ (`Sáng`, `OSM`, `Vệ tinh`, `Tối`) và thanh công cụ khu vực (`Toàn cảnh`, `Germany`, `France`, `Spain` | `Về Châu Âu`, `GeoJSON`) trên `InteractiveRegionMap.tsx` thành 1 hàng ngang gọn gàng không rớt dòng lẻ, thay emoji cờ bằng huy hiệu ISO (`FR`, `DE`, `ES`) và khóa `maxBounds` vùng Tây Âu (`[[30, -16], [60, 24]]`).
@@ -126,6 +126,14 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
   * Khi tồn tại thư mục `.next`, `run_fullstack.py` tự động chọn `npm run start` (Production) và chạy `uvicorn` không có `--reload`, buộc phải tắt và chạy lại `python run_fullstack.py` mỗi lần sửa code.
 * **Thay đổi đã thực hiện:**
   * Chuyển mặc định `python run_fullstack.py` sang chế độ **Auto-Reload Dev Mode** (`npm run dev -- -p 3000` với Turbopack Fast Refresh + `uvicorn --reload --reload-dir api --reload-dir src`), bổ sung tùy chọn `--prod` để chạy bản Production khi cần và thêm `stop_process_tree` (`taskkill /F /T /PID`) để dọn sạch tiến trình con trên Windows khi nhấn `Ctrl + C`.
+
+### Thay đổi 10: Chuẩn Hóa Định Dạng Số Tiếng Việt (`vi-VN`: `.` Hàng Nghìn, `,` Thập Phân) Toàn Dự Án (23/11/2026)
+
+* **Trong Báo cáo & Giao diện trước đó:**
+  * Bị pha trộn giữa 2 quy ước số: `reports/01` và `PROJECT_PLAN_BANK_CUSTOMER_CHURN.md` dùng chuẩn Việt Nam (`10.000`, `20,38%`), trong khi `reports/02`–`04`, `reports/05` và giao diện Web Next.js dùng chuẩn Quốc tế (`10,000`, `32.44%`, `300.40M €`) và gọi `.toLocaleString()` không truyền locale cố định.
+* **Thay đổi đã thực hiện:**
+  * Tạo module định dạng dùng chung [formatters.ts](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/frontend/src/lib/formatters.ts) (`formatInt`, `formatDecimal`, `formatAuto`, `formatPercent`, `formatViDisplay` dùng `Intl.NumberFormat("vi-VN")`) và áp dụng đồng bộ lên toàn bộ 6 trang Web (`page.tsx`, `dashboard`, `advisor`, `batch`, `strategy`, `governance`), dữ liệu bản đồ (`mapBranchesData.ts`, `InteractiveRegionMap.tsx`, `LeafletMapInner.tsx`), `TopNavbar.tsx`, cũng như tooltip/trục biểu đồ Recharts.
+  * Chuẩn hóa đồng nhất toàn bộ 5 báo cáo (`reports/01`–`05`) sang quy ước tiếng Việt (`.` phân cách hàng nghìn, `,` dấu thập phân, `;` ngăn cách khoảng tin cậy `[0,8179; 0,8693]`), giữ nguyên mã nguồn Python/JSON, tệp CSV xuất thô, URL và số hiệu phiên bản phần mềm.
 
 ---
 

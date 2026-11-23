@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import { useTheme } from "@/components/AppShell";
 import { fetchApi } from "@/lib/api";
+import { formatInt, formatDecimal, formatAuto } from "@/lib/formatters";
 import {
   BarChart,
   Bar,
@@ -76,7 +77,7 @@ export default function DashboardPage() {
             Tổng Danh Mục Quản Lý
           </div>
           <div className="text-2xl font-extrabold text-slate-900 dark:text-white">
-            {kpis.total_customers.toLocaleString()} KH
+            {formatInt(kpis.total_customers)} KH
           </div>
           <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 mt-2">
             100% Khách hàng cá nhân
@@ -88,10 +89,10 @@ export default function DashboardPage() {
             Tỷ Lệ Rời Bỏ Đầu Người
           </div>
           <div className="text-2xl font-extrabold text-rose-600 dark:text-rose-400">
-            {kpis.churn_rate_pct}%
+            {formatDecimal(kpis.churn_rate_pct, 2)}%
           </div>
           <div className="text-xs font-semibold text-rose-600 dark:text-rose-400 mt-2">
-            {kpis.churn_headcount.toLocaleString()} khách rời bỏ
+            {formatInt(kpis.churn_headcount)} khách rời bỏ
           </div>
         </div>
 
@@ -100,10 +101,10 @@ export default function DashboardPage() {
             Tổng Nguồn Vốn Tiền Gửi
           </div>
           <div className="text-2xl font-extrabold text-slate-900 dark:text-white">
-            {kpis.total_balance_m_eur}M &euro;
+            {formatDecimal(kpis.total_balance_m_eur, 2)}M &euro;
           </div>
           <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-2">
-            764.86M EUR toàn ngân hàng
+            764,86M EUR toàn ngân hàng
           </div>
         </div>
 
@@ -112,10 +113,10 @@ export default function DashboardPage() {
             Tiền Gửi Bị Thất Thoát
           </div>
           <div className="text-2xl font-extrabold text-rose-600 dark:text-rose-400">
-            {kpis.balance_at_risk_m_eur}M &euro;
+            {formatDecimal(kpis.balance_at_risk_m_eur, 2)}M &euro;
           </div>
           <div className="text-xs font-semibold text-rose-600 dark:text-rose-400 mt-2">
-            {kpis.balance_at_risk_pct}% tổng vốn tiền gửi
+            {formatDecimal(kpis.balance_at_risk_pct, 2)}% tổng vốn tiền gửi
           </div>
         </div>
       </div>
@@ -140,9 +141,9 @@ export default function DashboardPage() {
               <ComposedChart data={countryData}>
                 <CartesianGrid strokeDasharray="3 3" stroke={gridStroke} />
                 <XAxis dataKey="country" stroke={axisStroke} fontSize={12} />
-                <YAxis yAxisId="left" stroke="#ef4444" fontSize={12} unit="%" />
-                <YAxis yAxisId="right" orientation="right" stroke="#3b82f6" fontSize={12} unit="M" />
-                <Tooltip contentStyle={tooltipStyle} />
+                <YAxis yAxisId="left" stroke="#ef4444" fontSize={12} unit="%" tickFormatter={(v) => formatAuto(v)} />
+                <YAxis yAxisId="right" orientation="right" stroke="#3b82f6" fontSize={12} unit="M" tickFormatter={(v) => formatAuto(v)} />
+                <Tooltip contentStyle={tooltipStyle} formatter={(val) => (typeof val === "number" ? formatAuto(val) : val)} />
                 <Legend />
                 <Bar yAxisId="left" dataKey="churn_rate_pct" name="Tỷ lệ Churn (%)" fill="#ef4444" radius={[6, 6, 0, 0]} />
                 <Line yAxisId="right" type="monotone" dataKey="lost_balance_m_eur" name="Vốn mất (M EUR)" stroke="#3b82f6" strokeWidth={3} dot={{ r: 5 }} />
@@ -153,7 +154,7 @@ export default function DashboardPage() {
           <div className="mt-4 p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/70 text-xs text-rose-800 dark:text-rose-200 leading-relaxed flex items-start gap-2">
             <Zap className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
             <div>
-              <b>Tâm chấn Đức:</b> Tỷ lệ rời bỏ tại Đức là <b>32.44%</b>, 100% khách hàng có tiền gửi dương (TB 119,730 EUR), làm thất thoát <b>97.97M EUR (52.76% tổng vốn mất toàn ngân hàng)</b>.
+              <b>Tâm chấn Đức:</b> Tỷ lệ rời bỏ tại Đức là <b>32,44%</b>, 100% khách hàng có tiền gửi dương (TB 119.730 EUR), làm thất thoát <b>97,97M EUR (52,76% tổng vốn mất toàn ngân hàng)</b>.
             </div>
           </div>
         </div>
@@ -176,8 +177,8 @@ export default function DashboardPage() {
               <BarChart data={productData}>
                 <CartesianGrid strokeDasharray="3 3" stroke={gridStroke} />
                 <XAxis dataKey="num_products" stroke={axisStroke} fontSize={12} unit=" SP" />
-                <YAxis stroke={axisStroke} fontSize={12} unit="%" />
-                <Tooltip contentStyle={tooltipStyle} />
+                <YAxis stroke={axisStroke} fontSize={12} unit="%" tickFormatter={(v) => formatAuto(v)} />
+                <Tooltip contentStyle={tooltipStyle} formatter={(val) => (typeof val === "number" ? formatAuto(val) : val)} />
                 <Bar dataKey="churn_rate_pct" name="Tỷ lệ Churn (%)" fill="#3b82f6" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -186,7 +187,7 @@ export default function DashboardPage() {
           <div className="mt-4 p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/70 text-xs text-amber-900 dark:text-amber-200 leading-relaxed flex items-start gap-2">
             <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
             <div>
-              <b>Bẫy bán chéo:</b> Sở hữu 2 sản phẩm có tỷ lệ rời bỏ thấp nhất (chỉ <b>7.60%</b>). Khi ép bán chéo lên 3 hoặc 4 sản phẩm, tỷ lệ rời bỏ tăng vọt lên <b>82.71% và 100.0%</b> do quá tải dịch vụ.
+              <b>Bẫy bán chéo:</b> Sở hữu 2 sản phẩm có tỷ lệ rời bỏ thấp nhất (chỉ <b>7,60%</b>). Khi ép bán chéo lên 3 hoặc 4 sản phẩm, tỷ lệ rời bỏ tăng vọt lên <b>82,71% và 100,0%</b> do quá tải dịch vụ.
             </div>
           </div>
         </div>
@@ -198,7 +199,7 @@ export default function DashboardPage() {
           3. Tỷ Lệ Rời Bỏ Theo Nhóm Tuổi &amp; Trạng Thái Tương Tác Kênh Số
         </h3>
         <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-          Nhóm trung niên (adult_mature: 45–59 tuổi) có tỷ lệ rời bỏ cao kỷ lục 49.45%
+          Nhóm trung niên (adult_mature: 45–59 tuổi) có tỷ lệ rời bỏ cao kỷ lục 49,45%
         </p>
 
         <div className="h-72 w-full">
@@ -206,8 +207,8 @@ export default function DashboardPage() {
             <BarChart data={ageData}>
               <CartesianGrid strokeDasharray="3 3" stroke={gridStroke} />
               <XAxis dataKey="age_group" stroke={axisStroke} fontSize={12} />
-              <YAxis stroke={axisStroke} fontSize={12} unit="%" />
-              <Tooltip contentStyle={tooltipStyle} />
+              <YAxis stroke={axisStroke} fontSize={12} unit="%" tickFormatter={(v) => formatAuto(v)} />
+              <Tooltip contentStyle={tooltipStyle} formatter={(val) => (typeof val === "number" ? formatAuto(val) : val)} />
               <Legend />
               <Bar dataKey="active_churn_rate_pct" name="Đang hoạt động (Active)" fill="#10b981" radius={[4, 4, 0, 0]} />
               <Bar dataKey="inactive_churn_rate_pct" name="Bất hoạt (Inactive)" fill="#ef4444" radius={[4, 4, 0, 0]} />
