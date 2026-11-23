@@ -31,7 +31,7 @@ export default function HomePage() {
     <div>
       <PageHeader
         category="Hồ Sơ Doanh Nghiệp & Kiến Trúc Phân Tích"
-        title="EuroVanguard Bank — Churn Analytics & Retention DSS"
+        title="BB Bank — Churn Analytics & Retention DSS"
         subtitle="Hệ thống quản trị rủi ro rời bỏ và ra quyết định giữ chân khách hàng (Thị trường: Pháp, Đức, Tây Ban Nha)"
       />
 

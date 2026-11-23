@@ -1,6 +1,6 @@
 """
-Pydantic Schemas for EuroVanguard Bank Customer Churn FastAPI Backend.
-Roleplay: EuroVanguard Bank (France, Germany, Spain).
+Pydantic Schemas for BB Bank Customer Churn FastAPI Backend.
+Roleplay: BB Bank (France, Germany, Spain).
 """
 
 from typing import Optional, List, Dict, Any

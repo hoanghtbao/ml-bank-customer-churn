@@ -1,6 +1,6 @@
 """
 Model Prediction and Operational Decision Support Module.
-Roleplay: EuroVanguard Bank.
+Roleplay: BB Bank.
 Implements the Proactive ML Pipeline combined with the Hard Business Rule Override for Complaints.
 """
 

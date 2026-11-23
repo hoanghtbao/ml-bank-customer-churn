@@ -1,7 +1,7 @@
 """
 Module: src.data.load_data
 Description: Data loading, schema validation, and column categorization
-for EuroVanguard Bank Customer Churn DSS (Customer-Churn-Records.csv).
+for BB Bank Customer Churn DSS (Customer-Churn-Records.csv).
 """
 
 import os

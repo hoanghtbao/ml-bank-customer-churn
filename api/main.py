@@ -1,5 +1,5 @@
 """
-EuroVanguard Bank Customer Churn DSS - FastAPI Server.
+BB Bank Customer Churn DSS - FastAPI Server.
 Provides high-performance, asynchronous REST APIs for Next.js Web Frontend.
 """
 
@@ -16,7 +16,7 @@ if PROJECT_ROOT not in sys.path:
 from api.routes import predict, dashboard, strategy, governance, batch
 
 app = FastAPI(
-    title="EuroVanguard Bank - Churn DSS API",
+    title="BB Bank - Churn DSS API",
     description="Enterprise Machine Learning & Retention Decision Support System REST API",
     version="2.4.0"
 )
@@ -44,7 +44,7 @@ def health_check():
     """Health check endpoint."""
     return {
         "status": "healthy",
-        "system": "EuroVanguard Bank Churn DSS",
+        "system": "BB Bank Churn DSS",
         "version": "2.4.0",
         "certified": True,
         "model_loaded": True

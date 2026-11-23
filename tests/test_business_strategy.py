@@ -100,7 +100,7 @@ def test_generate_call_script():
     assert "Bao" in script
     assert "Le Van B" in script
     assert "Germany" in script
-    assert "EuroVanguard" in script
+    assert "BB Bank" in script
     # Ensure internal AI risk score is never leaked to the customer
     assert "Machine Learning" not in script
     assert "AI Churn Score" not in script

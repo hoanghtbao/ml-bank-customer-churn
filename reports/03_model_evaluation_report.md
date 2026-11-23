@@ -1,6 +1,6 @@
 # BÁO CÁO ĐÁNH GIÁ MÔ HÌNH HỌC MÁY DỰ BÁO SỚM & QUẢN TRỊ RỦI RO
 ## (Predictive Modeling, Ablation Scenarios & SHAP Governance Report)
-### Doanh nghiệp giả định: EuroVanguard Bank (France, Germany, Spain)
+### Doanh nghiệp giả định: BB Bank (France, Germany, Spain)
 **Quy trình chuẩn:** CRISP-DM — Phase 5: Modeling & Evaluation | Chuẩn mực Quản trị Rủi ro Mô hình (SR 11-7 / Basel III)  
 **Tập dữ liệu huấn luyện:** [train.csv](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/data/processed/train.csv) (7,000 dòng) | **Tập thẩm định:** [val.csv](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/data/processed/val.csv) (1,500 dòng) | **Tập kiểm thử:** [test.csv](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/data/processed/test.csv) (1,500 dòng)  
 **Tệp mô hình xuất xưởng:** [churn_early_warning_pipeline.joblib](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/models/churn_early_warning_pipeline.joblib)  
@@ -11,7 +11,7 @@
 
 ## 1. TỔNG QUAN ĐIỀU HÀNH (EXECUTIVE SUMMARY)
 
-Báo cáo này trình bày toàn bộ kết quả phát triển, thẩm định chéo, nghiên cứu triệt tiêu (Ablation Study), tối ưu ngưỡng quyết định kinh tế và giải thích nguyên nhân dự báo (SHAP Explainability) cho hệ thống **Cảnh báo Sớm Nguy cơ Rời bỏ Khách hàng (Customer Churn Proactive Early-Warning System)** tại EuroVanguard Bank.
+Báo cáo này trình bày toàn bộ kết quả phát triển, thẩm định chéo, nghiên cứu triệt tiêu (Ablation Study), tối ưu ngưỡng quyết định kinh tế và giải thích nguyên nhân dự báo (SHAP Explainability) cho hệ thống **Cảnh báo Sớm Nguy cơ Rời bỏ Khách hàng (Customer Churn Proactive Early-Warning System)** tại BB Bank.
 
 ### Các Chỉ số Hiệu năng Cốt lõi trên Tập Kiểm thử Độc lập (1-Time Untouched Test Holdout):
 * **Quy mô Tập Kiểm thử:** 1,500 khách hàng (Chưa từng tham gia huấn luyện hay tinh chỉnh siêu tham số).

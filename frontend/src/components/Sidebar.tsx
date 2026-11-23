@@ -93,7 +93,7 @@ export default function Sidebar() {
             {!collapsed && (
               <div className="min-w-0 overflow-hidden">
                 <div className="font-extrabold text-sm tracking-tight text-white leading-tight">
-                  EUROVANGUARD
+                  BB BANK
                 </div>
                 <div className="text-[9px] font-bold text-blue-400 tracking-widest uppercase">
                   Bank Decision Support

@@ -1,6 +1,6 @@
 """
 Model Training and Multi-Scaler / Multi-Model Experimentation Module.
-Roleplay: EuroVanguard Bank.
+Roleplay: BB Bank.
 Standard: CRISP-DM Phase 5 (Modeling) & Teacher Barem Alignment.
 """
 

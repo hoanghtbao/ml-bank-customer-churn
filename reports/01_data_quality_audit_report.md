@@ -1,5 +1,5 @@
 # BÁO CÁO KIỂM TOÁN CHẤT LƯỢNG & LÀM SẠCH KỸ THUẬT DỮ LIỆU
-## EuroVanguard Bank – Customer Churn Analytics & Decision Support System
+## BB Bank – Customer Churn Analytics & Decision Support System
 **Mã tài liệu:** `DATA-QUALITY-REPORT-V1.0`  
 **Giai đoạn:** Giai đoạn 1 & Giai đoạn 2 (CRISP-DM: Data Understanding & Data Preparation)  
 **Tập dữ liệu nguồn:** `data/raw/Customer-Churn-Records.csv`  
@@ -9,7 +9,7 @@
 
 ## 1. Tóm tắt Điều hành (Executive Summary)
 
-Báo cáo này tài liệu hóa kết quả kiểm toán chất lượng dữ liệu thô và quy trình làm sạch kỹ thuật (Technical Data Cleansing) trên danh mục **10.000 khách hàng cá nhân** của **EuroVanguard Bank** (tại 3 thị trường: Pháp, Đức và Tây Ban Nha).
+Báo cáo này tài liệu hóa kết quả kiểm toán chất lượng dữ liệu thô và quy trình làm sạch kỹ thuật (Technical Data Cleansing) trên danh mục **10.000 khách hàng cá nhân** của **BB Bank** (tại 3 thị trường: Pháp, Đức và Tây Ban Nha).
 
 ### Các kết luận then chốt:
 1. **Tính toàn vẹn kỹ thuật:** Bộ dữ liệu có chất lượng thu thập rất cao về mặt cấu trúc: **0% giá trị khuyết thiếu (`NaN`)**, **0 bản ghi trùng lặp**, và toàn bộ **10.000 mã định danh `CustomerId` là duy nhất**.

@@ -16,7 +16,7 @@ import {
 import { useState, useEffect } from "react";
 
 const ROUTE_TITLES: Record<string, { title: string; section: string }> = {
-  "/": { title: "Tổng Quan Hồ Sơ & Kiến Trúc", section: "EuroVanguard" },
+  "/": { title: "Tổng Quan Hồ Sơ & Kiến Trúc", section: "BB Bank" },
   "/dashboard": { title: "Báo Cáo Điều Hành Danh Mục", section: "Descriptive & Diagnostic" },
   "/advisor": { title: "Tư Vấn Giữ Chân 1-1 (SLA 4h)", section: "Predictive & Prescriptive" },
   "/batch": { title: "Chấm Điểm Danh Mục Khách Hàng", section: "Campaign Operations" },
@@ -27,7 +27,7 @@ const ROUTE_TITLES: Record<string, { title: string; section: string }> = {
 export default function TopNavbar() {
   const pathname = usePathname();
   const { collapsed, toggleSidebar } = useSidebar();
-  const currentRoute = ROUTE_TITLES[pathname] || { title: "Phân Hệ Nghiệp Vụ", section: "EuroVanguard" };
+  const currentRoute = ROUTE_TITLES[pathname] || { title: "Phân Hệ Nghiệp Vụ", section: "BB Bank" };
   const [timeStr, setTimeStr] = useState("");
 
   useEffect(() => {

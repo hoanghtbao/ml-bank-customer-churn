@@ -12,7 +12,7 @@
 ## 1. Thông tin dự án & Kịch bản Đóng vai Doanh nghiệp (Business Roleplay)
 
 ### 1.1. Tên dự án
-* **Tên tiếng Anh:** **EuroVanguard Bank – Enterprise Customer Churn Analytics, Early-Warning ML & Retention Decision Support System**
+* **Tên tiếng Anh:** **BB Bank – Enterprise Customer Churn Analytics, Early-Warning ML & Retention Decision Support System**
 * **Tên tiếng Việt:** **Xây dựng Hệ thống Phân tích Dữ liệu Đa tầng, Dự báo Sớm Khách hàng Rời bỏ và Phần mềm Tư vấn Giữ chân Khách hàng ứng dụng Machine Learning tại Ngân hàng Bán lẻ Đa quốc gia.**
 
 ---
@@ -20,7 +20,7 @@
 ### 1.2. Hồ sơ Doanh nghiệp Giả định (Company Persona)
 Nhóm đóng vai **Khối Phân tích Dữ liệu & Quản trị Giá trị Khách hàng (Data Science & Customer Value Management - CVM Division)** của ngân hàng giả định:
 
-* **Tên doanh nghiệp giả định:** **EuroVanguard Bank** *(Ngân hàng Thương mại & Ngân hàng Số Bán lẻ hoạt động tại khu vực đồng tiền chung Châu Âu - Eurozone)*.
+* **Tên doanh nghiệp giả định:** **BB Bank** *(Ngân hàng Thương mại & Ngân hàng Số Bán lẻ hoạt động tại khu vực đồng tiền chung Châu Âu - Eurozone)*.
 * **Quy mô & Thị trường trong mẫu nghiên cứu:** Danh mục 10.000 khách hàng cá nhân tại 3 quốc gia: **Pháp (France - 50,14%)**, **Đức (Germany - 25,09%)** và **Tây Ban Nha (Spain - 24,77%)**.
 * **Hệ sinh thái sản phẩm:** Tài khoản thanh toán & tiết kiệm (`Balance`), Thẻ tín dụng (`HasCrCard`), Chương trình khách hàng thân thiết 4 hạng thẻ (`SILVER`, `GOLD`, `PLATINUM`, `DIAMOND`) tích điểm thưởng (`Point Earned`), và các gói sản phẩm tài chính (`NumOfProducts` từ 1 đến 4 sản phẩm).
 * **Bài toán kinh doanh trích xuất từ bộ dữ liệu (Business Pain Point):**
@@ -34,7 +34,7 @@ Nhóm đóng vai **Khối Phân tích Dữ liệu & Quản trị Giá trị Khá
 ### 1.3. Kịch bản Lời dẫn Đóng vai khi Thuyết trình (Executive Pitching Script)
 
 > **Lời dẫn Mở đầu (Đóng vai Giám đốc Khối Dữ liệu báo cáo trước Hội đồng Quản trị):**
-> *"Kính chào Hội đồng Quản trị và Ban Giám đốc EuroVanguard Bank. Hôm nay, Khối Khoa học Dữ liệu (Data Science Division) xin trình bày báo cáo chiến lược: **Bảo vệ nguồn vốn huy động 185,68 triệu EUR trước làn sóng khách hàng rời bỏ tại 3 thị trường Pháp, Đức và Tây Ban Nha.**
+> *"Kính chào Hội đồng Quản trị và Ban Giám đốc BB Bank. Hôm nay, Khối Khoa học Dữ liệu (Data Science Division) xin trình bày báo cáo chiến lược: **Bảo vệ nguồn vốn huy động 185,68 triệu EUR trước làn sóng khách hàng rời bỏ tại 3 thị trường Pháp, Đức và Tây Ban Nha.**
 > Khi nhìn vào con số 20,38% khách hàng rời bỏ, nhiều người nghĩ chúng ta chỉ mất đi 1/5 số lượng tài khoản. Nhưng dữ liệu phơi bày một thực tế đáng lo ngại hơn: những khách hàng rời bỏ mang theo số dư trung bình hơn 91.100 EUR — cao hơn 25,2% so với khách hàng ở lại, làm hao hụt 24,28% tổng nguồn vốn tiền gửi của ngân hàng. Thay vì bị động chờ khách hàng đóng tài khoản, nhóm chúng tôi đã triển khai quy trình phân tích 4 cấp độ chuẩn doanh nghiệp — từ **Mô tả, Chẩn đoán, Dự báo đến Đề xuất Quyết định** — nhằm cung cấp cho đội ngũ Chăm sóc Khách hàng một phần mềm tư vấn thông minh: xác định rõ **Ai có nguy cơ rời đi – Yếu tố nào thúc đẩy rủi ro đó – Và gói can thiệp nào mang lại lợi nhuận ròng (ROI) dương cho ngân hàng**."*
 
 > **Lời dẫn Kết thúc (Chốt chiến lược – Điền số liệu thực tế sau khi chạy Giai đoạn 5 & 6):**
@@ -46,7 +46,7 @@ Nhóm đóng vai **Khối Phân tích Dữ liệu & Quản trị Giá trị Khá
 ### 1.4. Phạm vi và Giới hạn của Nghiên cứu (Scope & Limitations)
 1. **Bản chất bộ dữ liệu công khai & Khả năng khái quát hóa:**
    * `Customer-Churn-Records.csv` là bộ dữ liệu công khai trên Kaggle dùng cho mục đích học tập và mô phỏng.
-   * Qua kiểm tra sơ bộ, một số biến như `EstimatedSalary`, `Satisfaction Score`, `Card Type` có phân phối gần như đồng đều (Uniform), và có sự độc lập giữa `HasCrCard = 0` với `Card Type`. Đây là dấu hiệu của dữ liệu được bổ sung/tổng hợp (synthetic augmentation). Do đó, mọi kết luận chỉ áp dụng trong phạm vi bộ dữ liệu này và là kịch bản mô phỏng quy trình cho ngân hàng giả định EuroVanguard Bank.
+   * Qua kiểm tra sơ bộ, một số biến như `EstimatedSalary`, `Satisfaction Score`, `Card Type` có phân phối gần như đồng đều (Uniform), và có sự độc lập giữa `HasCrCard = 0` với `Card Type`. Đây là dấu hiệu của dữ liệu được bổ sung/tổng hợp (synthetic augmentation). Do đó, mọi kết luận chỉ áp dụng trong phạm vi bộ dữ liệu này và là kịch bản mô phỏng quy trình cho ngân hàng giả định BB Bank.
 2. **Không có dấu thời gian (No Timestamps / Cross-sectional Snapshot):**
    * Dataset là ảnh chụp cắt ngang tại một thời điểm, không có lịch sử giao dịch theo thời gian (`timestamp`).
    * Do đó, việc coi `Complain` (khiếu nại) và `Satisfaction Score` (điểm hài lòng sau giải quyết khiếu nại) xảy ra đồng thời hoặc ngay trước sự kiện `Exited` là **giả định nghiệp vụ** để thiết kế bài toán chống rò rỉ nhãn (Data Leakage). Quy trình phản ứng nhanh (SLA 4 giờ khi có khiếu nại) trong thực tế chỉ có hiệu lực nếu hệ thống CRM ghi nhận khiếu nại *trước khi* khách hàng nộp yêu cầu tất toán tài khoản.
@@ -138,7 +138,7 @@ Bank_Customer_Churn/
 │       └── retention_advisor.py               # Động cơ gợi ý Gói Giữ chân (Fairness-aware) & Mô phỏng What-If
 │
 ├── app/
-│   ├── Home.py                                # Trang chủ: Hồ sơ EuroVanguard Bank & Kiến trúc 4 tầng phân tích
+│   ├── Home.py                                # Trang chủ: Hồ sơ BB Bank & Kiến trúc 4 tầng phân tích
 │   └── pages/
 │       ├── 1_Executive_Dashboard.py           # Tầng Mô tả & Chẩn đoán: Headcount Churn vs. Balance-at-Risk
 │       ├── 2_Customer_Retention_Advisor.py    # Phần mềm Tư vấn Cá nhân: Tra cứu ID/Nhập hồ sơ -> Tư vấn & What-If
@@ -489,7 +489,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
 
 - [x] **Bước chuẩn bị:** Chuẩn hóa toàn bộ quy trình theo 4 Cấp độ Phân tích Doanh nghiệp (Gartner) + CRISP-DM, bổ sung đầy đủ công thức tường minh, Chia 3 tập `Train / Validation / Test`, Tiered ROI, Ablation (Leakage & Fairness) và đồng bộ 100% với `Customer-Churn-Records.csv`.
 - [x] **Giai đoạn 0:** Khởi tạo cấu trúc dự án chuẩn Enterprise, kiểm tra môi trường và quản trị dữ liệu gốc (`data/raw/`).
-- [x] **Giai đoạn 1:** Business Understanding (Hồ sơ EuroVanguard Bank & Phạm vi giới hạn) & Data Audit (Kiểm toán 18 cột).
+- [x] **Giai đoạn 1:** Business Understanding (Hồ sơ BB Bank & Phạm vi giới hạn) & Data Audit (Kiểm toán 18 cột).
 - [x] **Giai đoạn 2:** Technical Data Cleansing (Làm sạch kỹ thuật, xử lý lỗi font `Surname`, kiểm tra logic & miền giá trị *trước* EDA).
 - [x] **Giai đoạn 3:** EDA Chuẩn Ngân hàng (Đơn biến + Nhị biến kèm Kiểm định, **Holm-Bonferroni**, **Effect Size**, **WOE/IV** + Đa biến kèm **VIF** & **Balance-at-Risk**).
 - [x] **Giai đoạn 4:** Domain Feature Engineering (6 biến tường minh, an toàn với `Tenure = 0` + `categorize_age`) & Chia 3 tập `Train / Validation / Test` + Pipeline chống Leakage.
@@ -517,4 +517,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
    * Ghi nhận rõ lộ trình: `18 cột gốc` $\rightarrow$ `+1 cờ Surname_Encoding_Issue = 19 cột (Giai đoạn 2)` $\rightarrow$ `+7 đặc trưng mới (có IsZeroBalance và age_groups) = 26 cột (Giai đoạn 4)` $\rightarrow$ `Loại bỏ 7 cột (Exited, định danh, cờ lỗi font, Complain rò rỉ, Age_Lifecycle_Stage trùng lặp) = 19 đặc trưng đầu vào mô hình ML (Giai đoạn 5)`.
 6. **Tách rời Bộ nạp Mô hình về `src/modeling/predict.py` & Mở rộng Bộ Kiểm thử lên 47 Tests:**
    * Đưa các hàm nạp pipeline/dữ liệu về `src/modeling/predict.py` thuần Python và bổ sung `tests/test_api_endpoints.py` (tổng cộng **47/47 tests PASSED**).
+7. **Chuẩn hóa Tên Thương Hiệu Ngân Hàng Thành `BB Bank` (23/11/2026):**
+   * Cập nhật đồng bộ tên doanh nghiệp giả định từ tên ban đầu sang **`BB Bank`** (`BB Bank AG`, `BB_Bank_Scored_Portfolio_2026.xlsx`) trên toàn bộ 37 tệp mã nguồn Web, API, Python, Notebook, Báo cáo và Kiểm thử.
+
 

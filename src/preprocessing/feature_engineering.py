@@ -1,6 +1,6 @@
 """
 Feature Engineering and Dataset Splitting Module.
-Roleplay: EuroVanguard Bank (France, Germany, Spain).
+Roleplay: BB Bank (France, Germany, Spain).
 Standard: CRISP-DM Phase 4 (Data Preparation).
 
 This module implements deterministic, row-wise domain feature transformations

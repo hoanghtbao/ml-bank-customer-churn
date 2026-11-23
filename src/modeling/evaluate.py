@@ -1,6 +1,6 @@
 """
 Model Evaluation, Threshold Optimization, and 1-Time Test Holdout Module.
-Roleplay: EuroVanguard Bank.
+Roleplay: BB Bank.
 Standard: CRISP-DM Phase 5 (Evaluation) & Enterprise Model Governance.
 """
 

@@ -24,7 +24,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setMounted(true);
-    const saved = localStorage.getItem("eurovanguard_sidebar_collapsed");
+    const saved = localStorage.getItem("bb_bank_sidebar_collapsed");
     if (saved !== null) {
       setCollapsed(saved === "true");
     }
@@ -33,7 +33,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const toggleSidebar = () => {
     setCollapsed((prev) => {
       const next = !prev;
-      localStorage.setItem("eurovanguard_sidebar_collapsed", String(next));
+      localStorage.setItem("bb_bank_sidebar_collapsed", String(next));
       return next;
     });
   };
@@ -61,7 +61,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           {/* Enterprise Footer */}
           <footer className="px-8 py-4 border-t border-slate-200/80 bg-white/50 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
             <div>
-              <span className="font-semibold text-slate-700">EuroVanguard Bank AG</span> &bull; Customer Value Management & Churn DSS &bull; Production v2.4
+              <span className="font-semibold text-slate-700">BB Bank AG</span> &bull; Customer Value Management & Churn DSS &bull; Production v2.4
             </div>
             <div className="flex items-center gap-4 text-slate-400">
               <span>Độc quyền nội bộ Hội đồng Tín Dụng & Khối Bán Lẻ</span>

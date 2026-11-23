@@ -193,7 +193,7 @@ export default function BatchScoringPage() {
     link.setAttribute("href", url);
     link.setAttribute(
       "download",
-      `EuroVanguard_Scored_Portfolio_${activeSheet}_${new Date().toISOString().slice(0, 10)}.csv`
+      `BB_Bank_Scored_Portfolio_${activeSheet}_${new Date().toISOString().slice(0, 10)}.csv`
     );
     document.body.appendChild(link);
     link.click();
@@ -270,7 +270,7 @@ export default function BatchScoringPage() {
             </div>
             <div>
               <div className="text-xs font-extrabold tracking-wide flex items-center gap-2">
-                <span>EuroVanguard_Scored_Portfolio_2026.xlsx</span>
+                <span>BB_Bank_Scored_Portfolio_2026.xlsx</span>
                 <span className="text-[10px] px-1.5 py-0.2 rounded bg-white/20 font-normal">
                   Đã lưu tự động
                 </span>

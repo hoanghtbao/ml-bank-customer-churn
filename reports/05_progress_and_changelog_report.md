@@ -1,6 +1,6 @@
 # BÁO CÁO TIẾN ĐỘ TỔNG THỂ & NHẬT KÝ CÁC THAY ĐỔI SO VỚI KẾ HOẠCH DỰ ÁN (PROGRESS & CHANGELOG REPORT)
 
-* **Dự án:** Hệ thống Cảnh báo Sớm Rời bỏ & Tư vấn Giữ chân Khách hàng Ngân hàng Bán lẻ (*EuroVanguard Bank Customer Churn Early-Warning & Retention DSS*)
+* **Dự án:** Hệ thống Cảnh báo Sớm Rời bỏ & Tư vấn Giữ chân Khách hàng Ngân hàng Bán lẻ (*BB Bank Customer Churn Early-Warning & Retention DSS*)
 * **Ngày cập nhật:** 19/11/2026
 * **Trạng thái tổng thể:** **Hoàn thành 100% (8/8 Giai đoạn + Các hạng mục nâng cấp mở rộng)**
 * **Quy tắc quản trị:** Mọi chỉnh sửa, nâng cấp hoặc điều chỉnh kiến trúc so với bản Kế hoạch gốc (`PROJECT_PLAN_BANK_CUSTOMER_CHURN.md`) đều được ghi nhận minh bạch tại báo cáo này để phục vụ tra cứu, bảo trì và bảo vệ đồ án.
@@ -12,7 +12,7 @@
 | Giai đoạn | Hạng mục Công việc Cốt lõi | Trạng thái | Tệp Đầu ra / Minh chứng |
 | :--- | :--- | :---: | :--- |
 | **Giai đoạn 0** | Khởi tạo cấu trúc dự án Enterprise, kiểm tra môi trường & bảo toàn dữ liệu gốc | ✅ **100%** | `data/raw/Customer-Churn-Records.csv`, `tests/test_environment.py` |
-| **Giai đoạn 1** | Business Understanding (Hồ sơ EuroVanguard Bank) & Kiểm toán Chất lượng Dữ liệu (18 cột) | ✅ **100%** | `src/data/load_data.py`, `reports/01_data_quality_audit_report.md` |
+| **Giai đoạn 1** | Business Understanding (Hồ sơ BB Bank) & Kiểm toán Chất lượng Dữ liệu (18 cột) | ✅ **100%** | `src/data/load_data.py`, `reports/01_data_quality_audit_report.md` |
 | **Giai đoạn 2** | Làm sạch Kỹ thuật (Chuẩn hóa tên cột, xử lý 92 lỗi font `?` ở `Surname` kèm cờ `Surname_Encoding_Issue`) | ✅ **100%** | `src/data/clean_data.py`, `data/interim/churn_technical_cleaned.csv` (19 cột) |
 | **Giai đoạn 3** | EDA Chuẩn Ngân hàng (Đơn biến, Nhị biến, Đa biến, Kiểm định giả thuyết, Holm-Bonferroni, WoE/IV, VIF) | ✅ **100%** | `src/eda/statistical_tests.py`, `reports/02_eda_diagnostic_report.md`, `fig_01` $\rightarrow$ `fig_13` |
 | **Giai đoạn 4** | Kỹ thuật Đặc trưng Nghiệp vụ (Feature Engineering) & Chia 3 tập Phân tầng (`70% Train / 15% Val / 15% Test`) | ✅ **100%** | `src/preprocessing/feature_engineering.py`, `data/processed/{train,val,test,full_engineered}.csv` |
@@ -100,6 +100,15 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
 * **Nâng cấp đã thực hiện:**
   * Chuyển các hàm nạp dữ liệu và mô hình (`load_champion_pipeline`, `load_metadata`, `load_full_dataset`, `get_pre_scored_data`) về module lõi [src/modeling/predict.py](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/src/modeling/predict.py) thuần Python, không phụ thuộc vào bất kỳ framework giao diện nào.
   * Bổ sung thêm tệp kiểm thử [tests/test_api_endpoints.py](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/tests/test_api_endpoints.py) gồm 8 bài kiểm thử tích hợp cho toàn bộ hệ thống FastAPI REST Endpoints $\rightarrow$ Nâng tổng số bài kiểm thử tự động lên **47/47 tests đạt 100% (`PASSED`)**.
+
+---
+
+### Thay đổi 7: Chuẩn hóa Tên Thương Hiệu Ngân Hàng Thành `BB Bank` Xuyên Suốt Toàn Dự Án (23/11/2026)
+
+* **Trong Kế hoạch gốc:**
+  * Đặt tên ngân hàng nhập vai ban đầu là `EuroVanguard Bank`.
+* **Thay đổi đã thực hiện:**
+  * Đổi đồng bộ tên ngân hàng thành **`BB Bank`** (`BB Bank AG` ở chân trang Web, `BB BANK` trên banner/Sidebar, `BB_Bank_Scored_Portfolio_2026.xlsx` trên lưới Excel và `bb_bank_retention_call_list.csv` khi xuất file) trên toàn bộ **37 tệp** gồm: Giao diện Web Next.js (`frontend/`), Backend FastAPI (`api/`), mã nguồn Python (`src/`), kiểm thử (`tests/test_business_strategy.py`), Notebook tổng hợp (`Project_Source_Code.ipynb`), các notebook thành phần (`notebooks/`), kế hoạch và toàn bộ báo cáo (`reports/`).
 
 ---
 

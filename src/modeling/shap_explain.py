@@ -1,6 +1,6 @@
 """
 SHAP Explainability Module for Tree-based Early-Warning Models.
-Roleplay: EuroVanguard Bank.
+Roleplay: BB Bank.
 Provides global and local feature attribution for decision support and regulatory audit.
 """
 

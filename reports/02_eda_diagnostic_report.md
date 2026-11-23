@@ -1,6 +1,6 @@
 # BÁO CÁO PHÂN TÍCH CHẨN ĐOÁN DỮ LIỆU RỜI BỎ KHÁCH HÀNG
 ## (EDA & Diagnostic Analytics Report: From Descriptive to Diagnostic Insights)
-### Doanh nghiệp giả định: EuroVanguard Bank (France, Germany, Spain)
+### Doanh nghiệp giả định: BB Bank (France, Germany, Spain)
 **Quy trình chuẩn:** CRISP-DM — Phase 2 & 3: Data Understanding & Diagnostic Analytics  
 **Tập dữ liệu chuẩn hóa:** [churn_technical_cleaned.csv](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/data/interim/churn_technical_cleaned.csv) (10,000 khách hàng × 18 biến số)  
 **Ngày thực hiện:** Tháng 11/2026 | **Phiên bản:** 1.0 (Production-Ready)
@@ -9,7 +9,7 @@
 
 ## 1. TỔNG QUAN ĐIỀU HÀNH (EXECUTIVE SUMMARY)
 
-Phân tích chẩn đoán chuyên sâu (Diagnostic Analytics) được thực hiện trên 10.000 hồ sơ khách hàng của EuroVanguard Bank nhằm xác định căn nguyên của hiện tượng khách hàng đóng tài khoản và rút vốn tiền gửi. Khác biệt với các tiếp cận học máy thông thường chỉ tập trung vào tỷ lệ rời bỏ theo số lượng đầu người (Headcount Churn), báo cáo này thiết lập **Hệ thống Mục tiêu Kép (Dual Baseline Framework)** gắn liền trực tiếp với dòng tiền và vốn huy động của ngân hàng:
+Phân tích chẩn đoán chuyên sâu (Diagnostic Analytics) được thực hiện trên 10.000 hồ sơ khách hàng của BB Bank nhằm xác định căn nguyên của hiện tượng khách hàng đóng tài khoản và rút vốn tiền gửi. Khác biệt với các tiếp cận học máy thông thường chỉ tập trung vào tỷ lệ rời bỏ theo số lượng đầu người (Headcount Churn), báo cáo này thiết lập **Hệ thống Mục tiêu Kép (Dual Baseline Framework)** gắn liền trực tiếp với dòng tiền và vốn huy động của ngân hàng:
 
 | Chỉ số Cốt lõi (Core Metric) | Giá trị Toàn Ngân hàng | Phân khúc Khách hàng Rời bỏ (`Exited = 1`) | Phân khúc Khách hàng Giữ chân (`Exited = 0`) | Chênh lệch / Tác động Tài chính |
 | :--- | :---: | :---: | :---: | :---: |
@@ -92,7 +92,7 @@ Mỗi phát hiện bên dưới được trình bày theo cấu trúc chuẩn m�
   * Cả 4 hạng thẻ (Diamond, Platinum, Gold, Silver) tại Đức đều thất thoát đều đặn từ 24 đến 26 triệu EUR mỗi hạng, cho thấy đây là vấn đề mang tính hệ thống của chi nhánh (lãi suất cạnh tranh kém, dịch vụ chăm sóc khách hàng VIP kém, hoặc đối thủ fintech/ngân hàng nội địa Đức đang hút vốn).
 
 * **5. Hạn chế & Giả định:**
-  * Tập dữ liệu không ghi nhận tên đối thủ cạnh tranh hay mức chênh lệch lãi suất huy động giữa EuroVanguard và các ngân hàng Đức (Deutsche Bank, Commerzbank, N26).
+  * Tập dữ liệu không ghi nhận tên đối thủ cạnh tranh hay mức chênh lệch lãi suất huy động giữa BB Bank và các ngân hàng Đức (Deutsche Bank, Commerzbank, N26).
 
 ---
 
@@ -195,7 +195,7 @@ Mỗi phát hiện bên dưới được trình bày theo cấu trúc chuẩn m�
 
 * **3. Bản chất Hiện tượng Số liệu (Core Insight):**
   * Các biến thường được coi là trọng tâm như `CreditScore`, `EstimatedSalary`, `HasCrCard`, `Point_Earned` hoàn toàn không có sự khác biệt giữa hai nhóm khách hàng ở lại và rời bỏ ($p > 0.05$, $IV < 0.02$).
-  * Điều này chứng minh hành vi rời bỏ tại EuroVanguard Bank không chịu ảnh hưởng bởi mức lương hay uy tín tín dụng, mà chịu tác động trực tiếp bởi **Tuổi tác, Sản phẩm, Chi nhánh Quốc gia và Trạng thái tương tác**.
+  * Điều này chứng minh hành vi rời bỏ tại BB Bank không chịu ảnh hưởng bởi mức lương hay uy tín tín dụng, mà chịu tác động trực tiếp bởi **Tuổi tác, Sản phẩm, Chi nhánh Quốc gia và Trạng thái tương tác**.
 
 * **4. Tác động Mô hình hóa & Kiến trúc Pipeline:**
   * Việc áp dụng thuật toán chọn đặc trưng tự động `SelectKBest(f_classif)` trong Scikit-learn Pipeline (tương ứng với phong cách của Notebook mẫu) sẽ giúp loại bỏ các biến nhiễu này, ngăn chặn hiện tượng quá khớp (Overfitting) và tăng cường độ vững cáp khi triển khai thực tế.

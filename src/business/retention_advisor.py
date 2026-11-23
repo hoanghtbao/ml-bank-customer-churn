@@ -1,7 +1,7 @@
 """
 Prescriptive Retention Advisor, Next-Best-Action (NBA) Engine,
 Dynamic Call Script Generator, and Tiered ROI Calculator.
-Roleplay: EuroVanguard Bank.
+Roleplay: BB Bank.
 Standard: Gartner Prescriptive Analytics — Actionable Playbook.
 """
 
@@ -117,14 +117,14 @@ def generate_call_script(
 
     script = f"""================================================================================
 KỊCH BẢN CHĂM SÓC KHÁCH HÀNG CÁ NHÂN HÓA (FRONT-LINE RETENTION CALL SCRIPT)
-Ngân hàng: EuroVanguard Bank | Khách hàng: {salutation} {surname} | Chi nhánh: {geography}
+Ngân hàng: BB Bank | Khách hàng: {salutation} {surname} | Chi nhánh: {geography}
 Chuyên viên phụ trách: {rm_name} | Mã chiến lược: {nba['strategy_code']}
 Mức độ ưu tiên: {nba['urgency']} | Kênh thực hiện: {nba['channel']}
 ================================================================================
 
 [BƯỚC 1: LỜI CHÀO & TẠO SỰ GẮN KẾT ẤM ÁP]
-"Dạ, em chào {salutation} {surname}! Em là {rm_name}, Chuyên viên Quản lý Quan hệ Khách hàng tại EuroVanguard Bank chi nhánh {geography}.
-Trước hết, thay mặt ban lãnh đạo ngân hàng, em xin chân thành cảm ơn {salutation} đã đồng hành và tin tưởng gắn bó cùng EuroVanguard trong suốt {tenure} năm qua.
+"Dạ, em chào {salutation} {surname}! Em là {rm_name}, Chuyên viên Quản lý Quan hệ Khách hàng tại BB Bank chi nhánh {geography}.
+Trước hết, thay mặt ban lãnh đạo ngân hàng, em xin chân thành cảm ơn {salutation} đã đồng hành và tin tưởng gắn bó cùng BB Bank trong suốt {tenure} năm qua.
 Hôm nay em liên hệ trực tiếp để kiểm tra xem quá trình trải nghiệm dịch vụ tài khoản của {salutation} có điều gì cần ngân hàng hỗ trợ thêm hay không ạ?"
 
 [BƯỚC 2: TIẾP CẬN TẾ NHỊ DỰA TRÊN ĐẶC TRƯNG HÀNH VI]
@@ -141,7 +141,7 @@ Em xin được đại diện ban điều hành chân thành gửi lời xin l�
         script += f"""\"Dạ thưa {salutation}, với tư cách là một trong những khách hàng tiền gửi tiêu biểu tại chi nhánh Đức, ngân hàng chúng em trân trọng mời {salutation} tham gia gói đặc quyền 'Bảo toàn & Tăng trưởng Vốn 2026' với chính sách lãi suất linh hoạt ưu đãi riêng biệt...\"
 """
     elif customer.get('IsActiveMember', 1) == 0:
-        script += f"""\"Dạ thưa {salutation}, đợt này ứng dụng ngân hàng số EuroVanguard Mobile vừa nâng cấp nhiều tính năng chuyển tiền tự động và thanh toán không tiếp xúc rất tiện ích. 
+        script += f"""\"Dạ thưa {salutation}, đợt này ứng dụng ngân hàng số BB Bank Mobile vừa nâng cấp nhiều tính năng chuyển tiền tự động và thanh toán không tiếp xúc rất tiện ích. 
 Em muốn hỗ trợ {salutation} kích hoạt lại để nhận ngay các gói voucher ưu đãi dành riêng cho tài khoản của mình ạ...\"
 """
     else:

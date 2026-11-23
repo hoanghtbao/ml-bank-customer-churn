@@ -1,14 +1,14 @@
-# EuroVanguard Bank – Customer Churn Analytics & Decision Support System (DSS)
+# BB Bank – Customer Churn Analytics & Decision Support System (DSS)
 
 ## 📌 Giới thiệu Dự án
-Hệ thống Phân tích Dữ liệu Đa tầng, Dự báo Sớm Khách hàng Rời bỏ và Phần mềm Hỗ trợ Quyết định Giữ chân Khách hàng ứng dụng Machine Learning tại Ngân hàng Bán lẻ Châu Âu (**EuroVanguard Bank**).
+Hệ thống Phân tích Dữ liệu Đa tầng, Dự báo Sớm Khách hàng Rời bỏ và Phần mềm Hỗ trợ Quyết định Giữ chân Khách hàng ứng dụng Machine Learning tại Ngân hàng Bán lẻ Châu Âu (**BB Bank**).
 
 Dự án áp dụng khung phân tích 4 cấp độ của **Gartner (Descriptive $\rightarrow$ Diagnostic $\rightarrow$ Predictive $\rightarrow$ Prescriptive)** kết hợp quy trình chuẩn **CRISP-DM** và các chỉ số thẩm định rủi ro ngân hàng (**WOE/IV, Decile Gain/Lift, Tiered ROI, Model Governance & Fairness**).
 
 ---
 
 ## 🏛 Bối cảnh Doanh nghiệp Giả định
-* **Tổ chức:** EuroVanguard Bank (Ngân hàng bán lẻ đa quốc gia tại Eurozone).
+* **Tổ chức:** BB Bank (Ngân hàng bán lẻ đa quốc gia tại Eurozone).
 * **Thị trường khảo sát:** 10.000 khách hàng cá nhân tại Pháp (50.14%), Đức (25.09%) và Tây Ban Nha (24.77%).
 * **Thực trạng dữ liệu:**
   * Tỷ lệ rời bỏ theo số lượng (**Headcount Churn Rate**): **20.38%** (2,038 / 10,000 khách hàng).

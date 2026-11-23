@@ -1,6 +1,6 @@
 # SỔ TAY CHIẾN LƯỢC KINH DOANH & PHÂN TÍCH ĐỀ XUẤT GIỮ CHÂN KHÁCH HÀNG
 ## (Prescriptive Business Strategy & Customer Retention Playbook)
-### Doanh nghiệp giả định: EuroVanguard Bank (France, Germany, Spain)
+### Doanh nghiệp giả định: BB Bank (France, Germany, Spain)
 **Quy trình chuẩn:** Gartner Level 4: Prescriptive Analytics | Chiến lược Quản trị Dòng tiền & Trải nghiệm Khách hàng  
 **Tập dữ liệu phân tích:** [full_engineered.csv](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/data/processed/full_engineered.csv) (10,000 khách hàng toàn ngân hàng)  
 **Mô hình vận hành:** [churn_early_warning_pipeline.joblib](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/models/churn_early_warning_pipeline.joblib)  
@@ -99,13 +99,13 @@ flowchart TD
 ```text
 ================================================================================
 KỊCH BẢN CHĂM SÓC KHÁCH HÀNG CÁ NHÂN HÓA (FRONT-LINE RETENTION CALL SCRIPT)
-Ngân hàng: EuroVanguard Bank | Khách hàng: Anh Müller | Chi nhánh: Germany
+Ngân hàng: BB Bank | Khách hàng: Anh Müller | Chi nhánh: Germany
 Chuyên viên phụ trách: Nguyễn Văn Bảo | Mã chiến lược: S3_GERMAN_WEALTH_LOCK
 ================================================================================
 
 [BƯỚC 1: LỜI CHÀO & TẠO SỰ GẮN KẾT ẤM ÁP]
-"Dạ, em chào Anh Müller! Em là Nguyễn Văn Bảo, Chuyên viên Quản lý Tài sản Khách hàng Cao cấp tại EuroVanguard Bank chi nhánh Frankfurt.
-Trước hết, thay mặt ban lãnh đạo ngân hàng, em xin chân thành cảm ơn Anh đã đồng hành và tin tưởng gửi gắm dòng vốn tại EuroVanguard trong suốt 5 năm qua.
+"Dạ, em chào Anh Müller! Em là Nguyễn Văn Bảo, Chuyên viên Quản lý Tài sản Khách hàng Cao cấp tại BB Bank chi nhánh Frankfurt.
+Trước hết, thay mặt ban lãnh đạo ngân hàng, em xin chân thành cảm ơn Anh đã đồng hành và tin tưởng gửi gắm dòng vốn tại BB Bank trong suốt 5 năm qua.
 Hôm nay em liên hệ trực tiếp để hỏi thăm tình hình giao dịch của Anh và cập nhật một số chính sách ưu đãi vốn mới nhất của ngân hàng dành riêng cho phân khúc khách hàng thân thiết ạ."
 
 [BƯỚC 2: TIẾP CẬN TẾ NHỊ DỰA TRÊN ĐẶC TRƯNG HÀNH VI]

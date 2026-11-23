@@ -3,7 +3,7 @@ import "./globals.css";
 import AppShell from "@/components/AppShell";
 
 export const metadata: Metadata = {
-  title: "EuroVanguard Bank — Enterprise Churn Analytics & Retention DSS",
+  title: "BB Bank — Enterprise Churn Analytics & Retention DSS",
   description: "Enterprise Machine Learning & Retention Decision Support System for Retail Banking (France, Germany, Spain)",
 };
 

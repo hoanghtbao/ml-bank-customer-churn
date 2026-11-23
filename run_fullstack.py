@@ -1,5 +1,5 @@
 """
-EuroVanguard Bank — Churn DSS Fullstack Launcher
+BB Bank — Churn DSS Fullstack Launcher
 Launches both FastAPI backend (port 8000) and Next.js frontend (port 3000) concurrently.
 """
 
@@ -15,7 +15,7 @@ FRONTEND_DIR = os.path.join(ROOT_DIR, "frontend")
 def print_banner():
     banner = r"""
     ========================================================================
-     EUROVANGUARD BANK — ENTERPRISE CHURN DECISION SUPPORT SYSTEM
+     BB BANK — ENTERPRISE CHURN DECISION SUPPORT SYSTEM
     ========================================================================
      [UI/UX] Modern Next.js 16 (App Router + Tailwind CSS + Recharts)
      [ENGINE] Python FastAPI + Uvicorn + XGBoost Early Warning Pipeline
@@ -78,7 +78,7 @@ def main():
             time.sleep(1)
 
     except KeyboardInterrupt:
-        print("\n[INFO] Stopping EuroVanguard services gracefully...")
+        print("\n[INFO] Stopping BB Bank services gracefully...")
         for p in processes:
             try:
                 p.terminate()

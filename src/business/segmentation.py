@@ -1,6 +1,6 @@
 """
 Customer Value-Risk Segmentation Module (4 Quadrants Matrix).
-Roleplay: EuroVanguard Bank.
+Roleplay: BB Bank.
 Standard: Gartner Prescriptive Analytics — Value vs Risk Prioritization.
 """
 
