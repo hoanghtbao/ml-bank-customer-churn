@@ -1,35 +1,44 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import PageHeader from "@/components/PageHeader";
+import ApiStatusState from "@/components/ApiStatusState";
 import { fetchApi } from "@/lib/api";
 import { formatDecimal, formatViDisplay } from "@/lib/formatters";
-import { ShieldCheck, CheckCircle2, Cpu, FileText, RefreshCw } from "lucide-react";
+import { ShieldCheck, CheckCircle2, Cpu, FileText } from "lucide-react";
 
 export default function GovernancePage() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadGovernance = useCallback(() => {
+    setLoading(true);
+    setApiError(null);
     fetchApi("/api/governance/metadata")
       .then((res) => {
         setData(res);
         setLoading(false);
       })
       .catch((err) => {
-        console.error(err);
+        console.warn("Governance API temporarily unavailable:", err?.message || err);
+        setApiError("Không thể tải siêu dữ liệu quản trị mô hình từ FastAPI (:8000).");
         setLoading(false);
       });
   }, []);
 
+  useEffect(() => {
+    loadGovernance();
+  }, [loadGovernance]);
+
   if (loading || !data) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400 font-semibold text-sm">
-          <RefreshCw className="w-5 h-5 animate-spin text-blue-600 dark:text-blue-400" />
-          <span>Đang tải Dữ liệu Quản trị &amp; Siêu dữ liệu từ FastAPI...</span>
-        </div>
-      </div>
+      <ApiStatusState
+        loading={loading}
+        error={apiError}
+        loadingText="Đang tải Dữ liệu Quản trị & Siêu dữ liệu từ FastAPI..."
+        onRetry={loadGovernance}
+      />
     );
   }
 

@@ -527,5 +527,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
     * Xây dựng bộ hàm định dạng dùng chung `frontend/src/lib/formatters.ts` (`Intl.NumberFormat("vi-VN")`) cho toàn bộ Web Next.js (6 trang, Bản đồ GIS, Lưới Excel, biểu đồ Recharts) và chuẩn hóa đồng bộ toàn bộ `reports/01`–`05` theo quy ước `.` phân cách hàng nghìn (`10.000`), `,` thập phân (`32,44%`, `300,40M €`).
 11. **Hoàn Thiện `TopNavbar` (`h-16`, `/api/health` Thực & Tìm Kiếm Nhanh `Ctrl+K`) (23/11/2026):**
     * Căn thẳng chiều cao `h-16` khớp tuyệt đối với `Sidebar`; bổ sung `/api/batch/search` và `/api/batch/customer/{customer_id}` trong `api/routes/batch.py`, kích hoạt tìm kiếm thời gian thực trên `TopNavbar` + liên kết nhảy thẳng sang `advisor/page.tsx` và `batch/page.tsx`; nối `FastAPI Live` với `/api/health`.
+12. **Khắc Phục Mượt Lỗi `Failed to fetch` & Chờ Sẵn Sàng Backend Khi Khởi Động (24/11/2026):**
+    * Tạo `frontend/src/components/ApiStatusState.tsx` với nút thử kết nối lại trên `dashboard`, `strategy`, `governance`; nâng cấp `run_fullstack.py` kiểm tra `/api/health` trước khi mở Next.js `3000`.
 
 

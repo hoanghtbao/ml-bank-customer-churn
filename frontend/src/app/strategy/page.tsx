@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import PageHeader from "@/components/PageHeader";
+import ApiStatusState from "@/components/ApiStatusState";
 import { useTheme } from "@/components/AppShell";
 import { fetchApi } from "@/lib/api";
 import { formatInt, formatDecimal, formatAuto, formatViDisplay } from "@/lib/formatters";
@@ -15,7 +16,7 @@ import {
   Legend,
   CartesianGrid,
 } from "recharts";
-import { TrendingUp, Sliders, ShieldAlert, RefreshCw, Gem, Smartphone, Landmark } from "lucide-react";
+import { TrendingUp, Sliders, ShieldAlert, Gem, Smartphone, Landmark } from "lucide-react";
 
 export default function StrategyPage() {
   const { theme } = useTheme();
@@ -23,6 +24,7 @@ export default function StrategyPage() {
   const [quadrantData, setQuadrantData] = useState<any>(null);
   const [roiResult, setRoiResult] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const [vipCost, setVipCost] = useState(150);
   const [stdCost, setStdCost] = useState(25);
@@ -32,7 +34,9 @@ export default function StrategyPage() {
   const [baseFee, setBaseFee] = useState(200);
   const [simLoading, setSimLoading] = useState(false);
 
-  useEffect(() => {
+  const loadStrategyData = useCallback(() => {
+    setLoading(true);
+    setApiError(null);
     Promise.all([
       fetchApi("/api/strategy/quadrants"),
       fetchApi("/api/strategy/roi-simulate", {
@@ -53,9 +57,14 @@ export default function StrategyPage() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error(err);
+        console.warn("Strategy API temporarily unavailable:", err?.message || err);
+        setApiError("Không thể kết nối tới Backend FastAPI (:8000) để tải Ma trận 4 Quadrants.");
         setLoading(false);
       });
+  }, [vipCost, stdCost, vipSaveRate, stdSaveRate, marginRate, baseFee]);
+
+  useEffect(() => {
+    loadStrategyData();
   }, []);
 
   const handleSimulate = async () => {
@@ -74,7 +83,7 @@ export default function StrategyPage() {
       });
       setRoiResult(res);
     } catch (err) {
-      console.error(err);
+      console.warn("ROI simulation request failed:", err);
     } finally {
       setSimLoading(false);
     }
@@ -82,12 +91,12 @@ export default function StrategyPage() {
 
   if (loading || !quadrantData) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400 font-semibold text-sm">
-          <RefreshCw className="w-5 h-5 animate-spin text-blue-600 dark:text-blue-400" />
-          <span>Đang tải Ma trận 4 Quadrants &amp; Mô hình ROI từ FastAPI...</span>
-        </div>
-      </div>
+      <ApiStatusState
+        loading={loading}
+        error={apiError}
+        loadingText="Đang tải Ma trận 4 Quadrants & Mô hình ROI từ FastAPI..."
+        onRetry={loadStrategyData}
+      />
     );
   }
 

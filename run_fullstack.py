@@ -12,6 +12,7 @@ import os
 import sys
 import time
 import subprocess
+import urllib.request
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIR = os.path.join(ROOT_DIR, "frontend")
@@ -94,8 +95,25 @@ def main():
         api_proc = subprocess.Popen(py_cmd, cwd=ROOT_DIR)
         processes.append(api_proc)
 
-        # Wait 1.5s for API to bind
-        time.sleep(1.5)
+        # Wait until FastAPI actually answers /api/health (prevents browser Failed to fetch on cold start)
+        print("      Waiting for FastAPI to finish loading ML pipeline...")
+        api_ready = False
+        for _ in range(60):
+            if api_proc.poll() is not None:
+                print(f"[ERROR] FastAPI exited early with code {api_proc.returncode}")
+                break
+            try:
+                with urllib.request.urlopen("http://127.0.0.1:8000/api/health", timeout=1) as resp:
+                    if resp.status == 200:
+                        api_ready = True
+                        break
+            except Exception:
+                time.sleep(0.5)
+
+        if api_ready:
+            print("      [OK] FastAPI Backend is listening on http://127.0.0.1:8000")
+        else:
+            print("      [WARN] FastAPI did not confirm /api/health within 30s; check logs above.")
 
         # Start Next.js Frontend
         if args.prod:

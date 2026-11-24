@@ -144,6 +144,14 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
   * Bổ sung 2 endpoint `GET /api/batch/search` và `GET /api/batch/customer/{customer_id}` trong `api/routes/batch.py`; kết nối phím tắt `Ctrl+K` + dropdown gợi ý thời gian thực để bấm chọn mở thẳng hồ sơ khách hàng trong `advisor/page.tsx` hoặc nhấn `Enter` sang lưới `batch/page.tsx`.
   * Nối badge `FastAPI Live` với endpoint `/api/health` kiểm tra định kỳ mỗi 30 giây (`online` / `offline`).
 
+### Thay đổi 12: Xử Lý Mượt Lỗi Kết Nối Backend (`Failed to fetch`) & Chờ Sẵn Sàng `/api/health` Khi Khởi Động (24/11/2026)
+
+* **Trong Trình khởi chạy & Frontend trước đó:**
+  * `run_fullstack.py` chỉ đợi cố định `1,5s` sau khi bật Uvicorn trước khi khởi chạy Next.js; khi Backend đang nạp chậm hoặc gặp sự cố kẹt cổng `8000` (`State: Bound`), các trang `dashboard`, `strategy`, `governance`, `batch` gọi `console.error(err)` gây bật khung lỗi đỏ `Failed to fetch` và treo biểu tượng tải vô hạn.
+* **Thay đổi đã thực hiện:**
+  * Bổ sung thành phần dùng chung [ApiStatusState.tsx](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/frontend/src/components/ApiStatusState.tsx) hiển thị thông báo thân thiện kèm nút **Thử kết nối lại** trên `dashboard/page.tsx`, `strategy/page.tsx`, `governance/page.tsx`, thay `console.error` bằng `console.warn` để không làm sập trải nghiệm trình duyệt.
+  * Nâng cấp [run_fullstack.py](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/run_fullstack.py) kiểm tra thực tế `http://127.0.0.1:8000/api/health` trả về `200 OK` (tối đa 30s) rồi mới mở cổng Frontend `3000`.
+
 ---
 
 ## 3. DANH MỤC TỆP BÁO CÁO & TÀI LIỆU HIỆN CÓ TRONG DỰ ÁN

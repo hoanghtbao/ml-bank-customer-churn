@@ -76,7 +76,7 @@ export default function BatchScoringPage() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error(err);
+        console.warn("Batch API temporarily unavailable:", err?.message || err);
         setLoading(false);
       });
   };

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import PageHeader from "@/components/PageHeader";
+import ApiStatusState from "@/components/ApiStatusState";
 import { useTheme } from "@/components/AppShell";
 import { fetchApi } from "@/lib/api";
 import { formatInt, formatDecimal, formatAuto } from "@/lib/formatters";
@@ -17,34 +18,44 @@ import {
   Legend,
   CartesianGrid,
 } from "recharts";
-import { Landmark, TrendingDown, AlertTriangle, RefreshCw, Zap } from "lucide-react";
+import { Landmark, TrendingDown, AlertTriangle, Zap } from "lucide-react";
 
 export default function DashboardPage() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadDashboard = useCallback(() => {
+    setLoading(true);
+    setApiError(null);
     fetchApi("/api/dashboard/overview")
       .then((res) => {
         setData(res);
         setLoading(false);
       })
       .catch((err) => {
-        console.error(err);
+        console.warn("Dashboard API temporarily unavailable:", err?.message || err);
+        setApiError(
+          "Không thể tải dữ liệu từ http://127.0.0.1:8000/api/dashboard/overview. Hãy kiểm tra dịch vụ FastAPI (:8000)."
+        );
         setLoading(false);
       });
   }, []);
 
+  useEffect(() => {
+    loadDashboard();
+  }, [loadDashboard]);
+
   if (loading || !data) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400 font-semibold text-sm">
-          <RefreshCw className="w-5 h-5 animate-spin text-blue-600 dark:text-blue-400" />
-          <span>Đang tải số liệu Báo cáo Điều hành từ FastAPI...</span>
-        </div>
-      </div>
+      <ApiStatusState
+        loading={loading}
+        error={apiError}
+        loadingText="Đang tải số liệu Báo cáo Điều hành từ FastAPI..."
+        onRetry={loadDashboard}
+      />
     );
   }
 
