@@ -187,13 +187,21 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
   * Đồng bộ `threshold: float = 0.45` trong `src/modeling/predict.py`; đổi mặc định `rm_name = "Hoàng Hữu Bảo (Senior RM)"` và định dạng số `vi-VN` (`+0,50%/năm`) trong `src/business/retention_advisor.py`; bổ sung `_get_pipeline()` cache bộ nhớ trong `api/routes/batch.py`.
   * Định nghĩa đầy đủ kiểu dữ liệu TypeScript và tối ưu luồng React Hooks trong `AppShell.tsx`, `TopNavbar.tsx`, `InteractiveRegionMap.tsx`, `LeafletMapInner.tsx`, `dashboard`, `governance`, `strategy`, `advisor`, `batch` để sạch 0 lỗi ESLint.
 
+### Thay đổi 17: Cấu Trúc Lại Phần Import Của `Project_Source_Code.ipynb` Theo Đúng Phong Cách Giảng Viên (24/11/2026)
+
+* **Trong `Project_Source_Code.ipynb` trước đó:**
+  * Ô code đầu tiên gom chung cả thư viện nền tảng, 35 dòng `from src... import ...` của toàn bộ 6 giai đoạn và cả lệnh đọc bảng `Customer-Churn-Records.csv`, khiến phần đầu Notebook trông dài hơn bài mẫu của giảng viên.
+* **Thay đổi đã thực hiện:**
+  * Tách riêng mục `## Packages Import` ở ngay đầu [Project_Source_Code.ipynb](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/Project_Source_Code.ipynb) (`163 cells`) chỉ giữ gọn các thư viện chung (`os`, `sys`, `json`, `warnings`, `joblib`, `pandas`, `numpy`, `matplotlib.pyplot`, `seaborn`, `sklearn`, `xgboost`, `IPython.display`) và cấu hình đồ thị `ggplot` / kích thước khung hình chuẩn của thầy.
+  * Phân bổ các lệnh `from src... import ...` về đúng ô `Thiết lập Môi trường & Nạp Module` ở đầu từng giai đoạn sử dụng thực tế (Giai đoạn `1`, `2`, `3B`, `3C`, `4`, `5`, `6`) và chạy kiểm chứng lại toàn bộ 163 cells từ đầu đến cuối (`Restart & Run All` sạch lỗi 100%).
+
 ---
 
 ## 3. DANH MỤC TỆP BÁO CÁO & TÀI LIỆU HIỆN CÓ TRONG DỰ ÁN
 
 Để thuận tiện tra cứu khi viết báo cáo Word hoặc làm Slide thuyết trình, toàn bộ hệ thống báo cáo được lưu tại:
 1. [PROJECT_PLAN_BANK_CUSTOMER_CHURN.md](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/PROJECT_PLAN_BANK_CUSTOMER_CHURN.md): Kế hoạch tổng thể & Kiến trúc hệ thống.
-2. [Project_Source_Code.ipynb](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/Project_Source_Code.ipynb): Tệp Jupyter Notebook tổng hợp duy nhất (161 cells, 24 biểu đồ, chạy xuyên suốt từ đầu đến cuối).
+2. [Project_Source_Code.ipynb](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/Project_Source_Code.ipynb): Tệp Jupyter Notebook tổng hợp duy nhất (163 cells, 24 biểu đồ, chạy xuyên suốt từ đầu đến cuối).
 3. [reports/01_data_quality_audit_report.md](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/reports/01_data_quality_audit_report.md): Báo cáo Kiểm toán Chất lượng Dữ liệu & Làm sạch Kỹ thuật.
 4. [reports/02_eda_diagnostic_report.md](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/reports/02_eda_diagnostic_report.md): Báo cáo Phân tích Khám phá (EDA), Kiểm định Thống kê & Chẩn đoán Đa biến.
 5. [reports/03_model_evaluation_report.md](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/reports/03_model_evaluation_report.md): Báo cáo Đánh giá Mô hình Học máy, Ablation Study, Tối ưu Ngưỡng $T^*$ & Giải thích SHAP.

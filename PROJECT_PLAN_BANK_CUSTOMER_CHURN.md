@@ -537,5 +537,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
     * Xây dựng `src/business/excel_exporter.py` (OOXML `.xlsx` thuần Python với banner `BB BANK AG`, đóng băng tiêu đề, AutoFilter, căn lề/viền/màu rủi ro, định dạng tiền tệ & phần trăm, công thức `COUNTA`/`SUM`/`AVERAGE`, tự giãn cột & dòng), bổ sung `POST /api/batch/export-excel` và cập nhật `batch/page.tsx`.
 16. **Code Review Toàn Diện — Đồng Bộ Tham Số `0.45`, Cache Pipeline & Sạch Lỗi ESLint (24/11/2026):**
     * Đồng bộ ngưỡng mặc định `threshold=0.45` trong `src/modeling/predict.py`, chuẩn hóa `rm_name` & số `vi-VN` trong `retention_advisor.py`, thêm cache `_get_pipeline()` trong `api/routes/batch.py` và khử sạch lỗi ESLint/TypeScript trên toàn bộ Frontend.
+17. **Tinh Gọn Mục `Packages Import` Đầu Notebook & Chia Import Theo Từng Giai Đoạn Chuẩn Phong Cách Giảng Viên (24/11/2026):**
+    * Tách riêng mục `Packages Import` gọn nhẹ ở đầu `Project_Source_Code.ipynb` (`163 cells`) chứa các thư viện chung, và rải các lệnh `from src... import ...` về đúng ô thiết lập của từng Giai đoạn `1`–`6` (đã chạy kiểm chứng lại toàn bộ 163 cells xuyên suốt).
 
 

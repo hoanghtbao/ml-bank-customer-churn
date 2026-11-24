@@ -21,7 +21,7 @@ Dự án áp dụng khung phân tích 4 cấp độ của **Gartner (Descriptive
 
 ```text
 Bank_Customer_Churn/
-├── Project_Source_Code.ipynb        # File Notebook tổng hợp chạy toàn bộ quy trình 161 cells
+├── Project_Source_Code.ipynb        # File Notebook tổng hợp chạy toàn bộ quy trình 163 cells
 ├── Customer-Churn-Records.csv       # Tập dữ liệu gốc 10.000 dòng
 ├── run_fullstack.py                 # Trình khởi chạy đồng thời FastAPI (:8000) & Next.js (:3000)
 ├── start_web.bat                    # Lối tắt khởi chạy nhanh trên Windows
@@ -30,25 +30,25 @@ Bank_Customer_Churn/
 │   ├── schemas.py                   # Pydantic request/response schemas
 │   └── routes/                      # 5 router: dashboard, predict, batch, strategy, governance
 ├── frontend/                        # Frontend Web App (Next.js 16 + TypeScript + Tailwind CSS v4)
+│   ├── public/figures/              # Bộ 18 biểu đồ nghiên cứu (fig_01..fig_18.png) phục vụ thuyết trình
 │   └── src/
 │       ├── app/                     # 6 trang: /, /dashboard, /advisor, /batch, /strategy, /governance
-│       ├── components/              # AppShell (Light/Dark), Sidebar, TopNavbar (Ctrl+K), GIS Map...
-│       └── lib/                     # api.ts, formatters.ts (vi-VN), mapBranchesData.ts
+│       ├── components/              # AppShell (Light/Dark), Sidebar, TopNavbar (Ctrl+K), GIS Map, FigureGallery...
+│       └── lib/                     # api.ts, formatters.ts (vi-VN), chartCatalog.ts, mapBranchesData.ts
 ├── design-system/                   # Chuẩn giao diện Fintech UI/UX Pro Max (MASTER.md)
 ├── data/
 │   ├── raw/                         # Dữ liệu gốc bất biến (Customer-Churn-Records.csv)
 │   ├── interim/                     # Dữ liệu sạch kỹ thuật (Giai đoạn 2)
 │   └── processed/                   # Dữ liệu Feature Engineering & chia 3 tập Train/Val/Test
-├── notebooks/                       # Chuỗi 8 Notebook phân tích chi tiết + bản sao lưu tổng hợp
 ├── src/
 │   ├── data/                        # Load và validate dữ liệu
 │   ├── eda/                         # Kiểm định thống kê, Effect Size, WOE/IV, VIF
 │   ├── preprocessing/               # Feature Engineering & Pipeline Scikit-Learn
 │   ├── modeling/                    # Huấn luyện, đánh giá, tối ưu ngưỡng & giải thích SHAP
-│   └── business/                    # Phân khúc Risk x Value, Tiered ROI & Gợi ý giữ chân
+│   └── business/                    # Phân khúc Risk x Value, Tiered ROI, Gợi ý giữ chân & Xuất Excel (.xlsx)
 ├── models/                          # Pipeline đã huấn luyện (.joblib) & metadata (.json)
 ├── reports/                         # 5 Báo cáo chuyên sâu (.md) & 18 biểu đồ phân tích (figures/)
-├── tests/                           # Bộ kiểm thử tự động pytest (48 test cases, gồm cả API)
+├── tests/                           # Bộ kiểm thử tự động pytest (49 test cases, gồm cả API & Excel Export)
 ├── requirements.txt                 # Danh mục thư viện Python chuẩn
 └── README.md                        # Tài liệu hướng dẫn tổng quan
 ```
@@ -73,7 +73,7 @@ Mở và bấm **"Run All"** trong file **`Project_Source_Code.ipynb`** ngay t�
 ```bash
 python -m pytest -v
 ```
-*(Gồm **48 test cases** phủ dữ liệu, EDA, Feature Engineering, Modeling, Business Strategy và toàn bộ FastAPI REST endpoints).*
+*(Gồm **49 test cases** phủ dữ liệu, EDA, Feature Engineering, Modeling, Business Strategy, Xuất Excel OOXML và toàn bộ FastAPI REST endpoints).*
 
 ### 5. Khởi chạy Hệ thống Full-Stack Web DSS (Next.js 16 + FastAPI)
 ```bash
@@ -89,7 +89,7 @@ Sau khi khởi chạy thành công:
 1. **Tổng Quan Hồ Sơ (`/`):** Bản đồ địa lý thực tế 3 quốc gia (`React-Leaflet` + `GeoJSON` Tây Âu) và kiến trúc 4 tầng Gartner.
 2. **Báo Cáo Điều Hành (`/dashboard`):** Dual Baseline KPI, tâm chấn Đức, đường cong chữ U ngược theo số sản phẩm và nhóm tuổi.
 3. **Tư Vấn Giữ Chân 1-1 (`/advisor`):** Tra cứu & chấm điểm từng khách hàng, luật cứng SLA 4h cho khiếu nại, kịch bản thoại RM và mô phỏng What-If.
-4. **Chấm Điểm Danh Mục (`/batch`):** Mô phỏng lưới bảng tính Excel (`BB_Bank_Scored_Portfolio_2026.xlsx`), thanh công thức `fx`, lọc rủi ro và xuất CSV.
+4. **Chấm Điểm Danh Mục (`/batch`):** Mô phỏng lưới bảng tính Excel (`BB_Bank_Scored_Portfolio_2026.xlsx`), thanh công thức `fx`, lọc rủi ro và xuất file Excel chuẩn văn phòng (`.XLSX`) / `.CSV`.
 5. **Chiến Lược & ROI (`/strategy`):** Ma trận 4 góc phần tư (`Value × Risk`) và máy tính mô phỏng lợi nhuận ròng Tiered ROI thời gian thực.
 6. **Quản Trị Mô Hình AI (`/governance`):** Siêu dữ liệu xuất xưởng từ `model_metadata.json`, bảng Decile Lift (`3,97x`), 4 kịch bản Ablation và checklist Basel III / GDPR.
 
