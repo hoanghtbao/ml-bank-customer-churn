@@ -531,5 +531,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
     * Tạo `frontend/src/components/ApiStatusState.tsx` với nút thử kết nối lại trên `dashboard`, `strategy`, `governance`; nâng cấp `run_fullstack.py` kiểm tra `/api/health` trước khi mở Next.js `3000`.
 13. **Tổng Kiểm Toán & Đồng Bộ `README.md`, `requirements.txt`, Tests & Notebooks (24/11/2026):**
     * Dọn sạch dòng tên cũ còn sót trong `requirements.txt`, cập nhật `README.md` sang kiến trúc **BB Bank** Full-Stack Next.js 16 + FastAPI và chuẩn số `vi-VN`, thay thế các tham chiếu `Streamlit` cũ trong `tests/`, `shap_explain.py`, `reports/01` và markdown của 4 tệp `.ipynb`.
+14. **Tích Hợp Thư Viện 18 Biểu Đồ (`fig_01`–`fig_18`) Kèm Lightbox & Diễn Giải Lên Web (24/11/2026):**
+    * Tạo `chartCatalog.ts` + `FigureGallery.tsx`, thêm Tab `Kho Biểu Đồ Phân Tích EDA (13)` trên `/dashboard`, nhúng `fig_14`–`fig_16` vào `/governance` và `fig_17`–`fig_18` vào `/strategy` (kèm xóa 2 ảnh logo cũ còn sót trong `frontend/public/`).
 
 

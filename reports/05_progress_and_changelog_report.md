@@ -162,6 +162,15 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
   * Đổi tên `requirements.txt` sang **`BB Bank`** và cập nhật danh sách thư viện chuẩn FastAPI/Uvicorn; viết lại hoàn chỉnh `README.md` khớp 100% kiến trúc Full-Stack **Next.js 16 + FastAPI**, chuẩn số `vi-VN` và hướng dẫn `python run_fullstack.py`.
   * Cập nhật `tests/test_environment.py` (kiểm tra `fastapi`, `uvicorn`, `pydantic` thay cho `streamlit`), docstring của `tests/test_prediction.py` & `src/modeling/shap_explain.py`, câu mô tả trong `reports/01_data_quality_audit_report.md` và các ô markdown trong 4 notebook (`Project_Source_Code.ipynb`, `notebooks/Bank_Customer_Churn_Full_Pipeline.ipynb`, `02`, `08`).
 
+### Thay đổi 14: Tích Hợp Trình Xem & Giải Thích 18 Biểu Đồ Nghiên Cứu (`fig_01`–`fig_18`) Lên Giao Diện Web (24/11/2026)
+
+* **Nhu cầu thuyết trình & bảo vệ đồ án:**
+  * Khi trình bày đóng vai ngân hàng **BB Bank**, giảng viên thường yêu cầu mở trực tiếp các biểu đồ phân tích gốc (`fig_01`–`fig_18`) để hỏi *biểu đồ đó vẽ gì* và *ý nghĩa nghiệp vụ mang lại là gì*.
+* **Thay đổi đã thực hiện:**
+  * Đưa toàn bộ 18 ảnh `fig_01`–`fig_18` vào `frontend/public/figures/` (đồng thời xóa 2 ảnh logo cũ còn sót `eurovanguard_icon.png`, `eurovanguard_logo.png`).
+  * Xây dựng danh mục diễn giải chuẩn `vi-VN` [chartCatalog.ts](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/frontend/src/lib/chartCatalog.ts) và component [FigureGallery.tsx](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/frontend/src/components/FigureGallery.tsx) hỗ trợ lọc nhóm, thẻ gợi ý *"Vẽ gì / Ý nghĩa BB Bank"* và Lightbox phóng to (phím tắt `Esc`, mũi tên trái/phải).
+  * Tích hợp **Tab `Kho Biểu Đồ Phân Tích EDA (13 Hình)`** (`fig_01`–`fig_13`) vào `dashboard/page.tsx` (giữ Tab 1 `Bảng Điều Hành (Executive)` gọn nhẹ), nhúng `fig_14`–`fig_16` (SHAP & Threshold `T* = 0,45`) vào `governance/page.tsx`, và nhúng `fig_17`–`fig_18` (4 Quadrants & Tiered ROI) vào `strategy/page.tsx`.
+
 ---
 
 ## 3. DANH MỤC TỆP BÁO CÁO & TÀI LIỆU HIỆN CÓ TRONG DỰ ÁN

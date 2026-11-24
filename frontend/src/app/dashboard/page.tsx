@@ -3,6 +3,8 @@
 import { useEffect, useState, useCallback } from "react";
 import PageHeader from "@/components/PageHeader";
 import ApiStatusState from "@/components/ApiStatusState";
+import FigureGallery from "@/components/FigureGallery";
+import { EDA_FIGURES } from "@/lib/chartCatalog";
 import { useTheme } from "@/components/AppShell";
 import { fetchApi } from "@/lib/api";
 import { formatInt, formatDecimal, formatAuto } from "@/lib/formatters";
@@ -18,11 +20,12 @@ import {
   Legend,
   CartesianGrid,
 } from "recharts";
-import { Landmark, TrendingDown, AlertTriangle, Zap } from "lucide-react";
+import { Landmark, TrendingDown, AlertTriangle, Zap, LayoutDashboard, Images } from "lucide-react";
 
 export default function DashboardPage() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const [activeTab, setActiveTab] = useState<"executive" | "eda_gallery">("executive");
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -48,21 +51,10 @@ export default function DashboardPage() {
     loadDashboard();
   }, [loadDashboard]);
 
-  if (loading || !data) {
-    return (
-      <ApiStatusState
-        loading={loading}
-        error={apiError}
-        loadingText="Đang tải số liệu Báo cáo Điều hành từ FastAPI..."
-        onRetry={loadDashboard}
-      />
-    );
-  }
-
-  const kpis = data.kpis;
-  const countryData = data.country_distribution;
-  const productData = data.product_holding_curve;
-  const ageData = data.age_lifecycle;
+  const kpis = data?.kpis;
+  const countryData = data?.country_distribution;
+  const productData = data?.product_holding_curve;
+  const ageData = data?.age_lifecycle;
 
   const gridStroke = isDark ? "#1e293b" : "#f1f5f9";
   const axisStroke = isDark ? "#94a3b8" : "#64748b";
@@ -80,6 +72,72 @@ export default function DashboardPage() {
         title="Báo Cáo Quản Trị Điều Hành (Executive Dashboard)"
         subtitle="Chẩn đoán thất thoát nguồn vốn tiền gửi, tâm chấn thị trường Đức và bẫy bán chéo sản phẩm"
       />
+
+      {/* Segmented View Switcher: Executive View vs 13 EDA Defense Charts */}
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div
+          role="tablist"
+          aria-label="Chế độ xem Báo cáo Điều hành"
+          className="inline-flex items-center p-1 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800"
+        >
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "executive"}
+            onClick={() => setActiveTab("executive")}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-2 whitespace-nowrap ${
+              activeTab === "executive"
+                ? "bg-white dark:bg-blue-600 text-blue-600 dark:text-white shadow-xs"
+                : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+            }`}
+          >
+            <LayoutDashboard className="w-3.5 h-3.5" />
+            <span>Bảng Điều Hành (Executive)</span>
+          </button>
+
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "eda_gallery"}
+            onClick={() => setActiveTab("eda_gallery")}
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-2 whitespace-nowrap ${
+              activeTab === "eda_gallery"
+                ? "bg-white dark:bg-blue-600 text-blue-600 dark:text-white shadow-xs"
+                : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+            }`}
+          >
+            <Images className="w-3.5 h-3.5" />
+            <span>Kho Biểu Đồ Phân Tích EDA</span>
+            <span
+              className={`px-1.5 py-0.2 rounded-md text-[10px] font-mono ${
+                activeTab === "eda_gallery"
+                  ? "bg-blue-50 dark:bg-white/20 text-blue-700 dark:text-white"
+                  : "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+              }`}
+            >
+              13
+            </span>
+          </button>
+        </div>
+
+        <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+          {activeTab === "executive"
+            ? "Chế độ trình bày Ban Giám Đốc BB Bank"
+            : "Bộ 13 biểu đồ EDA phục vụ giải thích chuyên sâu & phản biện"}
+        </span>
+      </div>
+
+      {activeTab === "eda_gallery" ? (
+        <FigureGallery figures={EDA_FIGURES} columns={3} enableFilter />
+      ) : loading || !data ? (
+        <ApiStatusState
+          loading={loading}
+          error={apiError}
+          loadingText="Đang tải số liệu Báo cáo Điều hành từ FastAPI..."
+          onRetry={loadDashboard}
+        />
+      ) : (
+        <>
 
       {/* Top Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 tabular-nums">
@@ -227,6 +285,8 @@ export default function DashboardPage() {
           </ResponsiveContainer>
         </div>
       </div>
+        </>
+      )}
     </div>
   );
 }

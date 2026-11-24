@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import PageHeader from "@/components/PageHeader";
 import ApiStatusState from "@/components/ApiStatusState";
+import FigureGallery from "@/components/FigureGallery";
+import { PRESCRIPTIVE_FIGURES } from "@/lib/chartCatalog";
 import { useTheme } from "@/components/AppShell";
 import { fetchApi } from "@/lib/api";
 import { formatInt, formatDecimal, formatAuto, formatViDisplay } from "@/lib/formatters";
@@ -382,6 +384,17 @@ export default function StrategyPage() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Prescriptive Matrix & ROI Proof Figures */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-xs transition-colors">
+        <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wide mb-1">
+          3. Biểu Đồ Nghiên Cứu: Ma Trận 4 Quadrants &amp; Phân Rã Tiered ROI Gốc
+        </h2>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mb-5">
+          Đối chiếu phân bố 10.000 khách hàng trên hai trục Giá trị &times; Rủi ro và tổng kết hiệu quả tài chính chiến dịch.
+        </p>
+        <FigureGallery figures={PRESCRIPTIVE_FIGURES} columns={2} />
       </div>
     </div>
   );

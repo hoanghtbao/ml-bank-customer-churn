@@ -3,6 +3,8 @@
 import { useEffect, useState, useCallback } from "react";
 import PageHeader from "@/components/PageHeader";
 import ApiStatusState from "@/components/ApiStatusState";
+import FigureGallery from "@/components/FigureGallery";
+import { MODELING_FIGURES } from "@/lib/chartCatalog";
 import { fetchApi } from "@/lib/api";
 import { formatDecimal, formatViDisplay } from "@/lib/formatters";
 import { ShieldCheck, CheckCircle2, Cpu, FileText } from "lucide-react";
@@ -297,7 +299,7 @@ export default function GovernancePage() {
       </div>
 
       {/* Model Governance Audit Checklist */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-xs transition-colors">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 mb-8 shadow-xs transition-colors">
         <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wide mb-4">
           5. Danh Mục Kiểm Soát Tuân Thủ Quản Trị Mô Hình (Basel III / SR 11-7 / EU GDPR)
         </h2>
@@ -333,6 +335,17 @@ export default function GovernancePage() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* SHAP & Threshold Charts */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-xs transition-colors">
+        <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wide mb-1">
+          6. Biểu Đồ Giải Thích AI (SHAP) &amp; Đường Cong Tối Ưu Ngưỡng T*
+        </h2>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mb-5">
+          Nhấp vào từng biểu đồ để phóng to và đối chiếu ý nghĩa mô hình khi trình bày phản biện.
+        </p>
+        <FigureGallery figures={MODELING_FIGURES} columns={3} />
       </div>
     </div>
   );
