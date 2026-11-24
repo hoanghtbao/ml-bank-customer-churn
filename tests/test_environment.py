@@ -22,7 +22,9 @@ def test_python_packages_importable():
     import matplotlib
     import seaborn
     import plotly
-    import streamlit
+    import fastapi
+    import uvicorn
+    import pydantic
     import joblib
     import shap
 
@@ -30,6 +32,7 @@ def test_python_packages_importable():
     assert sklearn.__version__ is not None
     assert xgboost.__version__ is not None
     assert shap.__version__ is not None
+    assert fastapi.__version__ is not None
 
 def test_raw_data_file_exists():
     """Verify raw data is stored in data/raw/ and is non-empty."""

@@ -152,6 +152,16 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
   * Bổ sung thành phần dùng chung [ApiStatusState.tsx](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/frontend/src/components/ApiStatusState.tsx) hiển thị thông báo thân thiện kèm nút **Thử kết nối lại** trên `dashboard/page.tsx`, `strategy/page.tsx`, `governance/page.tsx`, thay `console.error` bằng `console.warn` để không làm sập trải nghiệm trình duyệt.
   * Nâng cấp [run_fullstack.py](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/run_fullstack.py) kiểm tra thực tế `http://127.0.0.1:8000/api/health` trả về `200 OK` (tối đa 30s) rồi mới mở cổng Frontend `3000`.
 
+### Thay đổi 13: Tổng Kiểm Toán & Dọn Sạch Tên Thương Hiệu Cũ, Tham Chiếu Streamlit Cũ và Tài Liệu Dự Án (24/11/2026)
+
+* **Kết quả tổng rà soát toàn bộ kho mã nguồn:**
+  * Phát hiện `requirements.txt` dòng 1 vẫn còn tên cũ `# EuroVanguard Bank` và liệt kê `streamlit>=1.35.0` (thiếu `fastapi`, `uvicorn`, `pydantic`, `python-multipart`, `httpx`).
+  * Phát hiện `README.md` vẫn mô tả thư mục `app/` (`Streamlit`) đã xóa, lệnh `streamlit run app/Home.py`, số lượng `4` báo cáo cũ và định dạng số chuẩn Anh-Mỹ.
+  * Phát hiện một số tham chiếu chữ `"Streamlit"` sót lại trong `tests/test_environment.py`, `tests/test_prediction.py`, `src/modeling/shap_explain.py`, `reports/01_data_quality_audit_report.md` và ghi chú markdown ở 4 tệp `.ipynb`.
+* **Thay đổi đã thực hiện:**
+  * Đổi tên `requirements.txt` sang **`BB Bank`** và cập nhật danh sách thư viện chuẩn FastAPI/Uvicorn; viết lại hoàn chỉnh `README.md` khớp 100% kiến trúc Full-Stack **Next.js 16 + FastAPI**, chuẩn số `vi-VN` và hướng dẫn `python run_fullstack.py`.
+  * Cập nhật `tests/test_environment.py` (kiểm tra `fastapi`, `uvicorn`, `pydantic` thay cho `streamlit`), docstring của `tests/test_prediction.py` & `src/modeling/shap_explain.py`, câu mô tả trong `reports/01_data_quality_audit_report.md` và các ô markdown trong 4 notebook (`Project_Source_Code.ipynb`, `notebooks/Bank_Customer_Churn_Full_Pipeline.ipynb`, `02`, `08`).
+
 ---
 
 ## 3. DANH MỤC TỆP BÁO CÁO & TÀI LIỆU HIỆN CÓ TRONG DỰ ÁN

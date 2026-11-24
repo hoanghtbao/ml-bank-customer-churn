@@ -56,7 +56,7 @@ Bảng dữ liệu sạch kỹ thuật tại `data/interim/churn_technical_clean
 * **Bản chất lỗi:** Có 92 khách hàng mang các họ như `H?`, `Hs?`, `L?`, `Y?an`, `Hs?eh` do các ký tự có dấu âm/ký tự đặc biệt bị lỗi encode sang ASCII khi xuất CSV.
 * **Xử lý:** 
   * Gắn cờ truy vết: `Surname_Encoding_Issue = 1` cho 92 dòng này.
-  * Làm sạch chuỗi: Loại bỏ ký tự `?` để khi tra cứu trên giao diện Streamlit GUI hiển thị trang trọng và không bị lỗi hiển thị rác.
+  * Làm sạch chuỗi: Loại bỏ ký tự `?` để khi tra cứu trên giao diện Web DSS hiển thị trang trọng và không bị lỗi hiển thị rác.
 
 ### 3.2. Phát hiện 2: Mâu thuẫn Logic giữa `HasCrCard = 0` và `Card_Type` (2.945 bản ghi)
 * **Bản chất:** Có 2.945 khách hàng không có thẻ tín dụng (`HasCrCard = 0`) nhưng vẫn mang hạng thẻ `DIAMOND / GOLD / PLATINUM / SILVER` và tích lũy điểm thưởng `Point_Earned`.

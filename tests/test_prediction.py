@@ -1,5 +1,5 @@
 """
-Unit tests for end-to-end prediction, model loading, and Streamlit application utilities.
+Unit tests for end-to-end prediction, model loading, and inference utilities.
 """
 
 import os

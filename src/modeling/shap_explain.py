@@ -92,7 +92,7 @@ def get_customer_top_drivers(
 ) -> List[Dict[str, Any]]:
     """
     Extracts top positive (risk-increasing) and negative (risk-decreasing) feature drivers
-    for an individual customer to display in the Streamlit retention advisor.
+    for an individual customer to display in the BB Bank Retention Advisor.
     """
     preprocessor = pipeline.named_steps['preprocessor']
     X_trans = preprocessor.transform(customer_df[feature_cols])

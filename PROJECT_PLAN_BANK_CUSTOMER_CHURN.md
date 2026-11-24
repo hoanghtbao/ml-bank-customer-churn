@@ -529,5 +529,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
     * Căn thẳng chiều cao `h-16` khớp tuyệt đối với `Sidebar`; bổ sung `/api/batch/search` và `/api/batch/customer/{customer_id}` trong `api/routes/batch.py`, kích hoạt tìm kiếm thời gian thực trên `TopNavbar` + liên kết nhảy thẳng sang `advisor/page.tsx` và `batch/page.tsx`; nối `FastAPI Live` với `/api/health`.
 12. **Khắc Phục Mượt Lỗi `Failed to fetch` & Chờ Sẵn Sàng Backend Khi Khởi Động (24/11/2026):**
     * Tạo `frontend/src/components/ApiStatusState.tsx` với nút thử kết nối lại trên `dashboard`, `strategy`, `governance`; nâng cấp `run_fullstack.py` kiểm tra `/api/health` trước khi mở Next.js `3000`.
+13. **Tổng Kiểm Toán & Đồng Bộ `README.md`, `requirements.txt`, Tests & Notebooks (24/11/2026):**
+    * Dọn sạch dòng tên cũ còn sót trong `requirements.txt`, cập nhật `README.md` sang kiến trúc **BB Bank** Full-Stack Next.js 16 + FastAPI và chuẩn số `vi-VN`, thay thế các tham chiếu `Streamlit` cũ trong `tests/`, `shap_explain.py`, `reports/01` và markdown của 4 tệp `.ipynb`.
 
 
