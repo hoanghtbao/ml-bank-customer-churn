@@ -171,6 +171,14 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
   * Xây dựng danh mục diễn giải chuẩn `vi-VN` [chartCatalog.ts](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/frontend/src/lib/chartCatalog.ts) và component [FigureGallery.tsx](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/frontend/src/components/FigureGallery.tsx) hỗ trợ lọc nhóm, thẻ gợi ý *"Vẽ gì / Ý nghĩa BB Bank"* và Lightbox phóng to (phím tắt `Esc`, mũi tên trái/phải).
   * Tích hợp **Tab `Kho Biểu Đồ Phân Tích EDA (13 Hình)`** (`fig_01`–`fig_13`) vào `dashboard/page.tsx` (giữ Tab 1 `Bảng Điều Hành (Executive)` gọn nhẹ), nhúng `fig_14`–`fig_16` (SHAP & Threshold `T* = 0,45`) vào `governance/page.tsx`, và nhúng `fig_17`–`fig_18` (4 Quadrants & Tiered ROI) vào `strategy/page.tsx`.
 
+### Thay đổi 15: Nâng Cấp Xuất File Excel `.XLSX` Chuẩn Văn Phòng Tại Phân Hệ Chấm Điểm Danh Mục (24/11/2026)
+
+* **Trong Phân hệ Chấm điểm Danh mục trước đó:**
+  * Nút `Xuất Excel (.CSV)` trước đây chỉ tải về tệp `.csv` văn bản thuần không có độ rộng cột, màu nền, viền bảng, căn lề hay định dạng tiền tệ/phần trăm khi mở bằng Microsoft Excel.
+* **Thay đổi đã thực hiện:**
+  * Xây dựng bộ tạo tệp OOXML `.xlsx` chuẩn ECMA-376 trong [excel_exporter.py](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/src/business/excel_exporter.py) với: tiêu đề hợp nhất (banner `BB BANK AG`), thanh thông tin bộ lọc, dòng tổng hợp công thức Excel sống (`COUNTA`, `SUM`, `AVERAGE`), tiêu đề cột Navy đóng băng (`freezePane` dòng 4) kèm `AutoFilter`, tự động giãn độ rộng & chiều cao dòng cho nội dung dài, căn lề chuẩn văn phòng (trái/giữa/phải theo loại dữ liệu), định dạng số (`#,##0.00 €`, `0.0%`), tô màu phân tầng rủi ro/khiếu nại và khổ in ngang (`Landscape`).
+  * Bổ sung `POST /api/batch/export-excel` (`BatchExportExcelRequest`) tại `api/routes/batch.py` và nâng cấp nút **`Xuất Excel (.XLSX)`** (giữ kèm nút `CSV` phụ) tại `frontend/src/app/batch/page.tsx`.
+
 ---
 
 ## 3. DANH MỤC TỆP BÁO CÁO & TÀI LIỆU HIỆN CÓ TRONG DỰ ÁN

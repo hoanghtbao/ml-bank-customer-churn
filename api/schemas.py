@@ -72,3 +72,10 @@ class RoiSimulateRequest(BaseModel):
     std_save_rate: float = Field(default=0.25, ge=0.05, le=0.95)
     margin_rate: float = Field(default=0.05, ge=0.005, le=0.20)
     base_service_fee: float = Field(default=200.0, ge=0.0, le=2000.0)
+
+
+class BatchExportExcelRequest(BaseModel):
+    """Payload for exporting scored portfolio rows into an office-formatted .xlsx file."""
+    sheet_name: str = Field(default="Sheet1_Top_150")
+    filter_summary: str = Field(default="Tất cả thị trường")
+    records: List[Dict[str, Any]] = Field(default_factory=list)

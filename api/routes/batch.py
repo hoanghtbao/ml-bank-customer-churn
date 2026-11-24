@@ -3,6 +3,8 @@ Batch Scoring Router: Upload CSV, score portfolio, filter and export retention c
 """
 
 from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi.responses import Response
+from datetime import datetime
 import os
 import sys
 import pandas as pd
@@ -14,9 +16,11 @@ PROJECT_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, '..', '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
+from api.schemas import BatchExportExcelRequest
 from src.modeling.predict import predict_batch
 from src.business.segmentation import assign_four_quadrants
 from src.business.retention_advisor import recommend_next_best_action
+from src.business.excel_exporter import build_portfolio_excel_bytes
 
 router = APIRouter(prefix="/api/batch", tags=["Batch Campaign Scoring"])
 
@@ -171,3 +175,25 @@ async def score_uploaded_csv(file: UploadFile = File(...)):
         "total_high_risk": int((scored['Predicted_Probability'] >= 0.45).sum()),
         "records": records
     }
+
+
+@router.post("/export-excel")
+def export_scored_portfolio_excel(payload: BatchExportExcelRequest):
+    """Exports scored customer rows into a professionally styled Microsoft Excel (.xlsx) workbook."""
+    if not payload.records:
+        raise HTTPException(status_code=400, detail="No records provided to export.")
+
+    xlsx_bytes = build_portfolio_excel_bytes(
+        records=payload.records,
+        sheet_label=payload.sheet_name,
+        filter_summary=payload.filter_summary,
+    )
+    today = datetime.now().strftime("%Y-%m-%d")
+    safe_sheet = "".join(c if c.isalnum() or c in ("_", "-") else "_" for c in payload.sheet_name)
+    filename = f"BB_Bank_Scored_Portfolio_{safe_sheet}_{today}.xlsx"
+
+    return Response(
+        content=xlsx_bytes,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )

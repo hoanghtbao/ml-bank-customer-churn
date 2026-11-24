@@ -160,3 +160,59 @@ def test_batch_search_and_customer_lookup():
 
     missing_res = client.get("/api/batch/customer/999999999")
     assert missing_res.status_code == 404
+
+
+def test_batch_export_excel():
+    import io
+    import zipfile
+    import xml.etree.ElementTree as ET
+
+    payload = {
+        "sheet_name": "Top_150_Test",
+        "filter_summary": "Germany",
+        "records": [
+            {
+                "CustomerId": 15700001,
+                "Surname": "Müller",
+                "Geography": "Germany",
+                "Gender": "Male",
+                "Age": 52,
+                "Balance": 145000.5,
+                "NumOfProducts": 1,
+                "IsActiveMember": 1,
+                "Complain": 0,
+                "Predicted_Probability": 0.84,
+                "Risk_Tier": "CRITICAL_RISK",
+                "Quadrant": "Q1: VIP At-Risk",
+                "Recommended_Strategy": "RM gọi 1-1 & ưu đãi lãi suất +0,5%/năm",
+                "Channel": "RM Call 1-1",
+                "Estimated_Cost_EUR": 150,
+            }
+        ],
+    }
+    res = client.post("/api/batch/export-excel", json=payload)
+    assert res.status_code == 200
+    assert (
+        res.headers["content-type"]
+        == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    assert ".xlsx" in res.headers["content-disposition"]
+
+    zf = zipfile.ZipFile(io.BytesIO(res.content))
+    expected_parts = {
+        "[Content_Types].xml",
+        "_rels/.rels",
+        "xl/workbook.xml",
+        "xl/_rels/workbook.xml.rels",
+        "xl/styles.xml",
+        "xl/worksheets/sheet1.xml",
+    }
+    assert expected_parts.issubset(set(zf.namelist()))
+    for name in expected_parts:
+        ET.fromstring(zf.read(name))
+
+    sheet_text = zf.read("xl/worksheets/sheet1.xml").decode("utf-8")
+    assert "BB BANK AG" in sheet_text
+    assert 'ySplit="4"' in sheet_text
+    assert "SUM(G5:G5)" in sheet_text
+    assert "AVERAGE(K5:K5)" in sheet_text

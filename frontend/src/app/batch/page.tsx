@@ -60,6 +60,7 @@ export default function BatchScoringPage() {
   });
   const [conditionalFormatting, setConditionalFormatting] = useState(true);
   const [isExpandedView, setIsExpandedView] = useState(false);
+  const [exportingExcel, setExportingExcel] = useState(false);
 
   const loadData = () => {
     setLoading(true);
@@ -154,6 +155,53 @@ export default function BatchScoringPage() {
     return (sum / sortedRecords.length) * 100;
   }, [sortedRecords]);
 
+  const exportExcel = async () => {
+    if (sortedRecords.length === 0 || exportingExcel) return;
+    setExportingExcel(true);
+    try {
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      const sheetMap: Record<string, string> = {
+        Sheet1: "Top_150_Khach_Hang",
+        Sheet2: "Q1_VIP_At_Risk",
+        Sheet3: "Tam_Chan_Duc_DE",
+      };
+      const filterParts = [
+        selectedCountry === "ALL" ? "Tất cả 3 quốc gia" : `Quốc gia: ${selectedCountry}`,
+        filterRiskOnly ? "Chỉ nguy cơ cao (>= 0,45)" : "Toàn danh mục",
+      ];
+      if (searchQuery.trim()) {
+        filterParts.push(`Từ khóa: "${searchQuery.trim()}"`);
+      }
+
+      const res = await fetch(`${apiBase}/api/batch/export-excel`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sheet_name: sheetMap[activeSheet] || activeSheet,
+          filter_summary: filterParts.join(" • "),
+          records: sortedRecords,
+        }),
+      });
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `BB_Bank_Scored_Portfolio_${activeSheet}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.warn("Excel export API failed:", err);
+      alert("Không thể xuất tệp Excel (.xlsx). Vui lòng kiểm tra kết nối FastAPI (:8000).");
+    } finally {
+      setExportingExcel(false);
+    }
+  };
+
   const exportCsv = () => {
     if (sortedRecords.length === 0) return;
     const headers = [
@@ -202,6 +250,7 @@ export default function BatchScoringPage() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -209,15 +258,31 @@ export default function BatchScoringPage() {
       <PageHeader
         category="Batch Campaign Operations & Data Grid"
         title="Bảng Tính Chấm Điểm Danh Mục Khách Hàng (Excel Grid Simulator)"
-        subtitle="Mô phỏng bảng tính Excel chuyên nghiệp: Lưới dữ liệu Top 150 khách hàng, thanh công thức fx, đóng băng tiêu đề, và xuất tệp call-list cho RM"
+        subtitle="Mô phỏng bảng tính Excel chuyên nghiệp: Lưới dữ liệu Top 150 khách hàng, thanh công thức fx, đóng băng tiêu đề, và xuất tệp .XLSX chuẩn văn phòng cho RM"
         action={
-          <button
-            onClick={exportCsv}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#107c41] hover:bg-[#0d6535] text-white text-xs font-bold shadow-sm transition-all cursor-pointer"
-          >
-            <Download className="w-4 h-4" />
-            <span>Xuất Excel (.CSV)</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={exportExcel}
+              disabled={exportingExcel || sortedRecords.length === 0}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#107c41] hover:bg-[#0d6535] text-white text-xs font-bold shadow-sm transition-all cursor-pointer disabled:opacity-60"
+            >
+              {exportingExcel ? (
+                <RefreshCw className="w-4 h-4 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4" />
+              )}
+              <span>{exportingExcel ? "Đang tạo Excel..." : "Xuất Excel (.XLSX)"}</span>
+            </button>
+
+            <button
+              onClick={exportCsv}
+              disabled={sortedRecords.length === 0}
+              title="Tải dữ liệu thô CSV"
+              className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold shadow-xs transition-all cursor-pointer disabled:opacity-60"
+            >
+              <span>CSV</span>
+            </button>
+          </div>
         }
       />
 

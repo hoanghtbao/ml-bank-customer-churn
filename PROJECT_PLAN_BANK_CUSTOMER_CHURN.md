@@ -533,5 +533,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
     * Dọn sạch dòng tên cũ còn sót trong `requirements.txt`, cập nhật `README.md` sang kiến trúc **BB Bank** Full-Stack Next.js 16 + FastAPI và chuẩn số `vi-VN`, thay thế các tham chiếu `Streamlit` cũ trong `tests/`, `shap_explain.py`, `reports/01` và markdown của 4 tệp `.ipynb`.
 14. **Tích Hợp Thư Viện 18 Biểu Đồ (`fig_01`–`fig_18`) Kèm Lightbox & Diễn Giải Lên Web (24/11/2026):**
     * Tạo `chartCatalog.ts` + `FigureGallery.tsx`, thêm Tab `Kho Biểu Đồ Phân Tích EDA (13)` trên `/dashboard`, nhúng `fig_14`–`fig_16` vào `/governance` và `fig_17`–`fig_18` vào `/strategy` (kèm xóa 2 ảnh logo cũ còn sót trong `frontend/public/`).
+15. **Xuất Tệp Excel `.XLSX` Định Dạng Chuẩn Văn Phòng Tại `/batch` (24/11/2026):**
+    * Xây dựng `src/business/excel_exporter.py` (OOXML `.xlsx` thuần Python với banner `BB BANK AG`, đóng băng tiêu đề, AutoFilter, căn lề/viền/màu rủi ro, định dạng tiền tệ & phần trăm, công thức `COUNTA`/`SUM`/`AVERAGE`, tự giãn cột & dòng), bổ sung `POST /api/batch/export-excel` và cập nhật `batch/page.tsx`.
 
 
