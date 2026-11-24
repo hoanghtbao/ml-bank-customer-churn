@@ -179,6 +179,14 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
   * Xây dựng bộ tạo tệp OOXML `.xlsx` chuẩn ECMA-376 trong [excel_exporter.py](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/src/business/excel_exporter.py) với: tiêu đề hợp nhất (banner `BB BANK AG`), thanh thông tin bộ lọc, dòng tổng hợp công thức Excel sống (`COUNTA`, `SUM`, `AVERAGE`), tiêu đề cột Navy đóng băng (`freezePane` dòng 4) kèm `AutoFilter`, tự động giãn độ rộng & chiều cao dòng cho nội dung dài, căn lề chuẩn văn phòng (trái/giữa/phải theo loại dữ liệu), định dạng số (`#,##0.00 €`, `0.0%`), tô màu phân tầng rủi ro/khiếu nại và khổ in ngang (`Landscape`).
   * Bổ sung `POST /api/batch/export-excel` (`BatchExportExcelRequest`) tại `api/routes/batch.py` và nâng cấp nút **`Xuất Excel (.XLSX)`** (giữ kèm nút `CSV` phụ) tại `frontend/src/app/batch/page.tsx`.
 
+### Thay đổi 16: Code Review Toàn Diện — Chuẩn Hóa Tham Số Mặc Định, Cache Pipeline & Sạch Lỗi ESLint/TypeScript (24/11/2026)
+
+* **Các điểm lệch nhỏ phát hiện khi Code Review:**
+  * Tham số mặc định `threshold` trong `predict_customer` và `predict_batch` (`src/modeling/predict.py`) còn để `0.27` thay vì `0.45`; hàm `generate_call_script` (`src/business/retention_advisor.py`) còn mặc định `rm_name = "Nguyễn Văn A"` và chuỗi chiến lược Đức định dạng số kiểu Mỹ; `get_portfolio_scored` (`api/routes/batch.py`) nạp lại `joblib.load` mỗi lần gọi; và `npm run lint` trong `frontend/` có 25 lỗi ESLint (`@typescript-eslint/no-explicit-any`, `react-hooks/set-state-in-effect`, `react-hooks/purity`).
+* **Thay đổi đã thực hiện:**
+  * Đồng bộ `threshold: float = 0.45` trong `src/modeling/predict.py`; đổi mặc định `rm_name = "Hoàng Hữu Bảo (Senior RM)"` và định dạng số `vi-VN` (`+0,50%/năm`) trong `src/business/retention_advisor.py`; bổ sung `_get_pipeline()` cache bộ nhớ trong `api/routes/batch.py`.
+  * Định nghĩa đầy đủ kiểu dữ liệu TypeScript và tối ưu luồng React Hooks trong `AppShell.tsx`, `TopNavbar.tsx`, `InteractiveRegionMap.tsx`, `LeafletMapInner.tsx`, `dashboard`, `governance`, `strategy`, `advisor`, `batch` để sạch 0 lỗi ESLint.
+
 ---
 
 ## 3. DANH MỤC TỆP BÁO CÁO & TÀI LIỆU HIỆN CÓ TRONG DỰ ÁN

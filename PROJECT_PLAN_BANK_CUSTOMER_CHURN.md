@@ -535,5 +535,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
     * Tạo `chartCatalog.ts` + `FigureGallery.tsx`, thêm Tab `Kho Biểu Đồ Phân Tích EDA (13)` trên `/dashboard`, nhúng `fig_14`–`fig_16` vào `/governance` và `fig_17`–`fig_18` vào `/strategy` (kèm xóa 2 ảnh logo cũ còn sót trong `frontend/public/`).
 15. **Xuất Tệp Excel `.XLSX` Định Dạng Chuẩn Văn Phòng Tại `/batch` (24/11/2026):**
     * Xây dựng `src/business/excel_exporter.py` (OOXML `.xlsx` thuần Python với banner `BB BANK AG`, đóng băng tiêu đề, AutoFilter, căn lề/viền/màu rủi ro, định dạng tiền tệ & phần trăm, công thức `COUNTA`/`SUM`/`AVERAGE`, tự giãn cột & dòng), bổ sung `POST /api/batch/export-excel` và cập nhật `batch/page.tsx`.
+16. **Code Review Toàn Diện — Đồng Bộ Tham Số `0.45`, Cache Pipeline & Sạch Lỗi ESLint (24/11/2026):**
+    * Đồng bộ ngưỡng mặc định `threshold=0.45` trong `src/modeling/predict.py`, chuẩn hóa `rm_name` & số `vi-VN` trong `retention_advisor.py`, thêm cache `_get_pipeline()` trong `api/routes/batch.py` và khử sạch lỗi ESLint/TypeScript trên toàn bộ Frontend.
 
 

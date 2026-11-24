@@ -39,9 +39,15 @@ const COUNTRY_CODE_MAP: Record<string, string> = {
   Spain: "ES",
 };
 
+interface BatchKpis {
+  total_records: number;
+  total_high_risk: number;
+  total_balance_at_risk_m_eur: number;
+}
+
 export default function BatchScoringPage() {
   const [records, setRecords] = useState<ScoredCustomer[]>([]);
-  const [kpis, setKpis] = useState<any>({
+  const [kpis, setKpis] = useState<BatchKpis>({
     total_records: 10000,
     total_high_risk: 1530,
     total_balance_at_risk_m_eur: 185.68,
@@ -53,7 +59,7 @@ export default function BatchScoringPage() {
   const [sortField, setSortField] = useState<keyof ScoredCustomer>("Predicted_Probability");
   const [sortAsc, setSortAsc] = useState<boolean>(false);
   const [activeSheet, setActiveSheet] = useState<string>("Sheet1");
-  const [selectedCell, setSelectedCell] = useState<{ row: number; col: string; val: any }>({
+  const [selectedCell, setSelectedCell] = useState<{ row: number; col: string; val: string | number }>({
     row: 1,
     col: "J",
     val: "82,5%",
@@ -62,8 +68,7 @@ export default function BatchScoringPage() {
   const [isExpandedView, setIsExpandedView] = useState(false);
   const [exportingExcel, setExportingExcel] = useState(false);
 
-  const loadData = () => {
-    setLoading(true);
+  const fetchPortfolio = () => {
     fetchApi("/api/batch/portfolio-scored?limit=150&risk_only=false")
       .then((res) => {
         setRecords(res.records || []);
@@ -82,11 +87,16 @@ export default function BatchScoringPage() {
       });
   };
 
+  const loadData = () => {
+    setLoading(true);
+    fetchPortfolio();
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const qParam = params.get("q");
     if (qParam) {
-      setSearchQuery(qParam);
+      queueMicrotask(() => setSearchQuery(qParam));
     }
 
     const handler = (e: Event) => {
@@ -96,7 +106,7 @@ export default function BatchScoringPage() {
       }
     };
     window.addEventListener("bb-batch-search", handler);
-    loadData();
+    fetchPortfolio();
     return () => window.removeEventListener("bb-batch-search", handler);
   }, []);
 

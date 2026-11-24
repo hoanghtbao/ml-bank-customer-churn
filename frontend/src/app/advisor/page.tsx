@@ -112,16 +112,41 @@ const PRESET_PERSONAS = [
   },
 ];
 
+interface SinglePredictionResult {
+  CustomerId: number;
+  Surname: string;
+  churn_probability: number;
+  risk_tier: string;
+  rule_override_applied: boolean;
+  annual_customer_value_eur: number;
+  action_cost_eur: number;
+  break_even_threshold: number;
+  expected_net_gain_eur: number;
+  next_best_action: {
+    strategy_name: string;
+    recommended_action: string;
+    channel: string;
+    estimated_cost_eur: number;
+  };
+  call_script: string;
+}
+
+interface WhatIfSimResult {
+  simulated_probability: number;
+  delta_probability: number;
+  recommendation_note: string;
+}
+
 export default function RetentionAdvisorPage() {
   const [formData, setFormData] = useState(PRESET_PERSONAS[0].data);
-  const [prediction, setPrediction] = useState<any>(null);
+  const [prediction, setPrediction] = useState<SinglePredictionResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const [whatIfActive, setWhatIfActive] = useState(1);
   const [whatIfProducts, setWhatIfProducts] = useState(1);
   const [whatIfBalance, setWhatIfBalance] = useState(145000);
-  const [whatIfResult, setWhatIfResult] = useState<any>(null);
+  const [whatIfResult, setWhatIfResult] = useState<WhatIfSimResult | null>(null);
   const [whatIfLoading, setWhatIfLoading] = useState(false);
 
   // Allow TopNavbar Quick Search to jump straight into scoring any customerId

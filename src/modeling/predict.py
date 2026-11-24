@@ -33,7 +33,7 @@ def calibrate_risk_tier(prob: float) -> str:
 def predict_customer(
     pipeline: Pipeline,
     customer_data: Dict[str, Any],
-    threshold: float = 0.27,
+    threshold: float = 0.45,
     enforce_complain_rule: bool = True
 ) -> Dict[str, Any]:
     """
@@ -83,7 +83,7 @@ def predict_customer(
 def predict_batch(
     pipeline: Pipeline,
     batch_df: pd.DataFrame,
-    threshold: float = 0.27,
+    threshold: float = 0.45,
     enforce_complain_rule: bool = True
 ) -> pd.DataFrame:
     """

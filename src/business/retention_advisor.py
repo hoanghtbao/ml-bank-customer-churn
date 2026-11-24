@@ -55,12 +55,13 @@ def recommend_next_best_action(customer: Dict[str, Any]) -> Dict[str, Any]:
 
     # Rule 3: German High-Balance Outflow
     if geography == 'Germany' and balance >= 80000.0:
+        bal_vn = f"{balance:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
         return {
             'strategy_code': 'S3_GERMAN_WEALTH_LOCK',
             'strategy_name': 'Đặc quyền Bảo toàn Vốn Chi nhánh Đức (German Wealth Protection)',
             'recommended_action': (
-                f"Khách hàng {surname} đang duy trì số dư lớn ({balance:,.2f} EUR) tại chi nhánh Đức. "
-                "Đề xuất gói tiền gửi kỳ hạn linh hoạt với lãi suất cộng thêm ưu đãi +0.50%/năm "
+                f"Khách hàng {surname} đang duy trì số dư lớn ({bal_vn} EUR) tại chi nhánh Đức. "
+                "Đề xuất gói tiền gửi kỳ hạn linh hoạt với lãi suất cộng thêm ưu đãi +0,50%/năm "
                 "để cạnh tranh trực tiếp với ngân hàng nội địa, miễn phí dịch vụ chuyển tiền quốc tế, "
                 "và chỉ định Private Banker quản lý riêng."
             ),
@@ -100,7 +101,7 @@ def recommend_next_best_action(customer: Dict[str, Any]) -> Dict[str, Any]:
 
 def generate_call_script(
     customer: Dict[str, Any],
-    rm_name: str = "Nguyễn Văn A"
+    rm_name: str = "Hoàng Hữu Bảo (Senior RM)"
 ) -> str:
     """
     Generates a personalized, professional call script in Vietnamese

@@ -22,17 +22,29 @@ import {
 } from "recharts";
 import { Landmark, TrendingDown, AlertTriangle, Zap, LayoutDashboard, Images } from "lucide-react";
 
+interface DashboardOverviewData {
+  kpis: {
+    total_customers: number;
+    churn_rate_pct: number;
+    churn_headcount: number;
+    total_balance_m_eur: number;
+    balance_at_risk_m_eur: number;
+    balance_at_risk_pct: number;
+  };
+  country_distribution: Record<string, string | number>[];
+  product_holding_curve: Record<string, string | number>[];
+  age_lifecycle: Record<string, string | number>[];
+}
+
 export default function DashboardPage() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const [activeTab, setActiveTab] = useState<"executive" | "eda_gallery">("executive");
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<DashboardOverviewData | null>(null);
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  const loadDashboard = useCallback(() => {
-    setLoading(true);
-    setApiError(null);
+  const fetchDashboard = useCallback(() => {
     fetchApi("/api/dashboard/overview")
       .then((res) => {
         setData(res);
@@ -47,9 +59,15 @@ export default function DashboardPage() {
       });
   }, []);
 
+  const handleRetry = () => {
+    setLoading(true);
+    setApiError(null);
+    fetchDashboard();
+  };
+
   useEffect(() => {
-    loadDashboard();
-  }, [loadDashboard]);
+    fetchDashboard();
+  }, [fetchDashboard]);
 
   const kpis = data?.kpis;
   const countryData = data?.country_distribution;
@@ -129,12 +147,12 @@ export default function DashboardPage() {
 
       {activeTab === "eda_gallery" ? (
         <FigureGallery figures={EDA_FIGURES} columns={3} enableFilter />
-      ) : loading || !data ? (
+      ) : loading || !data || !kpis ? (
         <ApiStatusState
           loading={loading}
           error={apiError}
           loadingText="Đang tải số liệu Báo cáo Điều hành từ FastAPI..."
-          onRetry={loadDashboard}
+          onRetry={handleRetry}
         />
       ) : (
         <>

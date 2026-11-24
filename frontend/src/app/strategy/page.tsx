@@ -20,11 +20,44 @@ import {
 } from "recharts";
 import { TrendingUp, Sliders, ShieldAlert, Gem, Smartphone, Landmark } from "lucide-react";
 
+interface QuadrantSummaryRow {
+  Quadrant_Code: string;
+  Quadrant_Name: string;
+  Customer_Count: number;
+  Customer_Pct: string | number;
+  Total_Balance_M_EUR: string | number;
+  Balance_Pct: string | number;
+  Actual_Churn_Pct: string | number;
+}
+
+interface QuadrantResponse {
+  summary: QuadrantSummaryRow[];
+}
+
+interface RoiTierBlock {
+  intervention_cost_eur: number;
+  clv_value_saved_eur: number;
+  net_profit_eur: number;
+}
+
+interface RoiResponse {
+  Q1_VIP: RoiTierBlock;
+  Q2_Standard: RoiTierBlock;
+  Total_Campaign: {
+    total_intervention_cost_eur: number;
+    total_customers_saved: number;
+    total_deposit_saved_m_eur: number;
+    total_clv_saved_eur: number;
+    total_net_profit_eur: number;
+    total_roi_pct: number;
+  };
+}
+
 export default function StrategyPage() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const [quadrantData, setQuadrantData] = useState<any>(null);
-  const [roiResult, setRoiResult] = useState<any>(null);
+  const [quadrantData, setQuadrantData] = useState<QuadrantResponse | null>(null);
+  const [roiResult, setRoiResult] = useState<RoiResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState<string | null>(null);
 
@@ -36,9 +69,7 @@ export default function StrategyPage() {
   const [baseFee, setBaseFee] = useState(200);
   const [simLoading, setSimLoading] = useState(false);
 
-  const loadStrategyData = useCallback(() => {
-    setLoading(true);
-    setApiError(null);
+  const fetchStrategyData = useCallback(() => {
     Promise.all([
       fetchApi("/api/strategy/quadrants"),
       fetchApi("/api/strategy/roi-simulate", {
@@ -65,8 +96,37 @@ export default function StrategyPage() {
       });
   }, [vipCost, stdCost, vipSaveRate, stdSaveRate, marginRate, baseFee]);
 
+  const handleRetry = () => {
+    setLoading(true);
+    setApiError(null);
+    fetchStrategyData();
+  };
+
   useEffect(() => {
-    loadStrategyData();
+    Promise.all([
+      fetchApi("/api/strategy/quadrants"),
+      fetchApi("/api/strategy/roi-simulate", {
+        method: "POST",
+        body: JSON.stringify({
+          vip_cost: 150,
+          std_cost: 25,
+          vip_save_rate: 0.4,
+          std_save_rate: 0.25,
+          margin_rate: 0.05,
+          base_service_fee: 200,
+        }),
+      }),
+    ])
+      .then(([qData, rData]) => {
+        setQuadrantData(qData);
+        setRoiResult(rData);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.warn("Strategy API temporarily unavailable:", err?.message || err);
+        setApiError("Không thể kết nối tới Backend FastAPI (:8000) để tải Ma trận 4 Quadrants.");
+        setLoading(false);
+      });
   }, []);
 
   const handleSimulate = async () => {
@@ -97,7 +157,7 @@ export default function StrategyPage() {
         loading={loading}
         error={apiError}
         loadingText="Đang tải Ma trận 4 Quadrants & Mô hình ROI từ FastAPI..."
-        onRetry={loadStrategyData}
+        onRetry={handleRetry}
       />
     );
   }
@@ -163,7 +223,7 @@ export default function StrategyPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-medium text-slate-700 dark:text-slate-300">
-              {quadrantData.summary.map((q: any) => (
+              {quadrantData.summary.map((q) => (
                 <tr key={q.Quadrant_Code} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40">
                   <td className="p-3 font-bold text-slate-900 dark:text-white">{q.Quadrant_Name}</td>
                   <td className="p-3 font-mono">

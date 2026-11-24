@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import {
   Globe2,
@@ -34,8 +34,7 @@ const LeafletMapInner = dynamic(() => import("./LeafletMapInner"), {
 
 export default function InteractiveRegionMap() {
   const { theme } = useTheme();
-  const [mapStyle, setMapStyle] = useState<MapStyle>("voyager");
-  const [manualMapStyle, setManualMapStyle] = useState(false);
+  const [manualMapStyle, setManualMapStyle] = useState<MapStyle | null>(null);
   const [showGeoJson, setShowGeoJson] = useState<boolean>(true);
   const [selectedCountry, setSelectedCountry] = useState<string>("Germany");
   const [selectedQuadrantCode, setSelectedQuadrantCode] = useState<string>("Q1_VIP_At_Risk");
@@ -45,12 +44,7 @@ export default function InteractiveRegionMap() {
     timestamp: number;
   } | null>(null);
 
-  // Sync map tiles seamlessly with global Light/Dark mode unless user manually chose Satellite/OSM
-  useEffect(() => {
-    if (!manualMapStyle) {
-      setMapStyle(theme === "dark" ? "dark" : "voyager");
-    }
-  }, [theme, manualMapStyle]);
+  const mapStyle: MapStyle = manualMapStyle ?? (theme === "dark" ? "dark" : "voyager");
 
   const activeCountryKey = selectedCountry === "ALL" ? "Germany" : selectedCountry;
   const activeData = COUNTRIES_DATA[activeCountryKey] || COUNTRIES_DATA["Germany"];
@@ -61,18 +55,25 @@ export default function InteractiveRegionMap() {
   const handleSelectCountry = (countryKey: string) => {
     setSelectedCountry(countryKey);
     if (countryKey === "ALL") {
-      setTargetView({ center: [46.8, 3.8], zoom: 5, timestamp: Date.now() });
+      setTargetView((prev) => ({
+        center: [46.8, 3.8],
+        zoom: 5,
+        timestamp: (prev?.timestamp ?? 0) + 1,
+      }));
     } else {
       const c = COUNTRIES_DATA[countryKey];
       if (c) {
-        setTargetView({ center: c.center, zoom: c.zoom, timestamp: Date.now() });
+        setTargetView((prev) => ({
+          center: c.center,
+          zoom: c.zoom,
+          timestamp: (prev?.timestamp ?? 0) + 1,
+        }));
       }
     }
   };
 
   const handleMapStyleChange = (style: MapStyle) => {
-    setManualMapStyle(true);
-    setMapStyle(style);
+    setManualMapStyle(style);
   };
 
   return (

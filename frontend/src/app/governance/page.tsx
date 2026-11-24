@@ -9,14 +9,55 @@ import { fetchApi } from "@/lib/api";
 import { formatDecimal, formatViDisplay } from "@/lib/formatters";
 import { ShieldCheck, CheckCircle2, Cpu, FileText } from "lucide-react";
 
+interface DecileRow {
+  Decile: number;
+  "Khách hàng": string | number;
+  "Số Churn": string | number;
+  "Tỷ lệ Churn Decile (%)": string | number;
+  "Tích lũy Churn Bắt được (%)": string | number;
+  "Hệ số Nâng (Lift)": string | number;
+}
+
+interface AblationRow {
+  scenario: string;
+  description: string;
+  val_accuracy: string | number;
+  val_f1: string | number;
+  val_roc_auc: string | number;
+  status: string;
+}
+
+interface GovernanceResponse {
+  metadata?: {
+    model_name?: string;
+    champion_model_type?: string;
+    scaler?: string;
+    optimal_decision_threshold?: string | number;
+    feature_columns?: string[];
+    test_holdout_metrics?: {
+      accuracy?: number;
+      precision?: number;
+      recall?: number;
+      f1_score?: number;
+      roc_auc?: number;
+    };
+    runtime_environment?: {
+      python_version?: string;
+      scikit_learn_version?: string;
+      xgboost_version?: string;
+      joblib_version?: string;
+    };
+  };
+  decile_lift_table?: DecileRow[];
+  ablation_studies?: AblationRow[];
+}
+
 export default function GovernancePage() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<GovernanceResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  const loadGovernance = useCallback(() => {
-    setLoading(true);
-    setApiError(null);
+  const fetchGovernance = useCallback(() => {
     fetchApi("/api/governance/metadata")
       .then((res) => {
         setData(res);
@@ -29,9 +70,15 @@ export default function GovernancePage() {
       });
   }, []);
 
+  const handleRetry = () => {
+    setLoading(true);
+    setApiError(null);
+    fetchGovernance();
+  };
+
   useEffect(() => {
-    loadGovernance();
-  }, [loadGovernance]);
+    fetchGovernance();
+  }, [fetchGovernance]);
 
   if (loading || !data) {
     return (
@@ -39,7 +86,7 @@ export default function GovernancePage() {
         loading={loading}
         error={apiError}
         loadingText="Đang tải Dữ liệu Quản trị & Siêu dữ liệu từ FastAPI..."
-        onRetry={loadGovernance}
+        onRetry={handleRetry}
       />
     );
   }
@@ -222,7 +269,7 @@ export default function GovernancePage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-medium text-slate-700 dark:text-slate-300">
-              {decileTable.map((d: any) => (
+              {decileTable.map((d) => (
                 <tr
                   key={d.Decile}
                   className={
@@ -266,7 +313,7 @@ export default function GovernancePage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-medium text-slate-700 dark:text-slate-300">
-              {ablationTable.map((a: any) => (
+              {ablationTable.map((a) => (
                 <tr
                   key={a.scenario}
                   className={

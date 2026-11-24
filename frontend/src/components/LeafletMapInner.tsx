@@ -201,20 +201,20 @@ export default function LeafletMapInner({
   targetView,
   theme,
 }: LeafletMapInnerProps) {
-  const [geoJsonData, setGeoJsonData] = useState<any>(null);
+  const [geoJsonData, setGeoJsonData] = useState<GeoJSON.GeoJsonObject | null>(null);
 
   useEffect(() => {
     fetch("/geo/tri_market_countries.json")
       .then((res) => res.json())
-      .then((data) => setGeoJsonData(data))
+      .then((data: GeoJSON.GeoJsonObject) => setGeoJsonData(data))
       .catch((err) => console.error("Error loading GeoJSON:", err));
   }, []);
 
   const currentTile = TILE_LAYERS[mapStyle];
   const visibleCountries = Object.values(COUNTRIES_DATA);
 
-  const geoJsonStyle = (feature: any) => {
-    const countryName = feature?.properties?.name || "";
+  const geoJsonStyle = (feature?: GeoJSON.Feature) => {
+    const countryName = String(feature?.properties?.name || "");
     const isSelected = selectedCountry === countryName || selectedCountry === "ALL";
     const isDark = theme === "dark";
 
@@ -253,8 +253,8 @@ export default function LeafletMapInner({
     };
   };
 
-  const onEachCountryFeature = (feature: any, layer: L.Layer) => {
-    const countryName = feature?.properties?.name;
+  const onEachCountryFeature = (feature: GeoJSON.Feature, layer: L.Layer) => {
+    const countryName = String(feature?.properties?.name || "");
     const stat = COUNTRIES_DATA[countryName];
 
     layer.on({
@@ -263,15 +263,15 @@ export default function LeafletMapInner({
           onSelectCountry(countryName);
         }
       },
-      mouseover: (e: any) => {
-        const target = e.target;
+      mouseover: (e: L.LeafletMouseEvent) => {
+        const target = e.target as L.Path;
         target.setStyle({
           weight: 3.5,
           fillOpacity: 0.38,
         });
       },
-      mouseout: (e: any) => {
-        const target = e.target;
+      mouseout: (e: L.LeafletMouseEvent) => {
+        const target = e.target as L.Path;
         target.setStyle(geoJsonStyle(feature));
       },
     });

@@ -39,14 +39,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const savedCollapsed = localStorage.getItem("bb_bank_sidebar_collapsed");
-    if (savedCollapsed !== null) {
-      setCollapsed(savedCollapsed === "true");
-    }
-
     const savedTheme = localStorage.getItem("bb_bank_theme") as ThemeMode | null;
     const initialTheme: ThemeMode = savedTheme === "dark" ? "dark" : "light";
-    setThemeState(initialTheme);
     document.documentElement.classList.toggle("dark", initialTheme === "dark");
+
+    queueMicrotask(() => {
+      if (savedCollapsed !== null) {
+        setCollapsed(savedCollapsed === "true");
+      }
+      setThemeState(initialTheme);
+    });
   }, []);
 
   const toggleSidebar = () => {

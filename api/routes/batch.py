@@ -28,6 +28,7 @@ DATA_PATH = os.path.join(PROJECT_ROOT, 'data', 'processed', 'full_engineered.csv
 MODEL_PATH = os.path.join(PROJECT_ROOT, 'models', 'churn_early_warning_pipeline.joblib')
 
 _PORTFOLIO_DF_CACHE = None
+_PIPELINE_CACHE = None
 
 
 def _get_portfolio_df() -> pd.DataFrame:
@@ -36,6 +37,14 @@ def _get_portfolio_df() -> pd.DataFrame:
     if _PORTFOLIO_DF_CACHE is None:
         _PORTFOLIO_DF_CACHE = pd.read_csv(DATA_PATH)
     return _PORTFOLIO_DF_CACHE
+
+
+def _get_pipeline():
+    """Lazy-load and cache champion ML pipeline for batch scoring."""
+    global _PIPELINE_CACHE
+    if _PIPELINE_CACHE is None:
+        _PIPELINE_CACHE = joblib.load(MODEL_PATH)
+    return _PIPELINE_CACHE
 
 
 def _row_to_customer_profile(row: pd.Series) -> dict:
@@ -90,8 +99,8 @@ def get_customer_by_id(customer_id: int):
 @router.get("/portfolio-scored")
 def get_portfolio_scored(limit: int = 200, risk_only: bool = False):
     """Returns scored customers from the 10,000 portfolio."""
-    pipeline = joblib.load(MODEL_PATH)
-    df = pd.read_csv(DATA_PATH)
+    pipeline = _get_pipeline()
+    df = _get_portfolio_df()
     scored = predict_batch(pipeline, df, threshold=0.45, enforce_complain_rule=True)
     scored = assign_four_quadrants(scored, risk_threshold=0.45, high_value_threshold=80000.0)
 
@@ -143,7 +152,7 @@ async def score_uploaded_csv(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to parse CSV: {str(e)}")
 
-    pipeline = joblib.load(MODEL_PATH)
+    pipeline = _get_pipeline()
     scored = predict_batch(pipeline, df_upload, threshold=0.45, enforce_complain_rule=True)
     scored = assign_four_quadrants(scored, risk_threshold=0.45, high_value_threshold=80000.0)
     scored = scored.sort_values(by='Predicted_Probability', ascending=False)

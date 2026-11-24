@@ -121,14 +121,12 @@ export default function TopNavbar() {
   useEffect(() => {
     const q = searchQuery.trim();
     if (!q) {
-      setSearchResults([]);
-      setSearching(false);
       return;
     }
 
     let cancelled = false;
-    setSearching(true);
     const timeout = setTimeout(() => {
+      setSearching(true);
       fetchApi(`/api/batch/search?q=${encodeURIComponent(q)}&limit=7`)
         .then((res) => {
           if (!cancelled) {
@@ -218,8 +216,13 @@ export default function TopNavbar() {
             value={searchQuery}
             onFocus={() => setDropdownOpen(true)}
             onChange={(e) => {
-              setSearchQuery(e.target.value);
+              const val = e.target.value;
+              setSearchQuery(val);
               setDropdownOpen(true);
+              if (!val.trim()) {
+                setSearchResults([]);
+                setSearching(false);
+              }
             }}
             aria-label="Tìm kiếm nhanh khách hàng theo ID hoặc Họ"
             placeholder="Tìm KH theo ID, Họ..."
