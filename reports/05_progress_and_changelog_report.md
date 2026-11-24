@@ -195,6 +195,13 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
   * Tách riêng mục `## Packages Import` ở ngay đầu [Project_Source_Code.ipynb](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/Project_Source_Code.ipynb) (`163 cells`) chỉ giữ gọn các thư viện chung (`os`, `sys`, `json`, `warnings`, `joblib`, `pandas`, `numpy`, `matplotlib.pyplot`, `seaborn`, `sklearn`, `xgboost`, `IPython.display`) và cấu hình đồ thị `ggplot` / kích thước khung hình chuẩn của thầy.
   * Phân bổ các lệnh `from src... import ...` về đúng ô `Thiết lập Môi trường & Nạp Module` ở đầu từng giai đoạn sử dụng thực tế (Giai đoạn `1`, `2`, `3B`, `3C`, `4`, `5`, `6`) và chạy kiểm chứng lại toàn bộ 163 cells từ đầu đến cuối (`Restart & Run All` sạch lỗi 100%).
 
+### Thay đổi 18: Xuất Báo Cáo Word Dự Án Chuẩn Định Dạng Coding Version (`Project_Report_BB_Bank_Coding.docx`) (24/11/2026)
+
+* **Yêu cầu bàn giao báo cáo:**
+  * Xây dựng báo cáo Word (`.docx`) bám sát 100% cấu trúc 8 phần, trang bìa, mục lục tự động, header/footer, ô code Python tô màu cú pháp (`[1]:`–`[45]:`), bảng kết quả và biểu đồ minh họa của mẫu `File 3_ Project Report (Coding).pdf`.
+* **Thay đổi đã thực hiện:**
+  * Khởi tạo tệp [Project_Report_BB_Bank_Coding.docx](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/Project_Report_BB_Bank_Coding.docx) (37 trang A4, tự động cập nhật số trang Mục lục bằng Microsoft Word COM) trích xuất trực tiếp mã nguồn, bảng kết quả (`df_result`, `df_if_values`, Ablation Study, Decile Lift, 4 Quadrants, Tiered ROI) và đủ **19 biểu đồ độ phân giải cao** (`fig_01`–`fig_18` + `age_groups` KDE) từ `Project_Source_Code.ipynb`.
+
 ---
 
 ## 3. DANH MỤC TỆP BÁO CÁO & TÀI LIỆU HIỆN CÓ TRONG DỰ ÁN

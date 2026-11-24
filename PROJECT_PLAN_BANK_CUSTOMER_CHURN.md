@@ -539,5 +539,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
     * Đồng bộ ngưỡng mặc định `threshold=0.45` trong `src/modeling/predict.py`, chuẩn hóa `rm_name` & số `vi-VN` trong `retention_advisor.py`, thêm cache `_get_pipeline()` trong `api/routes/batch.py` và khử sạch lỗi ESLint/TypeScript trên toàn bộ Frontend.
 17. **Tinh Gọn Mục `Packages Import` Đầu Notebook & Chia Import Theo Từng Giai Đoạn Chuẩn Phong Cách Giảng Viên (24/11/2026):**
     * Tách riêng mục `Packages Import` gọn nhẹ ở đầu `Project_Source_Code.ipynb` (`163 cells`) chứa các thư viện chung, và rải các lệnh `from src... import ...` về đúng ô thiết lập của từng Giai đoạn `1`–`6` (đã chạy kiểm chứng lại toàn bộ 163 cells xuyên suốt).
+18. **Biên Soạn Báo Cáo Word Chuẩn Định Dạng Coding Version (`Project_Report_BB_Bank_Coding.docx`) (24/11/2026):**
+    * Xuất tệp báo cáo Word chuẩn A4 (37 trang, Mục lục tự động, 45 ô code Python tô màu cú pháp, toàn bộ bảng số liệu thật và 19 biểu đồ độ phân giải cao) khớp 100% bố cục 8 phần của `File 3_ Project Report (Coding).pdf`.
 
 
