@@ -202,6 +202,15 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
 * **Thay đổi đã thực hiện:**
   * Khởi tạo tệp [Project_Report_BB_Bank_Coding.docx](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/Project_Report_BB_Bank_Coding.docx) (**38 trang A4**, tự động cập nhật số trang Mục lục bằng Microsoft Word COM), tích hợp trực tiếp **Trang bìa chính thức Trường Đại học Đông Á** (khung viền hoa văn, logo UDA, thông tin Nhóm 3 lớp `IT24A`, GVHD `TS. Nguyễn Sĩ Thìn`) ở Trang 1 và **Lời cảm ơn** từ `Nhom_3_BaoCao_KếtThúcHọcPhần.docx` ở Trang 2 (loại bỏ trang trắng thừa), nối tiếp bởi Mục lục (Trang 3) cùng 8 phần nội dung đầy đủ (45 ô code Python tô màu cú pháp, 14 bảng kết quả và **19 biểu đồ độ phân giải cao** `fig_01`–`fig_18` + `age_groups` KDE).
 
+### Thay đổi 19: Chuẩn Hóa Toàn Diện Báo Cáo Word Theo Quyết Định 149/QĐ-ĐHĐA (`Buoi 10 (1).pptx`) (25/11/2026)
+
+* **Yêu cầu chuẩn học thuật Trường Đại học Đông Á:**
+  * Áp dụng trọn vẹn các quy định hình thức trình bày trong `Buoi 10 (1).pptx` phù hợp với nội dung báo cáo học phần Machine Learning của Nhóm 3 (bỏ qua các mẫu không liên quan như Bìa phụ, Nhận xét đơn vị thực tập, Phụ lục).
+* **Thay đổi đã thực hiện:**
+  * Chuẩn hóa khổ A4 (`21 × 29,7 cm`), lề trái `3,5 cm`, các lề còn lại `2,5 cm`, Header/Footer `1,0 cm`; nội dung **`Times New Roman 13 pt`** giãn dòng `1,2`, `Before 6 pt / After 0 pt`, thụt lề đầu dòng `1,0 cm`, căn đều hai bên.
+  * Tổ chức 4 Chương chuẩn ĐH Đông Á (`CHƯƠNG 1`–`CHƯƠNG 4`, mỗi chương sang trang mới, đề mục `14 pt` phân cấp 4 tầng không dấu chấm/hai chấm cuối), bổ sung **Danh mục từ viết tắt (23 thuật ngữ)**, **Danh sách bảng tự động (15 bảng)**, **Danh sách hình tự động (19 hình)** và **Tài liệu tham khảo chuẩn IEEE (`[1]`–`[7]`)**.
+  * Áp dụng quy tắc đánh số trang chuẩn QĐ 149 (**không đánh số trang** ở Bìa, Lời cảm ơn, Mục lục, Danh mục viết tắt, Danh sách bảng/hình và Tài liệu tham khảo; **đánh số Á-rập `1`–`39` căn giữa cuối trang cỡ `13 pt` bắt đầu từ `CHƯƠNG 1`**, tổng cộng **48 trang**), định dạng toàn bộ 15 bảng theo chuẩn **`3-lines table format`** (tiêu đề `Bảng X.Y` phía trên, số liệu `vi-VN` dấu phẩy thập phân/dấu chấm hàng ngàn), tiêu đề `Hình X.Y` phía dưới và công thức toán học căn giữa đánh số `(2.1)`–`(4.1)`.
+
 ---
 
 ## 3. DANH MỤC TỆP BÁO CÁO & TÀI LIỆU HIỆN CÓ TRONG DỰ ÁN

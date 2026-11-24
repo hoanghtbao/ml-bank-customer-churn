@@ -541,5 +541,7 @@ Khắc phục hạn chế của mô hình ROI phẳng (không áp dụng một m
     * Tách riêng mục `Packages Import` gọn nhẹ ở đầu `Project_Source_Code.ipynb` (`163 cells`) chứa các thư viện chung, và rải các lệnh `from src... import ...` về đúng ô thiết lập của từng Giai đoạn `1`–`6` (đã chạy kiểm chứng lại toàn bộ 163 cells xuyên suốt).
 18. **Biên Soạn Báo Cáo Word Chuẩn Định Dạng Coding Version (`Project_Report_BB_Bank_Coding.docx`) (24/11/2026):**
     * Xuất tệp báo cáo Word chuẩn A4 (37 trang, Mục lục tự động, 45 ô code Python tô màu cú pháp, toàn bộ bảng số liệu thật và 19 biểu đồ độ phân giải cao) khớp 100% bố cục 8 phần của `File 3_ Project Report (Coding).pdf`.
+19. **Chuẩn Hóa Báo Cáo Word Theo Quyết Định 149/QĐ-ĐHĐA (`Buoi 10 (1).pptx`) (25/11/2026):**
+    * Chuyển đổi toàn bộ `Project_Report_BB_Bank_Coding.docx` sang chuẩn ĐH Đông Á (**48 trang A4**, lề trái `3,5 cm`, `Times New Roman 13/14 pt`, 4 Chương chuẩn đề mục không dấu chấm cuối, tự động cập nhật `Mục lục` + `Danh mục từ viết tắt` + `Danh sách bảng` + `Danh sách hình`, bảng `3-lines format` số liệu `vi-VN`, công thức đánh số `(2.1)`–`(4.1)`, đánh số trang `1`–`39` căn giữa từ `CHƯƠNG 1` và `Tài liệu tham khảo` chuẩn IEEE).
 
 
