@@ -200,7 +200,7 @@ Trong quá trình triển khai thực tế và tối ưu hóa theo yêu cầu s�
 * **Yêu cầu bàn giao báo cáo:**
   * Xây dựng báo cáo Word (`.docx`) bám sát 100% cấu trúc 8 phần, trang bìa, mục lục tự động, header/footer, ô code Python tô màu cú pháp (`[1]:`–`[45]:`), bảng kết quả và biểu đồ minh họa của mẫu `File 3_ Project Report (Coding).pdf`.
 * **Thay đổi đã thực hiện:**
-  * Khởi tạo tệp [Project_Report_BB_Bank_Coding.docx](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/Project_Report_BB_Bank_Coding.docx) (37 trang A4, tự động cập nhật số trang Mục lục bằng Microsoft Word COM) trích xuất trực tiếp mã nguồn, bảng kết quả (`df_result`, `df_if_values`, Ablation Study, Decile Lift, 4 Quadrants, Tiered ROI) và đủ **19 biểu đồ độ phân giải cao** (`fig_01`–`fig_18` + `age_groups` KDE) từ `Project_Source_Code.ipynb`.
+  * Khởi tạo tệp [Project_Report_BB_Bank_Coding.docx](file:///D:/Machine_Learning_UDA/Bank_Customer_Churn/Project_Report_BB_Bank_Coding.docx) (**38 trang A4**, tự động cập nhật số trang Mục lục bằng Microsoft Word COM), tích hợp trực tiếp **Trang bìa chính thức Trường Đại học Đông Á** (khung viền hoa văn, logo UDA, thông tin Nhóm 3 lớp `IT24A`, GVHD `TS. Nguyễn Sĩ Thìn`) ở Trang 1 và **Lời cảm ơn** từ `Nhom_3_BaoCao_KếtThúcHọcPhần.docx` ở Trang 2 (loại bỏ trang trắng thừa), nối tiếp bởi Mục lục (Trang 3) cùng 8 phần nội dung đầy đủ (45 ô code Python tô màu cú pháp, 14 bảng kết quả và **19 biểu đồ độ phân giải cao** `fig_01`–`fig_18` + `age_groups` KDE).
 
 ---
 
